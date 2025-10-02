@@ -2,6 +2,7 @@
 using Bpst.API.Services.UserAccount;
 using BudgetPlannerApi.DB.Models;
 using BudgetPlannerApplication_2025.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ namespace BudgetPlannerApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class IncomeSourceController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -29,10 +31,9 @@ namespace BudgetPlannerApi.Controllers
         public async Task<ActionResult<IEnumerable<IncomeSource>>> GetIncomeSource()
         {
             var loggedInUserId = _userAccountService.GetLoggedInUserId();
-
-            if(loggedInUserId == null) 
+            if (loggedInUserId == null)
                 return await _context.IncomeSource.ToListAsync();
-             return await _context.IncomeSource.Where(i => i.UserId.Equals(loggedInUserId)).ToListAsync();
+            return await _context.IncomeSource.Where(i => i.UserId.Equals(loggedInUserId)).ToListAsync();
         }
 
         // GET: api/IncomeSource/5

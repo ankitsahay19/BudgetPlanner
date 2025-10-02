@@ -1,1 +1,48 @@
-<p>index-income-component works!</p>
+@if(loadingIncomes() || !incomeSources() || incomeSources().length === 0) {
+<div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+  <div class="text-center">
+    <div class="spinner-border text-primary mb-3" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div *ngIf="!loadingIncomes() && (!incomeSources() || incomeSources().length === 0)">
+      loading ...
+    </div>
+  </div>
+</div>
+}
+@else {
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Source</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (income of incomeSources(); track income.uniqueId; let i = $index) {
+    <tr>
+      <td>{{ i + 1 }}</td>
+      <td>{{ income.sourceName }}</td>
+      <td>{{ income.incomeAmount }} Rs</td>
+      <td>
+        <span (click)="deleteIncome(income.uniqueId)" [class.text-muted]="deletingIds.has(income.uniqueId)"
+          [style.pointerEvents]="deletingIds.has(income.uniqueId) ? 'none' : 'auto'" class="action-icon"
+          style="margin-right:12px;" title="Delete">
+          @if (deletingIds.has(income.uniqueId)) {
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          }
+          @if (!deletingIds.has(income.uniqueId)) {
+          <i class="bi bi-trash text-danger"></i>
+          }
+        </span>
+        <span (click)="editIncome(income.uniqueId)" class="action-icon" title="Edit">
+          <i class="bi bi-pencil text-success"></i>
+        </span>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>
+}

@@ -10,11 +10,13 @@
         </div>
         <div class="col-sm-12 col-md-2">
             <div class="mt-4 d-flex" style="padding-top:0.3em;">
-                <button type="submit" class="btn btn-primary" [disabled]="incomeForm.invalid">
-                    S.
-                </button>
-                <button type="submit" class="btn btn-primary" [disabled]="incomeForm.invalid">
-                    S.
+                <button type="submit" class="btn btn-primary" [disabled]="incomeForm.invalid || savingIncome()">
+                    @if (savingIncome()) {
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    }
+                    @if (!savingIncome()) {
+                    Save
+                    }
                 </button>
             </div>
         </div>

@@ -1,7 +1,9 @@
-import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+//savingIncome = signal(false);
+import { MonthlyIncomeService } from '../../../../services/monthly-income-service';
+import { Component, Input, signal, effect } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { tap } from 'rxjs';
+import { single, tap } from 'rxjs';
+import { IncomeSourceModel } from '../../../../models/IncomeSourceModel';
 
 @Component({
   selector: 'add-income-component',
@@ -10,45 +12,64 @@ import { tap } from 'rxjs';
   styleUrl: './add-income-component.scss'
 })
 export class AddIncomeComponent {
+  savingIncome = signal(false);
+  @Input() editableIncomeSource = signal<IncomeSourceModel | null>(null);
+  @Input({ required: true }) incomeSources = signal<IncomeSourceModel[]>([]);
 
   incomeForm = new FormGroup({
-    sourceName: new FormControl('', Validators.required),
-    incomeAmount: new FormControl(0, [Validators.required, Validators.min(1)])
+    sourceName: new FormControl(this.editableIncomeSource()?.sourceName, Validators.required),
+    incomeAmount: new FormControl(this.editableIncomeSource()?.incomeAmount, [Validators.required, Validators.min(1)]),
+    uniqueId: new FormControl(this.editableIncomeSource()?.uniqueId),
+    userId: new FormControl(this.editableIncomeSource()?.userId)
   });
-
-  constructor(private fb: FormBuilder, private http: HttpClient) {
-    this.incomeForm = this.fb.group({
-      sourceName: ['', Validators.required],
-      incomeAmount: [0, [Validators.required, Validators.min(1)]]
+  constructor(private fb: FormBuilder, private monthlyIncomeService: MonthlyIncomeService) {
+    effect(() => {
+      const income = this.editableIncomeSource();
+      if (income) {
+        this.incomeForm.patchValue({
+          sourceName: income.sourceName,
+          incomeAmount: income.incomeAmount,
+          uniqueId: income?.uniqueId,
+          userId: income?.userId
+        });
+      } else {
+        this.incomeForm.reset();
+      }
     });
   }
 
-
-
-
   onSubmit() {
     if (this.incomeForm.valid) {
-      var data = this.http.post<any>("https://localhost:7255/api/IncomeSource/CreateOrEdit", this.incomeForm.value).pipe(
+      this.savingIncome.set(true);
+      const formValue = this.incomeForm.value;
+      const newIncome: IncomeSourceModel = {
+        uniqueId: this.editableIncomeSource()?.uniqueId ?? 0, // 0 means new
+        userId: this.editableIncomeSource()?.userId ?? 1,     // put current userId here
+        sourceName: formValue.sourceName!,
+        incomeAmount: formValue.incomeAmount!,
+        createdDate: this.editableIncomeSource()?.createdDate ?? new Date(),
+        lastUpdatedDate: new Date(),
+      };
+
+      this.monthlyIncomeService.addIncomeSource(newIncome).pipe(
         tap(response => {
-          console.log(response);
+          this.incomeSources.set([response, ...this.incomeSources()]);
+          this.incomeForm.reset();
+          this.editableIncomeSource.set(null);
+          this.savingIncome.set(false);
         })
-      );
-      data.subscribe();
+      ).subscribe({
+        error: () => {
+          this.savingIncome.set(false);
+        }
+      });
     } else {
       console.log('Form is invalid');
     }
   }
 
 
-  // SaveIncome(credentials: { loginName: string; password: string }): Observable<LoginResponseModel> {
-  //   return this.http.post<LoginResponseModel>(ApiEndpoints.userAccount.login, credentials).pipe(
-  //     tap(response => {
-  //       if (response?.isLoginSuccess) {
-  //         this.setUser(response);
-  //       }
-  //     })
-  //   );
-  // }
+
 
 }
 

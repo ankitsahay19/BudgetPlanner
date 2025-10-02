@@ -12,5 +12,12 @@ export class MonthlyIncomeService {
   getIncomeSources(): Observable<IncomeSourceModel[]> {
     return this.http.get<IncomeSourceModel[]>(this.apiUrl);
   }
+  DeleteIncomeSource(id: number): Observable<IncomeSourceModel[]> {
+    return this.http.delete<IncomeSourceModel[]>(`${this.apiUrl}/${id}`);
+  }
+
+  addIncomeSource(income: IncomeSourceModel): Observable<IncomeSourceModel> {
+    return this.http.post<IncomeSourceModel>(ApiEndpoints.IncomeSource.createOrEdit, income);
+  }
 
 }

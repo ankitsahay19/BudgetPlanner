@@ -1,0 +1,9 @@
+// Action icons: pointer and bold on hover
+.action-icon {
+    cursor: pointer;
+}
+
+.action-icon:hover i {
+    font-weight: bold;
+    filter: brightness(1.2);
+}

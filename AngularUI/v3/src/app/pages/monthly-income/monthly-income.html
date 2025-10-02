@@ -2,35 +2,8 @@
   <div class="card shadow-sm border-0">
     <div class="card-body p-4">
       <h2 class="mb-4 border-bottom pb-2">Monthly Income</h2>
-
-      <add-income-component></add-income-component>
-      <app-index-income-component></app-index-income-component>
-      <div class="mt-4">
-        <h2>Income List</h2>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Source</th>
-              <th scope="col">Amount</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (income of incomeSources(); track income.uniqueId; let i = $index) {
-            <tr>
-              <td>{{ i + 1 }}</td>
-              <td>{{ income.sourceName }}</td>
-              <td>{{ income.incomeAmount }} Rs</td>
-              <td>
-                <button class="btn btn-danger btn-sm" (click)="deleteIncome(income.uniqueId)">
-                  Delete
-                </button>
-              </td>
-            </tr>
-            }
-          </tbody>
-        </table>
-      </div>
+      <add-income-component [incomeSources]="incomeSources"></add-income-component>
+      <app-index-income-component [incomeSources]="incomeSources"
+        [editableIncomeSource]="editableIncomeSource"></app-index-income-component>
     </div>
   </div>

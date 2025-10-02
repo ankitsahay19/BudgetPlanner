@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MonthlyIncomeService } from '../../services/monthly-income-service';
@@ -15,6 +15,7 @@ import { IndexIncomeComponent } from "./components/index-income-component/index-
 })
 export class MonthlyIncome {
   incomeSources = signal<IncomeSourceModel[]>([]);
+  editableIncomeSource = signal<IncomeSourceModel | null>(null);
   source: string = '';
   amount: number | null = null;
   message: string = '';

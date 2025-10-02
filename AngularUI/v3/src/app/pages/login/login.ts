@@ -21,6 +21,9 @@ export class Login {
   isLoading = signal(false);
 
   constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {
+    if (this.auth.isLoggedIn()) {
+      this.router.navigate(['/income']);
+    }
     this.loginForm = this.fb.group({
       loginName: ['Ankit.sahay101@example.com', [Validators.required, Validators.email]],
       password: ['Ankit.sahay101@example.com', [Validators.required, Validators.minLength(6),]]
