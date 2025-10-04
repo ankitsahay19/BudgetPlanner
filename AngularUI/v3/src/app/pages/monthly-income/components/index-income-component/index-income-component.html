@@ -43,7 +43,7 @@
           <i class="bi bi-trash text-danger"></i>
           }
         </span>
-        <span (click)="incomeService.editIncomeSource(income)" class="action-icon" title="Edit">
+        <span (click)="incomeService.setSelectedIncomeIdForEdit(income.uniqueId)" class="action-icon" title="Edit">
           <i class="bi bi-pencil text-success"></i>
         </span>
       </td>

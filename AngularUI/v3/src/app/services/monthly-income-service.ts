@@ -15,7 +15,8 @@ export class MonthlyIncomeService {
   loadingIncomes = signal(false);
   errorMsg = signal('');
   successMsg = signal('');
-
+  // New: selected income for edit
+  selectedIncomeIdForEdit = signal<number | null>(null);
 
   // Load initial list
   getIncomeSources() {
@@ -36,7 +37,6 @@ export class MonthlyIncomeService {
     });
   }
 
-
   deleteIncomeSource(id: number): Observable<void> {
     const deleteUrl = ApiEndpoints.IncomeSource.delete(id);
     return this.http.delete<void>(deleteUrl).pipe(
@@ -47,8 +47,6 @@ export class MonthlyIncomeService {
       })
     );
   }
-
-
 
   // ✅ Add (append only when API responds successfully)
   addIncomeSource(income: IncomeSourceModel): Observable<IncomeSourceModel> {
@@ -70,5 +68,19 @@ export class MonthlyIncomeService {
       })
     );
   }
+
+
+  setSelectedIncomeIdForEdit(incomeId: number) {
+    this.selectedIncomeIdForEdit.set(incomeId);
+    console.log(' from income service setSelectedIncomeIdForEdit with ID:', incomeId);
+    //    return this.myIncomeSources().find(x => x.uniqueId === incomeId) || null;
+  }
+  getIncomeById(incomeId: number) {
+    this.selectedIncomeIdForEdit.set(incomeId);
+    const income = this.myIncomeSources().find(x => x.uniqueId === incomeId) || null;
+    console.log(' from income service getIncomeById with ID:', incomeId, ' found income:', income);
+    return income;
+  }
+
 
 }
