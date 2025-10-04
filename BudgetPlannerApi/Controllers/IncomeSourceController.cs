@@ -59,80 +59,30 @@ namespace BudgetPlannerApi.Controllers
         {
             if (IncomeSource == null)
                 return BadRequest("Invalid IncomeSource data.");
-            else if (IncomeSource.UserId == 0)
-                IncomeSource.UserId = null;
 
-            if (_userAccountService.GetLoggedInUserId() == null)
-                return Unauthorized("User ID not found in token.");
-            IncomeSource.UserId = _userAccountService.GetLoggedInUserId();
-
-            var existingIncome = await _context.Categories
-                .AsNoTracking()
-                .FirstOrDefaultAsync(c => c.UniqueId == IncomeSource.UniqueId);
-
-            if (existingIncome == null)
+            var existingIncome = await _context.IncomeSource.AsNoTracking().FirstOrDefaultAsync(c => c.UniqueId == IncomeSource.UniqueId);
+            if (existingIncome != null && existingIncome.UniqueId == IncomeSource.UniqueId)
             {
+                if (_userAccountService.GetLoggedInUserId() != existingIncome.UserId && existingIncome.UserId != IncomeSource.UserId)
+                    return Forbid("You do not have permission to edit this category.");
+                else
+                {
+                    existingIncome.LastUpdatedDate = DateTime.UtcNow;
+                    existingIncome.SourceName = IncomeSource.SourceName;
+                    existingIncome.IncomeAmount = IncomeSource.IncomeAmount;
+                    _context.Entry(existingIncome).State = EntityState.Modified;
+                }
+            }
+            else if (existingIncome == null)
+            {
+                IncomeSource.UserId ??= _userAccountService.GetLoggedInUserId();
                 IncomeSource.CreatedDate = DateTime.UtcNow;
                 _context.IncomeSource.Add(IncomeSource);
-                await _context.SaveChangesAsync();
 
-                return CreatedAtAction(nameof(GetIncomeSource), new { id = IncomeSource.UniqueId }, IncomeSource);
             }
-            else if (_userAccountService.GetLoggedInUserId() == existingIncome.UserId)
-            {
-                IncomeSource.LastUpdatedDate = DateTime.UtcNow;
-                _context.Entry(IncomeSource).State = EntityState.Modified;
-
-                try
-                {
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!IncomeSourceExists(IncomeSource.UniqueId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-
-                return Ok(IncomeSource);
-            }
-            else
-            {
-                return Forbid("You do not have permission to edit this category.");
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            await _context.SaveChangesAsync();
+            return Ok(IncomeSource);
+        } 
 
         // DELETE: api/IncomeSource/5
         [HttpDelete("{id}")]
