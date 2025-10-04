@@ -56,19 +56,20 @@ export class AddEditIncomeComponent {
     this.savingIncome.set(true);
     const formValue = this.incomeForm.value as IncomeSourceModel;
 
-    const request$ = this.incomeService.addIncomeSource(formValue);
+    const request$ = formValue.uniqueId && formValue.uniqueId > 0
+      ? this.incomeService.editIncomeSource(formValue)
+      : this.incomeService.addIncomeSource(formValue);
 
     request$.subscribe({
       next: () => {
         this.successMsg.set(`Income saved successfully!`);
         this.errorMsg.set('');
         this.savingIncome.set(false);
-        this.incomeForm.reset();
+        this.incomeForm.reset({ sourceName: '', incomeAmount: 0, uniqueId: 0, userId: 0 });
         this.incomeService.selectedIncomeIdForEdit.set(null);
 
       },
       complete: () => { this.errorMsg.set(''); this.savingIncome.set(false); this.incomeForm.reset(); this.incomeService.selectedIncomeIdForEdit.set(null); },
-
       error: () => {
         this.errorMsg.set('Error saving income.');
         this.successMsg.set('');

@@ -113,9 +113,63 @@ namespace BudgetPlannerApi.Controllers
             return NoContent();
         }
 
+
+        [HttpPost("CreateOrEdit")]
+        public async Task<IActionResult> CreateOrEditIncome(IncomeSource IncomeSource)
+        {
+            if (IncomeSource == null)
+                return BadRequest("Invalid IncomeSource data.");
+            else if (IncomeSource.UserId == 0)
+                IncomeSource.UserId = null;
+
+            if (_userAccountService.GetLoggedInUserId() == null)
+                return Unauthorized("User ID not found in token.");
+            IncomeSource.UserId = _userAccountService.GetLoggedInUserId();
+
+            var existingIncome = await _context.Categories
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.UniqueId == IncomeSource.UniqueId);
+
+            if (existingIncome == null)
+            {
+                IncomeSource.CreatedDate = DateTime.UtcNow;
+                _context.IncomeSource.Add(IncomeSource);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(GetIncomeSource), new { id = IncomeSource.UniqueId }, IncomeSource);
+            }
+            else if (_userAccountService.GetLoggedInUserId() == existingIncome.UserId)
+            {
+                IncomeSource.LastUpdatedDate = DateTime.UtcNow;
+                _context.Entry(IncomeSource).State = EntityState.Modified;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!IncomeSourceExists(IncomeSource.UniqueId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return Ok(IncomeSource);
+            }
+            else
+            {
+                return Forbid("You do not have permission to edit this category.");
+            }
+        }
         private bool IncomeSourceExists(int id)
         {
             return _context.IncomeSource.Any(e => e.UniqueId == id);
         }
+ 
     }
 }

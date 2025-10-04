@@ -47,41 +47,64 @@ export class MonthlyIncomeService {
       })
     );
   }
-
-  // ✅ Add (append only when API responds successfully)
-  addIncomeSource(income: IncomeSourceModel): Observable<IncomeSourceModel> {
-    return this.http.post<IncomeSourceModel>(ApiEndpoints.IncomeSource.createOrEdit, income).pipe(
-      tap((savedIncome) => {
-        const list = this.myIncomeSources();
-
-        if (income.uniqueId && income.uniqueId !== 0) {
-          // 🟢 Edit case — replace existing
-          const updatedList = list.map(item =>
-            item.uniqueId === income.uniqueId ? savedIncome : item
-          );
-          this.myIncomeSources.set(updatedList);
-        } else {
-          // 🟢 Add case — append new
-          this.myIncomeSources.set([...list, savedIncome]);
-        }
-
-      })
-    );
-  }
-
-
-
   setSelectedIncomeIdForEdit(incomeId: number) {
     this.selectedIncomeIdForEdit.set(incomeId);
     console.log(' from income service setSelectedIncomeIdForEdit with ID:', incomeId);
     //    return this.myIncomeSources().find(x => x.uniqueId === incomeId) || null;
   }
+
   getIncomeById(incomeId: number) {
     this.selectedIncomeIdForEdit.set(incomeId);
     const income = this.myIncomeSources().find(x => x.uniqueId === incomeId) || null;
     console.log(' from income service getIncomeById with ID:', incomeId, ' found income:', income);
     return income;
   }
+
+  // Create new income
+  addIncomeSource(income: IncomeSourceModel): Observable<IncomeSourceModel> {
+    return this.http.post<IncomeSourceModel>(ApiEndpoints.IncomeSource.create, income)
+      .pipe(
+        tap(savedIncome => {
+          this.myIncomeSources.set([...this.myIncomeSources(), savedIncome]);
+        })
+      );
+  }
+
+  // Update existing income
+  editIncomeSource(income: IncomeSourceModel): Observable<IncomeSourceModel> {
+    return this.http.put<IncomeSourceModel>(`${ApiEndpoints.IncomeSource.edit}/${income.uniqueId}`, income)
+      .pipe(
+        tap(updatedIncome => {
+          const updatedList = this.myIncomeSources().map(item =>
+            item.uniqueId === updatedIncome.uniqueId ? updatedIncome : item
+          );
+          this.myIncomeSources.set(updatedList);
+        })
+      );
+  }
+
+
+
+  // // ✅ Add (append only when API responds successfully)
+  // addIncomeSource(income: IncomeSourceModel): Observable<IncomeSourceModel> {
+  //   return this.http.post<IncomeSourceModel>(ApiEndpoints.IncomeSource.createOrEdit, income).pipe(
+  //     tap((savedIncome) => {
+  //       const list = this.myIncomeSources();
+
+  //       if (income.uniqueId && income.uniqueId !== 0) {
+  //         // 🟢 Edit case — replace existing
+  //         const updatedList = list.map(item =>
+  //           item.uniqueId === income.uniqueId ? savedIncome : item
+  //         );
+  //         this.myIncomeSources.set(updatedList);
+  //       } else {
+  //         // 🟢 Add case — append new
+  //         this.myIncomeSources.set([...list, savedIncome]);
+  //       }
+
+  //     })
+  //   );
+  // } 
 
 
 }
