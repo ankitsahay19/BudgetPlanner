@@ -1,12 +1,18 @@
-@if(loadingIncomes() || !incomeSources() || incomeSources().length === 0) {
+<!-- ✅ Loading indicator -->
+
+@if( incomeService.loadingIncomes() || !incomeService.myIncomeSources() || incomeService.myIncomeSources().length === 0)
+{
 <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
   <div class="text-center">
     <div class="spinner-border text-primary mb-3" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
-    <div *ngIf="!loadingIncomes() && (!incomeSources() || incomeSources().length === 0)">
+    @if(!incomeService.loadingIncomes() && (!incomeService.myIncomeSources() || incomeService.myIncomeSources().length
+    === 0)) {
+    <div class="text-muted">
       loading ...
     </div>
+    }
   </div>
 </div>
 }
@@ -21,7 +27,7 @@
     </tr>
   </thead>
   <tbody>
-    @for (income of incomeSources(); track income.uniqueId; let i = $index) {
+    @for (income of incomeService.myIncomeSources(); track income.uniqueId; let i = $index) {
     <tr>
       <td>{{ i + 1 }}</td>
       <td>{{ income.sourceName }}</td>
@@ -37,7 +43,7 @@
           <i class="bi bi-trash text-danger"></i>
           }
         </span>
-        <span (click)="editIncome(income.uniqueId)" class="action-icon" title="Edit">
+        <span (click)="incomeService.editIncomeSource(income)" class="action-icon" title="Edit">
           <i class="bi bi-pencil text-success"></i>
         </span>
       </td>

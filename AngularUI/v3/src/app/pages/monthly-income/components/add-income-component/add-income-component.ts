@@ -14,7 +14,6 @@ import { IncomeSourceModel } from '../../../../models/IncomeSourceModel';
 export class AddIncomeComponent {
   savingIncome = signal(false);
   @Input() editableIncomeSource = signal<IncomeSourceModel | null>(null);
-  @Input({ required: true }) incomeSources = signal<IncomeSourceModel[]>([]);
 
   incomeForm = new FormGroup({
     sourceName: new FormControl(this.editableIncomeSource()?.sourceName, Validators.required),
@@ -53,7 +52,7 @@ export class AddIncomeComponent {
 
       this.monthlyIncomeService.addIncomeSource(newIncome).pipe(
         tap(response => {
-          this.incomeSources.set([response, ...this.incomeSources()]);
+          //  this.incomeSources.set([response, ...this.incomeSources()]);
           this.incomeForm.reset();
           this.editableIncomeSource.set(null);
           this.savingIncome.set(false);
