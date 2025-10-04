@@ -53,86 +53,49 @@ namespace BudgetPlannerApi.Controllers
 
 
 
-
-        [HttpPost("CreateOrEdit")]
-        public async Task<IActionResult> CreateOrEditIncome(IncomeSource IncomeSource)
+        [HttpPost("Create")]
+        public async Task<IActionResult> CreateIncome([FromBody] IncomeSource incomeSource)
         {
-            if (IncomeSource == null)
+            if (incomeSource == null)
                 return BadRequest("Invalid IncomeSource data.");
-            else if (IncomeSource.UserId == 0)
-                IncomeSource.UserId = null;
 
-            if (_userAccountService.GetLoggedInUserId() == null)
-                return Unauthorized("User ID not found in token.");
-            IncomeSource.UserId = _userAccountService.GetLoggedInUserId();
+            incomeSource.UserId ??= _userAccountService.GetLoggedInUserId();
+            incomeSource.CreatedDate = DateTime.UtcNow;
 
-            var existingIncome = await _context.Categories
-                .AsNoTracking()
-                .FirstOrDefaultAsync(c => c.UniqueId == IncomeSource.UniqueId);
+            _context.IncomeSource.Add(incomeSource);
+            await _context.SaveChangesAsync();
 
-            if (existingIncome == null)
-            {
-                IncomeSource.CreatedDate = DateTime.UtcNow;
-                _context.IncomeSource.Add(IncomeSource);
-                await _context.SaveChangesAsync();
-
-                return CreatedAtAction(nameof(GetIncomeSource), new { id = IncomeSource.UniqueId }, IncomeSource);
-            }
-            else if (_userAccountService.GetLoggedInUserId() == existingIncome.UserId)
-            {
-                IncomeSource.LastUpdatedDate = DateTime.UtcNow;
-                _context.Entry(IncomeSource).State = EntityState.Modified;
-
-                try
-                {
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!IncomeSourceExists(IncomeSource.UniqueId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-
-                return Ok(IncomeSource);
-            }
-            else
-            {
-                return Forbid("You do not have permission to edit this category.");
-            }
+            return Ok(incomeSource);
         }
 
 
+        [HttpPut("Edit/{id}")]
+        public async Task<IActionResult> EditIncome(int id, [FromBody] IncomeSource incomeSource)
+        {
+            if (incomeSource == null || id != incomeSource.UniqueId)
+                return BadRequest("Invalid IncomeSource data or ID mismatch.");
 
+            var existingIncome = await _context.IncomeSource.AsNoTracking()
+                .FirstOrDefaultAsync(c => c.UniqueId == id);
 
+            if (existingIncome == null)
+                return NotFound("Income source not found.");
 
+            // Check permissions
+            var loggedInUserId = _userAccountService.GetLoggedInUserId();
+            if (existingIncome.UserId != loggedInUserId)
+                return Forbid("You do not have permission to edit this income source.");
 
+            // Update only editable fields
+            existingIncome.SourceName = incomeSource.SourceName;
+            existingIncome.IncomeAmount = incomeSource.IncomeAmount;
+            existingIncome.LastUpdatedDate = DateTime.UtcNow;
 
+            _context.Entry(existingIncome).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            return Ok(existingIncome);
+        }
 
         // DELETE: api/IncomeSource/5
         [HttpDelete("{id}")]
