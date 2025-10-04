@@ -55,7 +55,10 @@ export class AddEditIncomeComponent {
     if (this.incomeForm.invalid) return;
     this.savingIncome.set(true);
     const formValue = this.incomeForm.value as IncomeSourceModel;
+    if (formValue.userId === null) formValue.userId = Number(localStorage.getItem('userId') || '0');
+    if (formValue.uniqueId === null) formValue.uniqueId = Number(localStorage.getItem('uniqueId') || '0');
 
+    // Determine if adding or editing based on presence of uniqueId{
     const request$ = formValue.uniqueId && formValue.uniqueId > 0
       ? this.incomeService.editIncomeSource(formValue)
       : this.incomeService.addIncomeSource(formValue);
@@ -77,4 +80,6 @@ export class AddEditIncomeComponent {
       },
     });
   }
+
+
 }

@@ -32,4 +32,10 @@ export class IndexIncomeComponent {
     });
   }
 
+  getTotalIncome(): number {
+    const sources = this.incomeService.myIncomeSources();
+    return sources.reduce((sum, x) => sum + (x.incomeAmount || 0), 0);
+  }
+
+
 }

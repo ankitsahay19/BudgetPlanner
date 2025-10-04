@@ -58,9 +58,10 @@ namespace BudgetPlannerApi.Controllers
         {
             if (incomeSource == null)
                 return BadRequest("Invalid IncomeSource data.");
-
-            incomeSource.UserId ??= _userAccountService.GetLoggedInUserId();
-            incomeSource.CreatedDate = DateTime.UtcNow;
+            if (_userAccountService.GetLoggedInUserId() == null)
+                return Unauthorized("User ID not found in token.");
+            incomeSource.UserId = _userAccountService.GetLoggedInUserId(); 
+             incomeSource.CreatedDate = DateTime.UtcNow;
 
             _context.IncomeSource.Add(incomeSource);
             await _context.SaveChangesAsync();

@@ -1,23 +1,17 @@
 <!-- ✅ Loading indicator -->
 
-@if( incomeService.loadingIncomes() || !incomeService.myIncomeSources() || incomeService.myIncomeSources().length === 0)
+@if( incomeService.loadingIncomes())
 {
 <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
   <div class="text-center">
     <div class="spinner-border text-primary mb-3" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
-    @if(!incomeService.loadingIncomes() && (!incomeService.myIncomeSources() || incomeService.myIncomeSources().length
-    === 0)) {
-    <div class="text-muted">
-      loading ...
-    </div>
-    }
   </div>
 </div>
 }
 @else {
-<table class="table table-striped">
+<table class="table table-bordered align-middle">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -31,7 +25,8 @@
     <tr>
       <td>{{ i + 1 }}</td>
       <td>{{ income.sourceName }}</td>
-      <td>{{ income.incomeAmount }} Rs</td>
+      <td class="text-end">{{ income.incomeAmount | number:'1.0-0' }} Rs</td>
+
       <td>
         <span (click)="deleteIncome(income.uniqueId)" [class.text-muted]="deletingIds.has(income.uniqueId)"
           [style.pointerEvents]="deletingIds.has(income.uniqueId) ? 'none' : 'auto'" class="action-icon"
@@ -50,5 +45,11 @@
     </tr>
     }
   </tbody>
+  <tfoot>
+    <tr>
+      <th colspan="2" class="text-end">Total Income:</th>
+      <th class="text-end">{{ this.getTotalIncome() | number:'1.0-0' }} /- </th>
+      <th></th>
+    </tr>
 </table>
 }
