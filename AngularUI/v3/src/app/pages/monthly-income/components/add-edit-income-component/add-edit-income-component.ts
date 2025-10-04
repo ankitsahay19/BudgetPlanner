@@ -55,22 +55,20 @@ export class AddEditIncomeComponent {
     if (this.incomeForm.invalid) return;
     this.savingIncome.set(true);
     const formValue = this.incomeForm.value as IncomeSourceModel;
-    // Distinguish between add/edit
-    const isEdit = formValue.uniqueId && formValue.uniqueId > 0;
-    const request$ = isEdit
-      ? this.incomeService.editIncomeSource(formValue)
-      : this.incomeService.addIncomeSource(formValue);
+
+    const request$ = this.incomeService.addIncomeSource(formValue);
 
     request$.subscribe({
       next: () => {
-        this.successMsg.set(
-          `Income ${isEdit ? 'updated' : 'added'} successfully!`
-        );
+        this.successMsg.set(`Income saved successfully!`);
         this.errorMsg.set('');
         this.savingIncome.set(false);
         this.incomeForm.reset();
         this.incomeService.selectedIncomeIdForEdit.set(null);
+
       },
+      complete: () => { this.errorMsg.set(''); this.savingIncome.set(false); this.incomeForm.reset(); this.incomeService.selectedIncomeIdForEdit.set(null); },
+
       error: () => {
         this.errorMsg.set('Error saving income.');
         this.successMsg.set('');

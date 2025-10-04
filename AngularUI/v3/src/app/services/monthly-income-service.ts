@@ -52,22 +52,23 @@ export class MonthlyIncomeService {
   addIncomeSource(income: IncomeSourceModel): Observable<IncomeSourceModel> {
     return this.http.post<IncomeSourceModel>(ApiEndpoints.IncomeSource.createOrEdit, income).pipe(
       tap((savedIncome) => {
-        this.myIncomeSources.set([...this.myIncomeSources(), savedIncome]);
+        const list = this.myIncomeSources();
+
+        if (income.uniqueId && income.uniqueId !== 0) {
+          // 🟢 Edit case — replace existing
+          const updatedList = list.map(item =>
+            item.uniqueId === income.uniqueId ? savedIncome : item
+          );
+          this.myIncomeSources.set(updatedList);
+        } else {
+          // 🟢 Add case — append new
+          this.myIncomeSources.set([...list, savedIncome]);
+        }
+
       })
     );
   }
 
-  // ✅ Edit (replace existing record on success)
-  editIncomeSource(income: IncomeSourceModel): Observable<IncomeSourceModel> {
-    return this.http.put<IncomeSourceModel>(ApiEndpoints.IncomeSource.createOrEdit, income).pipe(
-      tap((updatedIncome) => {
-        const updatedList = this.myIncomeSources().map(item =>
-          item.uniqueId === updatedIncome.uniqueId ? updatedIncome : item
-        );
-        this.myIncomeSources.set(updatedList);
-      })
-    );
-  }
 
 
   setSelectedIncomeIdForEdit(incomeId: number) {
