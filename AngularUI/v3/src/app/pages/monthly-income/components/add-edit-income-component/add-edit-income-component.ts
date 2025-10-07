@@ -1,5 +1,5 @@
-import { Component, effect, inject, Injector, signal, runInInjectionContext } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule, } from '@angular/forms';
+import { Component, effect, inject, signal } from '@angular/core';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MonthlyIncomeService } from '../../../../services/monthly-income-service';
 import { IncomeSourceModel } from '../../../../models/IncomeSourceModel';
 
@@ -11,72 +11,93 @@ import { IncomeSourceModel } from '../../../../models/IncomeSourceModel';
   styleUrl: './add-edit-income-component.scss',
 })
 export class AddEditIncomeComponent {
-  private injector = inject(Injector);
-  private fb = inject(FormBuilder);
-  public incomeService = inject(MonthlyIncomeService);
+  /**
+   * Controls fade-out animation for error message
+   */
+  /**
+   * Controls fade-out animation for error message
+   */
+  errorFading = false;
 
-  // Signals
-  savingIncome = signal(false);
-  successMsg = signal('');
-  errorMsg = signal('');
-
-  // Reactive form
-  incomeForm = this.fb.group({
+  /**
+   * Reactive form for add/edit income
+   */
+  incomeForm = inject(FormBuilder).group({
     sourceName: ['', Validators.required],
     incomeAmount: [0, [Validators.required, Validators.min(1)]],
     uniqueId: [0],
     userId: [0],
   });
 
+  /**
+   * Signals for UI state
+   */
+  savingIncome = signal(false);
+  successMsg = signal('');
+  errorMsg = signal('');
+
+  /**
+   * MonthlyIncomeService for API and state
+   */
+  public incomeService = inject(MonthlyIncomeService);
+
+  /**
+   * Populate form when selected income changes
+   */
   constructor() {
-    // ✅ Run the effect safely inside an injection context
-    runInInjectionContext(this.injector, () => {
-      effect(() => {
-        const incomeId = this.incomeService.selectedIncomeIdForEdit();
-        console.log('Effect triggered: selected ID =', incomeId);
-        const income = incomeId ? this.incomeService.getIncomeById(incomeId) : null;
-        if (income) {
-          console.log('Populating form for edit:', income);
-          this.incomeForm.patchValue({
-            sourceName: income.sourceName,
-            incomeAmount: income.incomeAmount,
-            uniqueId: income.uniqueId,
-            userId: income.userId,
-          });
-        } else {
-          console.log('Resetting form (no income selected)');
-          this.incomeForm.reset({ sourceName: '', incomeAmount: 0, uniqueId: 0, userId: 0, });
-        }
-      });
+    effect(() => {
+      const incomeId = this.incomeService.selectedIncomeIdForEdit();
+      const income = incomeId ? this.incomeService.getIncomeById(incomeId) : null;
+      if (income) {
+        this.incomeForm.patchValue({
+          sourceName: income.sourceName,
+          incomeAmount: income.incomeAmount,
+          uniqueId: income.uniqueId,
+          userId: income.userId,
+        });
+      } else {
+        this.incomeForm.reset({ sourceName: '', incomeAmount: 0, uniqueId: 0, userId: 0 });
+      }
     });
   }
 
+  /**
+   * Handles form submission for add/edit income
+   * Shows loader and error/success feedback
+   */
   onSubmit() {
     if (this.incomeForm.invalid) return;
     this.savingIncome.set(true);
     const formValue = this.incomeForm.value as IncomeSourceModel;
-    if (formValue.userId === null) formValue.userId = Number(localStorage.getItem('userId') || '0');
-    if (formValue.uniqueId === null) formValue.uniqueId = Number(localStorage.getItem('uniqueId') || '0');
+    // Ensure userId and uniqueId are numbers
+    formValue.userId = formValue.userId ?? Number(localStorage.getItem('userId') || '0');
+    formValue.uniqueId = formValue.uniqueId ?? 0;
 
-    // Determine if adding or editing based on presence of uniqueId{
+    // Determine if adding or editing
     const request$ = formValue.uniqueId && formValue.uniqueId > 0
       ? this.incomeService.editIncomeSource(formValue)
       : this.incomeService.addIncomeSource(formValue);
 
     request$.subscribe({
       next: () => {
-        this.successMsg.set(`Income saved successfully!`);
+        this.successMsg.set('Income saved successfully!');
         this.errorMsg.set('');
         this.savingIncome.set(false);
         this.incomeForm.reset({ sourceName: '', incomeAmount: 0, uniqueId: 0, userId: 0 });
         this.incomeService.selectedIncomeIdForEdit.set(null);
-
       },
-      complete: () => { this.errorMsg.set(''); this.savingIncome.set(false); this.incomeForm.reset(); this.incomeService.selectedIncomeIdForEdit.set(null); },
       error: () => {
         this.errorMsg.set('Error saving income.');
         this.successMsg.set('');
         this.savingIncome.set(false);
+        this.errorFading = false;
+        setTimeout(() => {
+          this.errorFading = true;
+        }, 500);
+        setTimeout(() => {
+          this.errorMsg.set('');
+          this.errorFading = false;
+        }, 3000);
       },
     });
   }
