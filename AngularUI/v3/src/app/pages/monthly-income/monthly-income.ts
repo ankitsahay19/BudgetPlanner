@@ -13,7 +13,15 @@ import { AddEditIncomeComponent } from "./components/add-edit-income-component/a
   styleUrls: ['./monthly-income.scss']
 })
 export class MonthlyIncome {
+  /**
+   * Main monthly income container component
+   * Handles loading and passing state to child components
+   */
   constructor(private incomeService: MonthlyIncomeService, private authService: AuthService) { }
+
+  /**
+   * On component init, load all income sources
+   */
   ngOnInit() {
     this.incomeService.getIncomeSources();
   }
