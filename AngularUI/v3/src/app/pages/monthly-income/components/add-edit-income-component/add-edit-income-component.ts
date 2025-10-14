@@ -18,7 +18,7 @@ export class AddEditIncomeComponent {
    * Controls fade-out animation for error message
    */
   errorFading = false;
-
+  successFading= false;
   /**
    * Reactive form for add/edit income
    */
@@ -85,7 +85,14 @@ export class AddEditIncomeComponent {
         this.savingIncome.set(false);
         this.incomeForm.reset({ sourceName: '', incomeAmount: 0, uniqueId: 0, userId: 0 });
         this.incomeService.selectedIncomeIdForEdit.set(null);
-      },
+        this.successFading = false;
+        setTimeout(() => {this.successFading = true; }, 500);
+         setTimeout(() => {
+       this.successMsg.set('');
+      this.successFading = false;
+      }, 3000);
+ },
+      
       error: () => {
         this.errorMsg.set('Error saving income.');
         this.successMsg.set('');

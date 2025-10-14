@@ -1,6 +1,13 @@
 @if (errorMsg()) {
 <div class="alert alert-danger mb-3 fade-out" [class.fade-out-leave]="errorFading">{{ errorMsg() }}</div>
 }
+
+@if (successMsg()) {
+  <div class="alert alert-success mb-3 fade-out" [class.fade-out-leave]="successFading">
+    {{ successMsg() }}
+  </div>
+}
+
 <form [formGroup]="incomeForm" (ngSubmit)="onSubmit()">
     <div class="row g-4">
         <div class="col-sm-12 col-md-8">
