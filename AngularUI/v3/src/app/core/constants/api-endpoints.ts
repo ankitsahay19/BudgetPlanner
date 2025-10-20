@@ -1,7 +1,7 @@
 // src/app/core/constants/api-endpoints.ts
 
 //export const ApiBaseUrl = 'https://localhost:7255/api'; // windows base url local
-export const ApiBaseUrl = 'http://localhost:5109/api'; // mac base url local
+export const ApiBaseUrl = 'https://localhost:7255/api'; // mac base url local
 export const ApiSwagger = 'http://mbp.bitprosofttech.com/swagger/index.html';
 //export const ApiBaseUrl = 'http://mbp.bitprosofttech.com/api';
 export const ApiEndpoints = {
@@ -25,5 +25,11 @@ export const ApiEndpoints = {
         getAll: `${ApiBaseUrl}/WishLists`,
         getById: (id: number) => `${ApiBaseUrl}/WishLists/${id}`,
         delete: (id: number) => `${ApiBaseUrl}/WishLists/${id}`
+    },
+    IncomeSource: {
+        createOrEdit: `${ApiBaseUrl}/IncomeSource/CreateOrEdit`,
+        getAll: `${ApiBaseUrl}/IncomeSource`,
+        getById: (id: number) => `${ApiBaseUrl}/IncomeSource/${id}`,
+        delete: (id: number) => `${ApiBaseUrl}/IncomeSource/${id}`
     }
 };

@@ -1,7 +1,7 @@
 export interface LoginResponseModel {
     isLoginSuccess: boolean;
     token: string;
-    userId: string;
+    userId: number;
     fName: string;
     lName: string;
     email: string;

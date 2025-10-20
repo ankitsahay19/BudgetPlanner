@@ -11,10 +11,14 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./menu-component.scss']
 })
 export class MenuComponent {
-  constructor(public auth: AuthService, private router: Router) {}
+  constructor(public auth: AuthService, private router: Router) { }
 
   logout() {
     this.auth.logout();
     this.router.navigate(['/login']);
+  }
+
+  get currentRoute(): string {
+    return this.router.url;
   }
 }
