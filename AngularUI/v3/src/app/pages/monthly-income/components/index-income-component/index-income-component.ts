@@ -1,67 +1,80 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IncomeSourceModel } from '../../../../models/IncomeSourceModel';
 import { MonthlyIncomeService } from '../../../../services/monthly-income-service';
 import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-index-income-component',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './index-income-component.html',
   styleUrl: './index-income-component.scss'
 })
 export class IndexIncomeComponent {
-  editIncome(id: number) {
-    this.incomeSources().find(income => {
-      if (income.uniqueId === id) {
-        this.editableIncomeSource.set(income);
-        console.log(this.editableIncomeSource());
-      }
-    });
-  }
-  @Input({ required: true }) incomeSources = signal<IncomeSourceModel[]>([]);
-  @Input({ required: true }) editableIncomeSource = signal<IncomeSourceModel | null>(null);
-  source: string = '';
-  amount: number | null = null;
-  message: string = '';
-  loadingIncomes = signal(false);
+  /**
+   * Controls fade-out animation for error message
+   */
+  errorFading = false;
+
+  /**
+   * Tracks which income rows are currently being deleted (for loader UI)
+   */
   deletingIds: Set<number> = new Set();
 
-  constructor(private monthlyIncomeService: MonthlyIncomeService, private authService: AuthService) {
-    this.loadIncomeSources();
-  }
+  /**
+   * MonthlyIncomeService and AuthService injected via Angular signals
+   */
+  incomeService = inject(MonthlyIncomeService);
+  authService = inject(AuthService);
 
-  private loadIncomeSources() {
-
-    this.loadingIncomes.set(true);
-    this.monthlyIncomeService.getIncomeSources().subscribe({
-      next: (data) => {
-        var loggedinUser = this.authService.userTokenData();
-        var filteredIncomes = data.filter(income => income.userId == loggedinUser?.userId);
-        this.incomeSources.set(filteredIncomes);
-        console.log(this.incomeSources());
-        this.message = 'Income sources loaded successfully';
-      },
-      error: (err) => {
-        this.message = 'Error loading income sources';
+  /**
+   * Setup error fade-out effect and load income sources
+   */
+  constructor() {
+    this.incomeService.getIncomeSources();
+    effect(() => {
+      if (this.incomeService.errorMsg()) {
+        this.errorFading = false;
+        setTimeout(() => {
+          this.errorFading = true;
+        }, 500);
+        setTimeout(() => {
+          this.incomeService.errorMsg.set('');
+          this.errorFading = false;
+        }, 3000);
       }
     });
-    this.loadingIncomes.set(false);
   }
 
+  /**
+   * Deletes an income source and shows loader/error feedback
+   */
   deleteIncome(id: number) {
     this.deletingIds.add(id);
-    this.monthlyIncomeService.DeleteIncomeSource(id).subscribe({
+    this.incomeService.deleteIncomeSource(id).subscribe({
       next: () => {
-        this.incomeSources.set(this.incomeSources().filter(income => income.uniqueId !== id));
-        this.message = 'Income entry deleted 🗑️';
         this.deletingIds.delete(id);
       },
-      error: (err) => {
-        this.message = 'Error deleting income entry';
+      error: (_err: unknown) => {
         this.deletingIds.delete(id);
+        this.incomeService.errorMsg.set('Failed to delete income. Please try again.');
+        this.errorFading = false;
+        setTimeout(() => {
+          this.errorFading = true;
+        }, 500);
+        setTimeout(() => {
+          this.incomeService.errorMsg.set('');
+          this.errorFading = false;
+        }, 3000);
       }
     });
   }
 
+  /**
+   * Calculates the total income from all sources
+   */
+  getTotalIncome(): number {
+    const sources = this.incomeService.myIncomeSources();
+    return sources.reduce((sum: number, x: any) => sum + (x.incomeAmount || 0), 0);
+  }
 }

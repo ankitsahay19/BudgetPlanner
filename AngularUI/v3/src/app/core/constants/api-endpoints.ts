@@ -27,7 +27,9 @@ export const ApiEndpoints = {
         delete: (id: number) => `${ApiBaseUrl}/WishLists/${id}`
     },
     IncomeSource: {
-        createOrEdit: `${ApiBaseUrl}/IncomeSource/CreateOrEdit`,
+        // createOrEdit: `${ApiBaseUrl}/IncomeSource/CreateOrEdit`,
+        create: `${ApiBaseUrl}/IncomeSource/Create`,
+        edit: `${ApiBaseUrl}/IncomeSource/Edit`,
         getAll: `${ApiBaseUrl}/IncomeSource`,
         getById: (id: number) => `${ApiBaseUrl}/IncomeSource/${id}`,
         delete: (id: number) => `${ApiBaseUrl}/IncomeSource/${id}`

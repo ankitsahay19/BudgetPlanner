@@ -1,17 +1,17 @@
-@if(loadingIncomes() || !incomeSources() || incomeSources().length === 0) {
+@if (incomeService.loadingIncomes()) {
 <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
   <div class="text-center">
     <div class="spinner-border text-primary mb-3" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
-    <div *ngIf="!loadingIncomes() && (!incomeSources() || incomeSources().length === 0)">
-      loading ...
-    </div>
   </div>
 </div>
 }
 @else {
-<table class="table table-striped">
+@if (incomeService.errorMsg()) {
+<div class="alert alert-danger mb-3 fade-out" [class.fade-out-leave]="errorFading">{{ incomeService.errorMsg() }}</div>
+}
+<table class="table table-bordered align-middle">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -21,11 +21,11 @@
     </tr>
   </thead>
   <tbody>
-    @for (income of incomeSources(); track income.uniqueId; let i = $index) {
+    @for (income of incomeService.myIncomeSources(); track income.uniqueId; let i = $index) {
     <tr>
       <td>{{ i + 1 }}</td>
       <td>{{ income.sourceName }}</td>
-      <td>{{ income.incomeAmount }} Rs</td>
+      <td class="text-end">{{ income.incomeAmount| number:'1.0-0' :'en-IN'}} /- </td>
       <td>
         <span (click)="deleteIncome(income.uniqueId)" [class.text-muted]="deletingIds.has(income.uniqueId)"
           [style.pointerEvents]="deletingIds.has(income.uniqueId) ? 'none' : 'auto'" class="action-icon"
@@ -37,12 +37,19 @@
           <i class="bi bi-trash text-danger"></i>
           }
         </span>
-        <span (click)="editIncome(income.uniqueId)" class="action-icon" title="Edit">
+        <span (click)="incomeService.setSelectedIncomeIdForEdit(income.uniqueId)" class="action-icon" title="Edit">
           <i class="bi bi-pencil text-success"></i>
         </span>
       </td>
     </tr>
     }
   </tbody>
+  <tfoot>
+    <tr>
+      <th colspan="2" class="text-end">Total Income:</th>
+      <th class="text-end">{{ this.getTotalIncome() | number:'1.0-0' :'en-IN'}} /- </th>
+      <th></th>
+    </tr>
+  </tfoot>
 </table>
 }
