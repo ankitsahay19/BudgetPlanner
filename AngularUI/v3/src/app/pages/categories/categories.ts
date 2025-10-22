@@ -33,13 +33,15 @@ export class Categories {
   loadCategories() {
     this.categoryService.getCategories().subscribe({
       next: (data) => {
-        
+
         console.log(data);
         data.sort();
         this.categories.set(data);
       },
-      error: (_error) => { console.log(_error);
-         this.notification.set('Failed to load categories'); }
+      error: (_error) => {
+        console.log(_error);
+        this.notification.set('Failed to load categories');
+      }
     });
   }
 
@@ -47,39 +49,38 @@ export class Categories {
 
   editCategory(category: CategoryModel) {
     this.form.patchValue(category);
-    this.isEditMode.set(true); 
+    this.isEditMode.set(true);
     this.form.patchValue({ isSubCategory: !!category.parentId && category.parentId !== 0 });
 
-  // focus the name input without scrolling
-  setTimeout(() => {
-    this.nameInput?.nativeElement.focus();
-  });
-}
+    // focus the name input without scrolling
+    setTimeout(() => {
+      this.nameInput?.nativeElement.focus();
+    });
+  }
 
 
   clearForm() {
     this.form.reset({ allocatedAmount: 0 });
     this.selectedCategory.set(null);
-    this.form.patchValue({uniqueId:0,parentId:0});
+    this.form.patchValue({ uniqueId: 0, parentId: 0 });
     this.isEditMode.set(false);
   }
 
   submit() {
     if (this.form.invalid) return;
     const category = this.form.value as CategoryModel;
-    if (!category.parentId)
-      {
-        category.parentId = 0;
-      }
-      this.categoryService.createCategory(category).subscribe({
-        next: () => {
-          this.notification.set('Category created!');
-          this.loadCategories();
-          this.clearForm();
-        },
-        error: () => this.notification.set('Create failed')
-      });
-    
+    if (!category.parentId) {
+      category.parentId = 0;
+    }
+    this.categoryService.createCategory(category).subscribe({
+      next: () => {
+        this.notification.set('Category created!');
+        this.loadCategories();
+        this.clearForm();
+      },
+      error: () => this.notification.set('Create failed')
+    });
+
   }
 
   deleteCategory(id: number) {
@@ -104,7 +105,9 @@ export class Categories {
     return parent?.name || '-';
   }
 
-    getTotalAllocatedAmount(subCategories: CategoryModel[]): number {
-    return (subCategories || []).reduce((sum, sub) => sum + (sub.allocatedAmount || 0), 0);
+  getTotalAllocatedAmount() {
+    return (this.categories() || [])
+      .filter(cat => cat.parentId === 0 || cat.parentId == null)
+      .reduce((sum, cat) => sum + (cat.allocatedAmount || 0), 0);
   }
 }
