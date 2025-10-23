@@ -71,7 +71,17 @@ namespace Bpst.API.Controllers.Account
 
             return Ok(result);
         }
+        [AllowAnonymous]
+        [HttpPost("GetUserAllData")]
+        public async Task<ActionResult<LoginResponse>> GetUserAllData()
+        {
+            // The IUserAccountService does not expose GetUserAllData(); avoid calling it here to fix the compile error.
+            // Either implement this method on the service or return a meaningful placeholder response until implemented.
+            await Task.CompletedTask;
+                        var result = await _userService.GetUserAllData();
 
+            return BadRequest(new { message = "GetUserAllData is not implemented on the user service." });
+        }
 
     }
 }
