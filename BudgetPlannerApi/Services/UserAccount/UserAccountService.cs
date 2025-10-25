@@ -251,7 +251,7 @@ namespace Bpst.API.Services.UserAccount
             return result;
         }
 
-public async Task<UserBudgetAllData> GetUserAllData()
+        public async Task<UserBudgetAllData> GetUserAllData()
         {
             var userId = GetLoggedInUserId();
             var currentYear = DateTime.UtcNow.Year;
@@ -259,19 +259,18 @@ public async Task<UserBudgetAllData> GetUserAllData()
             var userBudgetData = new UserBudgetAllData
             {
                 Year = currentYear,
-                Months = new List<Month>()
+                Months = new List<MonthlyBudget>()
             };
 
             for (int month = 1; month <= 12; month++)
             {
-                var monthData = new Month
+                var monthData = new MonthlyBudget
                 {
                     MonthValue = month,
                     MonthName = new DateTime(currentYear, month, 1).ToString("MMMM"),
                     Budget = new Budget()
                 };
 
-                monthData.Budget.UserDetails = await _context.AppUsers.FindAsync(userId);
 
                 monthData.Budget.IncomeSources = await _context.IncomeSource
                     .Where(i => i.UserId == userId)
@@ -290,6 +289,34 @@ public async Task<UserBudgetAllData> GetUserAllData()
 
             return userBudgetData;
         }
-        
+
+        public async Task<MonthlyBudget> GetUserMonthlyData(int year, int month)
+        {
+            var userId = GetLoggedInUserId();
+            var currentYear = DateTime.UtcNow.Year;
+            var currentMonth = DateTime.UtcNow.Month;
+
+            var monthData = new MonthlyBudget
+            {
+                MonthValue = currentMonth,
+                MonthName = new DateTime(currentYear, currentMonth, 1).ToString("MMMM"),
+                Budget = new Budget()
+            };
+
+
+            monthData.Budget.IncomeSources = await _context.IncomeSource
+                .Where(i => i.UserId == userId)
+                .ToListAsync();
+
+            monthData.Budget.ExpensePlan = await _context.Categories
+                .Where(c => c.ParentId != null) // Assuming expense categories are sub-categories
+                .ToListAsync();
+
+            monthData.Budget.Expenses = await _context.Expenses
+                .Where(e => e.UserId == userId && e.ExpenseDate.Value.Year == currentYear && e.ExpenseDate.Value.Month == currentMonth)
+                .ToListAsync();
+            return monthData;
+
+        }
     }
 }

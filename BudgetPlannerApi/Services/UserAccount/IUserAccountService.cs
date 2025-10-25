@@ -13,6 +13,7 @@ namespace Bpst.API.Services.UserAccount
         public Task<UpdateResponse> UpdateEmail(string oldEmail, string newemail, string password);
         public Task<UpdateResponse> UpdatePassword(string email, string oldPassword, string newPassword, string confirmPassword);
         public Task<UserBudgetAllData> GetUserAllData();
+        public Task<MonthlyBudget> GetUserMonthlyData(int year, int month);
 
         public int? GetLoggedInUserId();
 
