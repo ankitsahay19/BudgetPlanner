@@ -15,6 +15,12 @@
         </li>
         }
         @if (isLoggedIn) {
+        <li class="nav-item">
+          <app-top-menu-date-picker (yearChange)="onYearChange($event)"
+            (monthChange)="onMonthChange($event)"></app-top-menu-date-picker>
+        </li>
+        <!-- month control removed in favor of TopMenuDatePicker -->
+
         <li class="nav-item d-flex align-items-center">
           <span class="nav-link disabled">Welcome,
             <b>{{ auth.userTokenData()?.fullName }}</b>

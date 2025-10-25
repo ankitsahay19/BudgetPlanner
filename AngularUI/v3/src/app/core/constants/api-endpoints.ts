@@ -8,6 +8,8 @@ export const ApiEndpoints = {
     userAccount: {
         login: `${ApiBaseUrl}/UserAccount/Login`,
         UserRegistration: `${ApiBaseUrl}/UserAccount/UserRegistration`,
+        // Get aggregated monthly data for the authenticated user. Usage: getUserMonthlyData(year, month)
+        getUserMonthlyData: (year: number, month: number) => `${ApiBaseUrl}/UserAccount/GetUserMonthlyData?year=${year}&month=${month}`,
     },
     Categories: {
         getAllCategories: `${ApiBaseUrl}/Categories`,
