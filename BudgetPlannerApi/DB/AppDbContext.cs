@@ -37,10 +37,10 @@ namespace Bpst.API.DB
                 .HasForeignKey(bp => bp.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict); // 🔥 IMPORTANT: This removes the cascade delete
 
-            modelBuilder.Entity<Expense>() 
-                .HasOne(e => e.AppUser) 
-                .WithMany() 
-                .HasForeignKey(e => e.UserId) 
+            modelBuilder.Entity<Expense>()
+                .HasOne(e => e.AppUser)
+                .WithMany()
+                .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.Cascade); // Keep cascade here
 
             modelBuilder.Entity<Expense>()
@@ -64,7 +64,9 @@ namespace Bpst.API.DB
         public DbSet<Address> Addresses { get; set; }
 
         public DbSet<BudgetPlan> BudgetPlans { get; set; }
+        [Obsolete("Use ExpensePlans DbSet instead")]
         public DbSet<Category> Categories { get; set; }
+        public DbSet<ExpensePlan> ExpensePlans { get; set; }
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<WishList> WishLists { get; set; }
         public DbSet<BudgetPlannerApi.DB.Models.IncomeSource> IncomeSource { get; set; } = default!;
