@@ -8,7 +8,7 @@ using BudgetPlannerApplication_2025.Models;
 public class Budget
 {
     public List<IncomeSource>? IncomeSources { get; set; }
-    public List<Category>? ExpensePlan { get; set; }
+    public List<ExpensePlan>? ExpensePlan { get; set; }
     public List<Expense>? Expenses { get; set; }
 }
 

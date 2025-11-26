@@ -276,7 +276,7 @@ namespace Bpst.API.Services.UserAccount
                     .Where(i => i.UserId == userId)
                     .ToListAsync();
 
-                monthData.Budget.ExpensePlan = await _context.Categories
+                monthData.Budget.ExpensePlan = await _context.ExpensePlans
                     .Where(c => c.ParentId != null) // Assuming expense categories are sub-categories
                     .ToListAsync();
 
@@ -308,7 +308,7 @@ namespace Bpst.API.Services.UserAccount
                 .Where(i => i.UserId == userId)
                 .ToListAsync();
 
-            monthData.Budget.ExpensePlan = await _context.Categories
+            monthData.Budget.ExpensePlan = await _context.ExpensePlans
                 .Where(c => c.ParentId != null) // Assuming expense categories are sub-categories
                 .ToListAsync();
 

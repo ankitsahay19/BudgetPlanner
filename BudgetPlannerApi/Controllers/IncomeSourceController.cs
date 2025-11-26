@@ -50,9 +50,6 @@ namespace BudgetPlannerApi.Controllers
             return incomeSource;
         }
 
-
-
-
         [HttpPost("Create")]
         public async Task<IActionResult> CreateIncome([FromBody] IncomeSource incomeSource)
         {
@@ -60,8 +57,8 @@ namespace BudgetPlannerApi.Controllers
                 return BadRequest("Invalid IncomeSource data.");
             if (_userAccountService.GetLoggedInUserId() == null)
                 return Unauthorized("User ID not found in token.");
-            incomeSource.UserId = _userAccountService.GetLoggedInUserId(); 
-             incomeSource.CreatedDate = DateTime.UtcNow;
+            incomeSource.UserId = _userAccountService.GetLoggedInUserId();
+            incomeSource.CreatedDate = DateTime.UtcNow;
 
             _context.IncomeSource.Add(incomeSource);
             await _context.SaveChangesAsync();
@@ -127,7 +124,7 @@ namespace BudgetPlannerApi.Controllers
                 return Unauthorized("User ID not found in token.");
             IncomeSource.UserId = _userAccountService.GetLoggedInUserId();
 
-            var existingIncome = await _context.Categories
+            var existingIncome = await _context.IncomeSource
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.UniqueId == IncomeSource.UniqueId);
 
@@ -151,26 +148,22 @@ namespace BudgetPlannerApi.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!IncomeSourceExists(IncomeSource.UniqueId))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
 
                 return Ok(IncomeSource);
             }
             else
             {
-                return Forbid("You do not have permission to edit this category.");
+                return Forbid("You do not have permission to edit this income source.");
             }
         }
         private bool IncomeSourceExists(int id)
         {
             return _context.IncomeSource.Any(e => e.UniqueId == id);
         }
- 
+
     }
 }

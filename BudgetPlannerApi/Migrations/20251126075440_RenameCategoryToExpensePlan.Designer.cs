@@ -4,6 +4,7 @@ using Bpst.API.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetPlannerApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251126075440_RenameCategoryToExpensePlan")]
+    partial class RenameCategoryToExpensePlan
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -7842,9 +7845,6 @@ namespace BudgetPlannerApi.Migrations
                     b.Property<DateTime?>("LastUpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Month")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -7855,12 +7855,13 @@ namespace BudgetPlannerApi.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Year")
-                        .HasColumnType("int");
-
                     b.HasKey("UniqueId");
 
-                    b.ToTable("ExpensePlan");
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -7868,36 +7869,28 @@ namespace BudgetPlannerApi.Migrations
                             UniqueId = 1,
                             AllocatedAmount = 0,
                             Description = "",
-                            Month = 0,
-                            Name = "Transport",
-                            Year = 0
+                            Name = "Transport"
                         },
                         new
                         {
                             UniqueId = 2,
                             AllocatedAmount = 0,
                             Description = "",
-                            Month = 0,
-                            Name = "Grocery",
-                            Year = 0
+                            Name = "Grocery"
                         },
                         new
                         {
                             UniqueId = 3,
                             AllocatedAmount = 0,
                             Description = "",
-                            Month = 0,
-                            Name = "Electronics",
-                            Year = 0
+                            Name = "Electronics"
                         },
                         new
                         {
                             UniqueId = 4,
                             AllocatedAmount = 0,
                             Description = "",
-                            Month = 0,
-                            Name = "Miscellaneous",
-                            Year = 0
+                            Name = "Miscellaneous"
                         });
                 });
 
@@ -8021,6 +8014,22 @@ namespace BudgetPlannerApi.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("BudgetPlannerApplication_2025.Models.ExpensePlan", b =>
+                {
+                    b.HasOne("BudgetPlannerApplication_2025.Models.ExpensePlan", "ParentExpensePlan")
+                        .WithMany("SubExpensePlans")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("BudgetPlannerApi.DB.Models.User.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("ParentExpensePlan");
+                });
+
             modelBuilder.Entity("BudgetPlannerApplication_2025.Models.WishList", b =>
                 {
                     b.HasOne("BudgetPlannerApi.DB.Models.User.AppUser", "AppUser")
@@ -8028,6 +8037,11 @@ namespace BudgetPlannerApi.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("BudgetPlannerApplication_2025.Models.ExpensePlan", b =>
+                {
+                    b.Navigation("SubExpensePlans");
                 });
 #pragma warning restore 612, 618
         }

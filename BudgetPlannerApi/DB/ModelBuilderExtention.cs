@@ -16,11 +16,11 @@ namespace Bpst.API.DB
         }
         public static void SeedCategory(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Category>().HasData( 
-                new Category() { UniqueId = 1, Name = "Transport", },
-                new Category() { UniqueId = 2, Name = "Grocery" },
-                new Category() { UniqueId = 3, Name = "Electronics" },
-                new Category() { UniqueId = 4, Name = "Miscellaneous" }
+            modelBuilder.Entity<ExpensePlan>().HasData(
+                new ExpensePlan() { UniqueId = 1, Name = "Transport", },
+                new ExpensePlan() { UniqueId = 2, Name = "Grocery" },
+                new ExpensePlan() { UniqueId = 3, Name = "Electronics" },
+                new ExpensePlan() { UniqueId = 4, Name = "Miscellaneous" }
                 );
         }
 

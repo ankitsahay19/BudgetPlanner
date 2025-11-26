@@ -14,11 +14,11 @@ namespace BudgetPlannerApplication_2025.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class CategoriesController : ControllerBase
+    public class ExpensePlansController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public CategoriesController(AppDbContext context)
+        public ExpensePlansController(AppDbContext context)
         {
             _context = context;
         }
@@ -32,26 +32,26 @@ namespace BudgetPlannerApplication_2025.Controllers
             return null;
         }
 
-        // GET: api/Categories
+        // GET: api/ExpensePlans
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<ExpensePlan>>> GetExpensePlans()
         {
             var userId = GetLoggedInUserId();
-            var data = await _context.Categories
-              //  .Include(sc=>sc.ParentId)
+            var data = await _context.ExpensePlans
+                //  .Include(sc=>sc.ParentId)
                 .Where(c => c.UserId.Equals(userId))
-                .OrderBy(c=>c.ParentId)
+                .OrderBy(c => c.ParentId)
                 .ToListAsync();
             return Ok(data);
         }
 
-        // GET: api/Categories/5
+        // GET: api/ExpensePlans/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public async Task<ActionResult<ExpensePlan>> GetExpensePlan(int id)
         {
             var userId = GetLoggedInUserId();
-            var category = await _context.Categories.Where(c => c.UserId == userId).FirstOrDefaultAsync();
-             
+            var category = await _context.ExpensePlans.Where(c => c.UserId == userId).FirstOrDefaultAsync();
+
             if (category == null)
             {
                 return NotFound();
@@ -61,29 +61,29 @@ namespace BudgetPlannerApplication_2025.Controllers
         }
 
         [HttpPost("CreateOrEdit")]
-        public async Task<IActionResult> CreateOrEditCategory(Category category)
+        public async Task<IActionResult> CreateOrEditExpensePlan(ExpensePlan category)
         {
             if (category == null)
                 return BadRequest("Invalid category data.");
             else if (category.ParentId == 0)
                 category.ParentId = null;
 
-                var userId = GetLoggedInUserId();
+            var userId = GetLoggedInUserId();
             if (userId == null)
                 return Unauthorized("User ID not found in token.");
             category.UserId = userId;
 
-            var existingCategory = await _context.Categories
+            var existingCategory = await _context.ExpensePlans
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.UniqueId == category.UniqueId);
 
             if (existingCategory == null)
             {
                 category.CreatedDate = DateTime.UtcNow;
-                 _context.Categories.Add(category);
+                _context.ExpensePlans.Add(category);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction(nameof(GetCategory), new { id = category.UniqueId }, category);
+                return CreatedAtAction(nameof(GetExpensePlan), new { id = category.UniqueId }, category);
             }
             else if (userId == existingCategory.UserId)
             {
@@ -96,7 +96,7 @@ namespace BudgetPlannerApplication_2025.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.UniqueId))
+                    if (!ExpensePlanExists(category.UniqueId))
                     {
                         return NotFound();
                     }
@@ -130,7 +130,7 @@ namespace BudgetPlannerApplication_2025.Controllers
         //    return NoContent();
         //}
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWishList(int id)
+        public async Task<IActionResult> DeleteExpensePlan(int id)
         {
             var userId = GetLoggedInUserId();
             if (userId == null)
@@ -138,7 +138,7 @@ namespace BudgetPlannerApplication_2025.Controllers
                 return Unauthorized();
             }
 
-            var category = await _context.Categories
+            var category = await _context.ExpensePlans
                 .FirstOrDefaultAsync(w => w.UniqueId == id && w.UserId == userId);
 
             if (category == null)
@@ -146,15 +146,15 @@ namespace BudgetPlannerApplication_2025.Controllers
                 return NotFound();
             }
 
-            _context.Categories.Remove(category);
+            _context.ExpensePlans.Remove(category);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
-        private bool CategoryExists(int id)
+        private bool ExpensePlanExists(int id)
         {
-            return _context.Categories.Any(e => e.UniqueId == id);
+            return _context.ExpensePlans.Any(e => e.UniqueId == id);
         }
     }
-    
+
 }
