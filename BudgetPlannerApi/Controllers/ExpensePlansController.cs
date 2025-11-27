@@ -42,6 +42,7 @@ namespace BudgetPlannerApplication_2025.Controllers
                 .Where(c => c.UserId.Equals(userId))
                 .OrderBy(c => c.ParentId)
                 .ToListAsync();
+            data.ForEach(p => { p.SubExpensePlans = data.Where(sp => sp.ParentId == p.UniqueId).ToList(); });
             return Ok(data);
         }
 
@@ -50,14 +51,12 @@ namespace BudgetPlannerApplication_2025.Controllers
         public async Task<ActionResult<ExpensePlan>> GetExpensePlan(int id)
         {
             var userId = GetLoggedInUserId();
-            var category = await _context.ExpensePlans.Where(c => c.UserId == userId).FirstOrDefaultAsync();
+            var plan = await _context.ExpensePlans.Where(c => c.UserId == userId).FirstOrDefaultAsync();
 
-            if (category == null)
-            {
+            if (plan == null)
                 return NotFound();
-            }
 
-            return category;
+            return plan;
         }
 
         [HttpPost("CreateOrEdit")]
