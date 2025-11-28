@@ -122,19 +122,20 @@ namespace BudgetPlannerApplication_2025.Controllers
         {
             var userId = GetLoggedInUserId();
             if (userId == null)
-            {
                 return Unauthorized();
-            }
 
-            var category = await _context.ExpensePlans
+            var ExpensePlan = await _context.ExpensePlans
                 .FirstOrDefaultAsync(w => w.UniqueId == id && w.UserId == userId);
 
-            if (category == null)
-            {
+            if (ExpensePlan == null)
                 return NotFound();
-            }
+            var SubExpensePlans = await _context.ExpensePlans
+                    .Where(w => w.ParentId == id && w.UserId == userId)
+                    .ToListAsync();
+            if (SubExpensePlans.Any())
+                return BadRequest("Cannot delete an ExpensePlan that has sub ExpensePlans. Please delete or reassign its sub ExpensePlans first.");
 
-            _context.ExpensePlans.Remove(category);
+            _context.ExpensePlans.Remove(ExpensePlan);
             await _context.SaveChangesAsync();
 
             return NoContent();
