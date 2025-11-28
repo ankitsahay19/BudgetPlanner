@@ -67,6 +67,6 @@ namespace Bpst.API.DB
         public DbSet<ExpensePlan> ExpensePlans { get; set; }
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<WishList> WishLists { get; set; }
-        public DbSet<BudgetPlannerApi.DB.Models.IncomeSource> IncomeSource { get; set; } = default!;
+        public DbSet<IncomeSource> IncomeSource { get; set; } = default!;
     }
 }
