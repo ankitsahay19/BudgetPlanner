@@ -64,6 +64,11 @@ namespace Bpst.API.DB
         public DbSet<Address> Addresses { get; set; }
 
         public DbSet<BudgetPlan> BudgetPlans { get; set; }
+<<<<<<< HEAD
+=======
+        [Obsolete("Use ExpensePlans DbSet instead")]
+        public DbSet<Category> Categories { get; set; }
+>>>>>>> upsteam/main
         public DbSet<ExpensePlan> ExpensePlans { get; set; }
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<WishList> WishLists { get; set; }
