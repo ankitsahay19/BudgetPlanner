@@ -1,0 +1,18 @@
+/* Small UI improvements for income page */
+.action-icon {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+.action-icon i {
+    font-size: 1.05rem;
+}
+
+.card-body .table {
+    margin-top: 1rem;
+}
+
+.card-body .btn {
+    min-width: 90px;
+}

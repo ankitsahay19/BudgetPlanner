@@ -1,0 +1,90 @@
+<div class="container">
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <h2 class="mb-4 border-bottom pb-2">Monthly Income</h2>
+            <div *ngIf="errorMsg" class="alert alert-danger mb-3">{{ errorMsg }}</div>
+            <div *ngIf="successMsg" class="alert alert-success mb-3">{{ successMsg }}</div>
+
+            <form [formGroup]="incomeForm" (ngSubmit)="onSubmit()">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-md-8">
+                        <label for="source" class="form-label"> Source On Income</label>
+                        <input type="text" class="form-control" id="source" formControlName="sourceName" required />
+                    </div>
+                    <div class="col-sm-12 col-md-2">
+                        <label for="amount" class="form-label">Amount</label>
+                        <input type="number" class="form-control" id="amount" formControlName="incomeAmount" required
+                            min="1" />
+                    </div>
+                    <div class="col-sm-12 col-md-2">
+                        <div class="mt-4 d-flex" style="padding-top:0.3em;">
+                            <button type="submit" class="btn btn-primary"
+                                [disabled]="incomeForm.invalid || savingIncome()">
+                                <ng-container *ngIf="savingIncome(); else saveText">
+                                    <span class="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true"></span>
+                                </ng-container>
+                                <ng-template #saveText>Save</ng-template>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <ng-container *ngIf="(loading$ | async); else listBlock">
+                <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary mb-3" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-template #listBlock>
+                <table class="table table-bordered align-middle" *ngIf="currentItems?.length; else emptyBlock">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Source</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let income of currentItems; let i = index; trackBy: trackById">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ income.sourceName }}</td>
+                            <td class="text-end">{{ income.incomeAmount | number:'1.0-0':'en-IN' }} /- </td>
+                            <td>
+                                <span (click)="delete(income.uniqueId)"
+                                    [class.text-muted]="deletingIds.has(income.uniqueId)"
+                                    [style.pointerEvents]="deletingIds.has(income.uniqueId) ? 'none' : 'auto'"
+                                    class="action-icon" style="margin-right:12px;" title="Delete">
+                                    <ng-container *ngIf="deletingIds.has(income.uniqueId); else trashIcon">
+                                        <span class="spinner-border spinner-border-sm" role="status"
+                                            aria-hidden="true"></span>
+                                    </ng-container>
+                                    <ng-template #trashIcon> <i class="bi bi-trash text-danger"></i> </ng-template>
+                                </span>
+                                <span (click)="startEdit(income)" class="action-icon" title="Edit">
+                                    <i class="bi bi-pencil text-success"></i>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="2" class="text-end">Total Income:</th>
+                            <th class="text-end">{{ getTotalIncome() | number:'1.0-0':'en-IN' }} /- </th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <ng-template #emptyBlock>
+                    <div class="alert alert-info">No income sources found. Add one above.</div>
+                </ng-template>
+            </ng-template>
+
+        </div>
+    </div>

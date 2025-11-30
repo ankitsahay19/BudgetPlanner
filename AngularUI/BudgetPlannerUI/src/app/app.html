@@ -1,0 +1,41 @@
+<div class="app-layout d-flex flex-column min-vh-100">
+
+  <!-- Top Menu / Header -->
+  <header class="top-header navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" routerLink="/">My Budget Planner</a>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        @if (!isLoggedIn) {
+        <li class="nav-item"> <a class="nav-link" routerLink="/login" routerLinkActive="active-link">Login</a> </li>
+        <li class="nav-item"> <a class="nav-link" routerLink="/register" routerLinkActive="active-link">Register</a>
+        </li>
+        }
+        @if (isLoggedIn) {
+        <li class="nav-item d-flex align-items-center"><span class="nav-link disabled">Welcome, <b>{{
+              auth.userTokenData()?.fullName }}</b> </span></li>
+        <li class="nav-item"><a class="nav-link" style="cursor: pointer;" (click)="logout()">Logout</a></li>
+        }
+      </ul>
+    </div>
+  </header>
+
+  <!-- Body with Left Menu + Main Content -->
+  <div class="body flex-grow-1 d-flex">
+
+
+    @if(isLoggedIn) {
+    <div class="content-wrapper">
+      <app-menu-component></app-menu-component>
+    </div>
+    } <!-- Main Content: 90% width -->
+    <main class="main-content p-4 flex-fill">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer bg-light text-center py-3 border-top">
+    &copy; {{ currentYear }} MyBudgetPlanner. All rights reserved.
+  </footer>
+
+</div>

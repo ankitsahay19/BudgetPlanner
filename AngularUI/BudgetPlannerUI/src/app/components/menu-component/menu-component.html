@@ -1,0 +1,57 @@
+<nav class="sidebar" id="sidebar">
+    <div class="sidebar-sticky">
+        <div class="d-flex align-items-center justify-content-center py-4">
+            <h4 class="mb-0 fw-bold text-primary">BudgetMaster</h4>
+        </div>
+
+        <div class="px-3 mb-4">
+            <div class="d-flex align-items-center p-3 bg-light rounded">
+                <div class="avatar bg-primary rounded-circle text-white d-flex align-items-center justify-content-center me-3"
+                    style="width: 40px; height: 40px;">
+                    <i class="bi bi-person"></i>
+                </div>
+                <div>
+                    <div class="fw-bold" id="user-name">{{ this.auth.userTokenData()?.fullName }}</div>
+                    <small class="text-muted">Welcome </small>
+                </div>
+            </div>
+        </div>
+
+
+        <ul class="nav flex-column">
+            <li class="nav-item" routerLinkActive="active">
+                <a class="nav-link" routerLink="/dashboard">
+                    <i class="bi bi-speedometer2"></i>Dashboard</a>
+            </li>
+            <li class="nav-item" routerLinkActive="active">
+                <a class="nav-link" routerLink="/income">
+                    <i class="bi bi-calendar"></i> Monthly Income</a>
+            </li>
+
+
+            <li class="nav-item" routerLinkActive="active"><a class="nav-link" routerLink="/expensePlan"> Expense
+                    Plan</a></li>
+            <li class="nav-item" routerLinkActive="active"><a class="nav-link" routerLink="/expenses"> Expenses </a>
+            </li>
+            <li class="nav-item" routerLinkActive="active"><a class="nav-link" routerLink="/wishlist"> Wishlist </a>
+            </li>
+            <li class="nav-item" routerLinkActive="active"> <a class="nav-link" routerLink="/reports"> <i
+                        class="bi bi-bar-chart"></i> Reports </a> </li>
+            <li class="nav-item" routerLinkActive="active"> <a class="nav-link" routerLink="/goals"> <i
+                        class="bi bi-trophy"></i> Goals </a> </li>
+            <li class="nav-item"> <a class="nav-link" href="#" data-page="settings"> <i class="bi bi-gear"></i> Settings
+                </a> </li>
+        </ul>
+
+        <hr class="my-3">
+        <div class="px-3">
+            <li class="nav-item" style="list-style: none;">
+                <button (click)="logout()" class="btn btn-outline-danger w-100" style="text-align: left;">
+                    Logout
+                </button>
+            </li>
+        </div>
+
+
+    </div>
+</nav>
