@@ -7792,9 +7792,6 @@ namespace BudgetPlannerApi.Migrations
                     b.Property<decimal?>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -7803,6 +7800,9 @@ namespace BudgetPlannerApi.Migrations
 
                     b.Property<DateTime?>("ExpenseDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("ExpensePlanId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("LastUpdatedDate")
                         .HasColumnType("datetime2");
@@ -7815,7 +7815,7 @@ namespace BudgetPlannerApi.Migrations
 
                     b.HasKey("UniqueId");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("ExpensePlanId");
 
                     b.HasIndex("UserId");
 
@@ -7860,7 +7860,8 @@ namespace BudgetPlannerApi.Migrations
 
                     b.HasKey("UniqueId");
 
-<<<<<<< HEAD
+                    b.HasIndex("ParentId");
+
                     b.ToTable("ExpensePlan");
 
                     b.HasData(
@@ -7900,13 +7901,6 @@ namespace BudgetPlannerApi.Migrations
                             Name = "Miscellaneous",
                             Year = 0
                         });
-=======
-                    b.HasIndex("ParentId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ExpensePlans");
->>>>>>> upsteam/main
                 });
 
             modelBuilder.Entity("BudgetPlannerApplication_2025.Models.WishList", b =>
@@ -8013,9 +8007,9 @@ namespace BudgetPlannerApi.Migrations
 
             modelBuilder.Entity("BudgetPlannerApplication_2025.Models.Expense", b =>
                 {
-                    b.HasOne("BudgetPlannerApplication_2025.Models.ExpensePlan", "Category")
+                    b.HasOne("BudgetPlannerApplication_2025.Models.ExpensePlan", "ExpensePlan")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("ExpensePlanId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -8026,7 +8020,7 @@ namespace BudgetPlannerApi.Migrations
 
                     b.Navigation("AppUser");
 
-                    b.Navigation("Category");
+                    b.Navigation("ExpensePlan");
                 });
 
             modelBuilder.Entity("BudgetPlannerApplication_2025.Models.ExpensePlan", b =>
@@ -8034,12 +8028,6 @@ namespace BudgetPlannerApi.Migrations
                     b.HasOne("BudgetPlannerApplication_2025.Models.ExpensePlan", "ParentCategory")
                         .WithMany("SubExpenses")
                         .HasForeignKey("ParentId");
-
-                    b.HasOne("BudgetPlannerApi.DB.Models.User.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("AppUser");
 
                     b.Navigation("ParentCategory");
                 });
@@ -8052,19 +8040,11 @@ namespace BudgetPlannerApi.Migrations
 
                     b.Navigation("AppUser");
                 });
-<<<<<<< HEAD
-=======
-
-            modelBuilder.Entity("BudgetPlannerApplication_2025.Models.Category", b =>
-                {
-                    b.Navigation("SubCategories");
-                });
 
             modelBuilder.Entity("BudgetPlannerApplication_2025.Models.ExpensePlan", b =>
                 {
                     b.Navigation("SubExpenses");
                 });
->>>>>>> upsteam/main
 #pragma warning restore 612, 618
         }
     }

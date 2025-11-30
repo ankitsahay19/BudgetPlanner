@@ -7,10 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace BudgetPlannerApplication_2025.Models
 {
-<<<<<<< HEAD
-    [Table("ExpensePlan")]
-=======
->>>>>>> upsteam/main
+     [Table("ExpensePlan")]
     public class ExpensePlan
     {
         [Key]
@@ -19,16 +16,9 @@ namespace BudgetPlannerApplication_2025.Models
         [Required]
         public string Name { get; set; } = string.Empty;
 
-<<<<<<< HEAD
-        public string? Description { get; set; } = string.Empty;
+         public string? Description { get; set; } = string.Empty;
 
-        public int? ParentId { get; set; } // Should be nullable to allow top-level categories 
-
-        public int Month { get; set; }
-        public int Year { get; set; }
-
-        public DateTime? CreatedDate { get; set; }
-        public DateTime? LastUpdatedDate { get; set; }
+        public int? ParentId { get; set; } // Should be nullable to allow top-level categories  
 
         public int? UserId { get; set; }
         [NotMapped]
@@ -39,14 +29,8 @@ namespace BudgetPlannerApplication_2025.Models
 
         [NotMapped]
         public int RemainingBalance { get { return AllocatedAmount - TotalAllocatedAmountOfSubExpensePlans; } }
-=======
-        public int? ParentId { get; set; } // Should be nullable to allow top-level categories
-
-        public string? Description { get; set; } = string.Empty;
-
-        public int AllocatedAmount { get; set; }
-
-        [NotMapped]
+         
+         [NotMapped]
         public int TotalOfSubCategoriesAmount
         {
             get
@@ -56,29 +40,19 @@ namespace BudgetPlannerApplication_2025.Models
                     return SubExpenses.Sum(sc => sc.AllocatedAmount);
                 return _allocatedAmount;
             }
-        }
-
-
-
-        // Foreign key property
-        public int? UserId { get; set; }
-
-        // Navigation property to User
-        [ForeignKey("UserId")]
-        public AppUser? AppUser { get; set; }
-
+        } 
         [JsonIgnore]
         // Self-referencing navigation property
         [ForeignKey("ParentId")]
         public ExpensePlan? ParentCategory { get; set; }
         public ICollection<ExpensePlan>? SubExpenses { get; set; }
+
+
         public int Month { get; set; }
         public int Year { get; set; }
+
         public DateTime? CreatedDate { get; set; }
-
         public DateTime? LastUpdatedDate { get; set; }
-
->>>>>>> upsteam/main
 
     }
 

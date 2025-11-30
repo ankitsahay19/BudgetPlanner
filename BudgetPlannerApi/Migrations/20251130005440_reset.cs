@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BudgetPlannerApi.Migrations
 {
     /// <inheritdoc />
-    public partial class inital : Migration
+    public partial class reset : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,7 +29,9 @@ namespace BudgetPlannerApi.Migrations
                     LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LoginEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Roles = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Roles = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -50,6 +52,32 @@ namespace BudgetPlannerApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ExpensePlan",
+                columns: table => new
+                {
+                    UniqueId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ParentId = table.Column<int>(type: "int", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    AllocatedAmount = table.Column<int>(type: "int", nullable: false),
+                    Month = table.Column<int>(type: "int", nullable: false),
+                    Year = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExpensePlan", x => x.UniqueId);
+                    table.ForeignKey(
+                        name: "FK_ExpensePlan_ExpensePlan_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "ExpensePlan",
+                        principalColumn: "UniqueId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -60,36 +88,6 @@ namespace BudgetPlannerApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.UniqueId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
-                {
-                    UniqueId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ParentId = table.Column<int>(type: "int", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AllocatedAmount = table.Column<int>(type: "int", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categories", x => x.UniqueId);
-                    table.ForeignKey(
-                        name: "FK_Categories_AppUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AppUsers",
-                        principalColumn: "UniqueId");
-                    table.ForeignKey(
-                        name: "FK_Categories_Categories_ParentId",
-                        column: x => x.ParentId,
-                        principalTable: "Categories",
-                        principalColumn: "UniqueId",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -177,9 +175,9 @@ namespace BudgetPlannerApi.Migrations
                         principalColumn: "UniqueId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BudgetPlans_Categories_CategoryId",
+                        name: "FK_BudgetPlans_ExpensePlan_CategoryId",
                         column: x => x.CategoryId,
-                        principalTable: "Categories",
+                        principalTable: "ExpensePlan",
                         principalColumn: "UniqueId",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -191,7 +189,7 @@ namespace BudgetPlannerApi.Migrations
                     UniqueId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: true),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    ExpensePlanId = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
@@ -209,9 +207,9 @@ namespace BudgetPlannerApi.Migrations
                         principalColumn: "UniqueId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Expenses_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
+                        name: "FK_Expenses_ExpensePlan_ExpensePlanId",
+                        column: x => x.ExpensePlanId,
+                        principalTable: "ExpensePlan",
                         principalColumn: "UniqueId",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -271,20 +269,20 @@ namespace BudgetPlannerApi.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Categories",
-                columns: new[] { "UniqueId", "AllocatedAmount", "CreatedDate", "Description", "LastUpdatedDate", "Name", "ParentId", "UserId" },
-                values: new object[,]
-                {
-                    { 1, 0, null, "", null, "Transport", null, null },
-                    { 2, 0, null, "", null, "Grocery", null, null },
-                    { 3, 0, null, "", null, "Electronics", null, null },
-                    { 4, 0, null, "", null, "Miscellaneous", null, null }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Countries",
                 columns: new[] { "UniqueId", "Name" },
                 values: new object[] { 1, "India" });
+
+            migrationBuilder.InsertData(
+                table: "ExpensePlan",
+                columns: new[] { "UniqueId", "AllocatedAmount", "CreatedDate", "Description", "LastUpdatedDate", "Month", "Name", "ParentId", "UserId", "Year" },
+                values: new object[,]
+                {
+                    { 1, 0, null, "", null, 0, "Transport", null, null, 0 },
+                    { 2, 0, null, "", null, 0, "Grocery", null, null, 0 },
+                    { 3, 0, null, "", null, 0, "Electronics", null, null, 0 },
+                    { 4, 0, null, "", null, 0, "Miscellaneous", null, null, 0 }
+                });
 
             migrationBuilder.InsertData(
                 table: "Roles",
@@ -1584,24 +1582,19 @@ namespace BudgetPlannerApi.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Categories_ParentId",
-                table: "Categories",
-                column: "ParentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Categories_UserId",
-                table: "Categories",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Cities_StateId",
                 table: "Cities",
                 column: "StateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Expenses_CategoryId",
+                name: "IX_ExpensePlan_ParentId",
+                table: "ExpensePlan",
+                column: "ParentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Expenses_ExpensePlanId",
                 table: "Expenses",
-                column: "CategoryId");
+                column: "ExpensePlanId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Expenses_UserId",
@@ -1649,13 +1642,13 @@ namespace BudgetPlannerApi.Migrations
                 name: "Cities");
 
             migrationBuilder.DropTable(
-                name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "States");
+                name: "ExpensePlan");
 
             migrationBuilder.DropTable(
                 name: "AppUsers");
+
+            migrationBuilder.DropTable(
+                name: "States");
 
             migrationBuilder.DropTable(
                 name: "Countries");

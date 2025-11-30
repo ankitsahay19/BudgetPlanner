@@ -154,6 +154,7 @@ namespace BudgetPlannerApplication_2025.Controllers
             if (_userAccountService.GetLoggedInUserId() == null) return Unauthorized("User ID not found in token.");
             plan.UserId = _userAccountService.GetLoggedInUserId();
             plan.CreatedDate = DateTime.UtcNow;
+            if (plan.ParentId == 0) plan.ParentId = null;
             _context.ExpensePlans.Add(plan);
             await _context.SaveChangesAsync();
             return Ok(plan);

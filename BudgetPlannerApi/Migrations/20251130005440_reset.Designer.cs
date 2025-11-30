@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetPlannerApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250810091201_inital")]
-    partial class inital
+    [Migration("20251130005440_reset")]
+    partial class reset
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -7712,6 +7712,12 @@ namespace BudgetPlannerApi.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RefreshTokenExpiryTime")
+                        .HasColumnType("datetime2");
+
                     b.PrimitiveCollection<string>("Roles")
                         .HasColumnType("nvarchar(max)");
 
@@ -7778,7 +7784,48 @@ namespace BudgetPlannerApi.Migrations
                     b.ToTable("BudgetPlans");
                 });
 
-            modelBuilder.Entity("BudgetPlannerApplication_2025.Models.Category", b =>
+            modelBuilder.Entity("BudgetPlannerApplication_2025.Models.Expense", b =>
+                {
+                    b.Property<int>("UniqueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
+
+                    b.Property<decimal?>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ExpenseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ExpensePlanId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastUpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UniqueId");
+
+                    b.HasIndex("ExpensePlanId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Expenses");
+                });
+
+            modelBuilder.Entity("BudgetPlannerApplication_2025.Models.ExpensePlan", b =>
                 {
                     b.Property<int>("UniqueId")
                         .ValueGeneratedOnAdd()
@@ -7798,6 +7845,9 @@ namespace BudgetPlannerApi.Migrations
                     b.Property<DateTime?>("LastUpdatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Month")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -7808,13 +7858,14 @@ namespace BudgetPlannerApi.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
                     b.HasKey("UniqueId");
 
                     b.HasIndex("ParentId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Categories");
+                    b.ToTable("ExpensePlan");
 
                     b.HasData(
                         new
@@ -7822,70 +7873,37 @@ namespace BudgetPlannerApi.Migrations
                             UniqueId = 1,
                             AllocatedAmount = 0,
                             Description = "",
-                            Name = "Transport"
+                            Month = 0,
+                            Name = "Transport",
+                            Year = 0
                         },
                         new
                         {
                             UniqueId = 2,
                             AllocatedAmount = 0,
                             Description = "",
-                            Name = "Grocery"
+                            Month = 0,
+                            Name = "Grocery",
+                            Year = 0
                         },
                         new
                         {
                             UniqueId = 3,
                             AllocatedAmount = 0,
                             Description = "",
-                            Name = "Electronics"
+                            Month = 0,
+                            Name = "Electronics",
+                            Year = 0
                         },
                         new
                         {
                             UniqueId = 4,
                             AllocatedAmount = 0,
                             Description = "",
-                            Name = "Miscellaneous"
+                            Month = 0,
+                            Name = "Miscellaneous",
+                            Year = 0
                         });
-                });
-
-            modelBuilder.Entity("BudgetPlannerApplication_2025.Models.Expense", b =>
-                {
-                    b.Property<int>("UniqueId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
-
-                    b.Property<decimal?>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ExpenseDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("LastUpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UniqueId");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Expenses");
                 });
 
             modelBuilder.Entity("BudgetPlannerApplication_2025.Models.WishList", b =>
@@ -7974,7 +7992,7 @@ namespace BudgetPlannerApi.Migrations
 
             modelBuilder.Entity("BudgetPlannerApplication_2025.Models.BudgetPlan", b =>
                 {
-                    b.HasOne("BudgetPlannerApplication_2025.Models.Category", "Category")
+                    b.HasOne("BudgetPlannerApplication_2025.Models.ExpensePlan", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -7988,29 +8006,13 @@ namespace BudgetPlannerApi.Migrations
                     b.Navigation("AppUser");
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("BudgetPlannerApplication_2025.Models.Category", b =>
-                {
-                    b.HasOne("BudgetPlannerApplication_2025.Models.Category", "ParentCategory")
-                        .WithMany("SubCategories")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("BudgetPlannerApi.DB.Models.User.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("AppUser");
-
-                    b.Navigation("ParentCategory");
                 });
 
             modelBuilder.Entity("BudgetPlannerApplication_2025.Models.Expense", b =>
                 {
-                    b.HasOne("BudgetPlannerApplication_2025.Models.Category", "Category")
+                    b.HasOne("BudgetPlannerApplication_2025.Models.ExpensePlan", "ExpensePlan")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("ExpensePlanId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -8021,7 +8023,16 @@ namespace BudgetPlannerApi.Migrations
 
                     b.Navigation("AppUser");
 
-                    b.Navigation("Category");
+                    b.Navigation("ExpensePlan");
+                });
+
+            modelBuilder.Entity("BudgetPlannerApplication_2025.Models.ExpensePlan", b =>
+                {
+                    b.HasOne("BudgetPlannerApplication_2025.Models.ExpensePlan", "ParentCategory")
+                        .WithMany("SubExpenses")
+                        .HasForeignKey("ParentId");
+
+                    b.Navigation("ParentCategory");
                 });
 
             modelBuilder.Entity("BudgetPlannerApplication_2025.Models.WishList", b =>
@@ -8033,9 +8044,9 @@ namespace BudgetPlannerApi.Migrations
                     b.Navigation("AppUser");
                 });
 
-            modelBuilder.Entity("BudgetPlannerApplication_2025.Models.Category", b =>
+            modelBuilder.Entity("BudgetPlannerApplication_2025.Models.ExpensePlan", b =>
                 {
-                    b.Navigation("SubCategories");
+                    b.Navigation("SubExpenses");
                 });
 #pragma warning restore 612, 618
         }
