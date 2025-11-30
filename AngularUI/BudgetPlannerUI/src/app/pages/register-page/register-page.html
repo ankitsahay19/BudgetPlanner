@@ -1,0 +1,99 @@
+<!-- Register Page -->
+<div class="page" id="register-page">
+    <div class="auth-container">
+        <div class="card auth-card">
+            <div class="auth-header">
+                <h3 class="mb-0">Create an Account</h3>
+                <p class="mb-0">Get started with BudgetMaster</p>
+            </div>
+            <div class="auth-body">
+                <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                    <!-- First Name + Last Name Row -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="firstName" class="form-label small">First Name*</label>
+                            <input type="text" id="firstName" class="form-control form-control-sm"
+                                formControlName="firstName">
+                            <div *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched"
+                                class="text-danger small">
+                                First Name is required.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="lastName" class="form-label small">Last Name*</label>
+                            <input type="text" id="lastName" class="form-control form-control-sm"
+                                formControlName="lastName">
+                            <div *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched"
+                                class="text-danger small">
+                                Last Name is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phone + Email Row -->
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="email" class="form-label small">Email*</label>
+                            <input type="email" id="email" class="form-control form-control-sm" formControlName="email">
+                            <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+                                class="text-danger small">
+                                <span *ngIf="registerForm.get('email')?.errors?.['required']">Email is required.</span>
+                                <span *ngIf="registerForm.get('email')?.errors?.['email']">Invalid email format.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Password + Confirm Password Row -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="password" class="form-label small">Password*</label>
+                            <input type="password" id="password" class="form-control form-control-sm"
+                                formControlName="password">
+                            <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+                                class="text-danger small">
+                                <span *ngIf="registerForm.get('password')?.errors?.['required']">Password is
+                                    required.</span>
+                                <span *ngIf="registerForm.get('password')?.errors?.['minlength']">Password must be at
+                                    least 8 characters.</span>
+                                <span *ngIf="registerForm.get('password')?.errors?.['maxlength']">Password cannot exceed
+                                    30 characters.</span>
+                                <span *ngIf="registerForm.get('password')?.errors?.['passwordStrength']">Password must
+                                    contain uppercase, lowercase, number, and special character.</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="confirmPassword" class="form-label small">Confirm Password*</label>
+                            <input type="password" id="confirmPassword" class="form-control form-control-sm"
+                                formControlName="confirmPassword">
+                            <div *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
+                                class="text-danger small">
+                                <span *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">Confirm Password
+                                    is required.</span>
+                            </div>
+                            <div *ngIf="registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched"
+                                class="text-danger small">
+                                Passwords do not match.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-sm"
+                            [disabled]="registerForm.invalid || isLoading()">
+                            <span *ngIf="isLoading()" class="spinner-border spinner-border-sm me-2"></span>
+                            Register
+                        </button>
+                        <!-- <button type="submit" class="btn btn-primary btn-sm" >Register</button> -->
+                    </div>
+                    <div class="text-center mt-3">
+                        <a routerLink="/login" class="small">Already have an account? Login</a>
+                    </div>
+                    <div class="text-center mt-3">
+                        <span class="text-success" *ngIf="isSuccess()">{{ notificationMessage() }}</span>
+                        <span class="text-danger" *ngIf="!isSuccess()">{{ notificationMessage() }}</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

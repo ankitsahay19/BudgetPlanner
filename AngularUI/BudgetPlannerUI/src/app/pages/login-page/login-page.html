@@ -1,0 +1,70 @@
+<div class="page" id="login-page">
+    <div class="auth-container">
+        <div class="card auth-card">
+            <div class="auth-header">
+                <h3 class="mb-0">Welcome to BudgetMaster</h3>
+                <p class="mb-0">Sign in to continue to your dashboard</p>
+            </div>
+            <div class="auth-body">
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                    <div *ngIf="notification()" class="mb-3">
+                        <div [ngClass]="isSuccess() ? 'alert alert-success' : 'alert alert-danger'">
+                            {{ notification() }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="loginName" class="form-label small">Email*</label>
+                            <input type="loginName" id="loginName" class="form-control form-control-sm"
+                                formControlName="loginName">
+                            <div *ngIf="loginForm.get('loginName')?.invalid && loginForm.get('loginName')?.touched"
+                                class="text-danger small">
+                                <span *ngIf="loginForm.get('loginName')?.errors?.['required']">Email is required.</span>
+                                <span *ngIf="loginForm.get('loginName')?.errors?.['loginName']">Invalid email
+                                    format.</span>
+                            </div>
+                            <div *ngIf="loginForm.get('loginName')?.valid" class="text-success small">
+                                <span>Looks good!</span>
+                            </div>
+                            <span>
+                                <i class="bi bi-check-circle-fill text-success"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="password" class="form-label small">Password*</label>
+                            <input type="password" id="password" class="form-control form-control-sm"
+                                formControlName="password">
+                            <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+                                class="text-danger small">
+                                <span *ngIf="loginForm.get('password')?.errors?.['required']">Password is
+                                    required.</span>
+                            </div>
+                            <div *ngIf="loginForm.get('password')?.valid" class="text-success small">
+                                <span>Looks good!</span>
+                            </div>
+                            <span>
+                                <i class="bi bi-check-circle-fill text-success"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-sm"
+                            [disabled]="loginForm.invalid || isLoading()">
+                            @if(isLoading())
+                            {
+                            <span class="spinner-border spinner-border-sm me-2"></span>
+                            }
+                            Login
+                        </button>
+                    </div>
+                </form>
+                <div class="text-center mt-3">
+                    <a routerLink="/register" class="small">Don't have an account? Register</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
