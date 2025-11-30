@@ -19,7 +19,7 @@ namespace BudgetPlannerApplication_2025.Models
         public int CategoryId { get; set; }
 
         [ForeignKey("CategoryId")]
-        public Category? Category { get; set; }
+        public ExpensePlan? Category { get; set; }
         public DateTime? LastUpdatedDate { get; set; }
 
     }

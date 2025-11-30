@@ -16,11 +16,11 @@ namespace Bpst.API.DB
             modelBuilder.SeedState();
             modelBuilder.SeedCities();
             modelBuilder.SeedCategory();
-            modelBuilder.Entity<Category>()
-                .HasOne(c => c.ParentCategory)
-                .WithMany(c => c.SubCategories)
-                .HasForeignKey(c => c.ParentId)
-                .OnDelete(DeleteBehavior.Restrict); // avoids circular delete errors
+            //        modelBuilder.Entity<ExpensePlan>()
+            // .HasOne(c => c.ParentExpensePlan)
+            // .WithMany(c => c.SubExpensePlans)
+            //                .HasForeignKey(c => c.ParentId)
+            //              .OnDelete(DeleteBehavior.Restrict); // avoids circular delete errors
 
 
             // 👉 Relationship with AppUser - keep cascade if you want
@@ -44,9 +44,9 @@ namespace Bpst.API.DB
                 .OnDelete(DeleteBehavior.Cascade); // Keep cascade here
 
             modelBuilder.Entity<Expense>()
-                .HasOne(e => e.Category)
+                .HasOne(e => e.ExpensePlan)
                 .WithMany()
-                .HasForeignKey(e => e.CategoryId)
+                .HasForeignKey(e => e.ExpensePlanId)
                 .OnDelete(DeleteBehavior.Restrict); // Remove cascade here like BudgetPlan
 
         }
@@ -64,11 +64,9 @@ namespace Bpst.API.DB
         public DbSet<Address> Addresses { get; set; }
 
         public DbSet<BudgetPlan> BudgetPlans { get; set; }
-        [Obsolete("Use ExpensePlans DbSet instead")]
-        public DbSet<Category> Categories { get; set; }
         public DbSet<ExpensePlan> ExpensePlans { get; set; }
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<WishList> WishLists { get; set; }
-        public DbSet<BudgetPlannerApi.DB.Models.IncomeSource> IncomeSource { get; set; } = default!;
+        public DbSet<IncomeSource> IncomeSource { get; set; } = default!;
     }
 }

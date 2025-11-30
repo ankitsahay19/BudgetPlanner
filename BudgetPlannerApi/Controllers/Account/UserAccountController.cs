@@ -21,7 +21,7 @@ namespace Bpst.API.Controllers.Account
         {
             var result = await _userService.RegisterNewUserAsync(user);
 
-            if (result.IsCreated == true && result.UniqueId>0)
+            if (result.IsCreated == true && result.UniqueId > 0)
             {
                 _context.IncomeSource.Add(new IncomeSource() { UserId = result.UniqueId, SourceName = "Salary", IncomeAmount = 0, CreatedDate = DateTime.UtcNow, LastUpdatedDate = DateTime.UtcNow });
                 _context.IncomeSource.Add(new IncomeSource() { UserId = result.UniqueId, SourceName = "Freelance", IncomeAmount = 0, CreatedDate = DateTime.UtcNow, LastUpdatedDate = DateTime.UtcNow });
@@ -72,6 +72,18 @@ namespace Bpst.API.Controllers.Account
             return Ok(result);
         }
 
+        [HttpPost("GetUserAllData")]
+        public async Task<ActionResult<UserBudgetAllData>> GetUserAllData()
+        {
+            var result = await _userService.GetUserAllData();
+            return Ok(result);
+        }
 
+        [HttpPost("GetUserMonthlyData")]
+        public async Task<ActionResult<MonthlyBudget>> GetUserMonthlyData(int year, int month)
+        {
+            var result = await _userService.GetUserMonthlyData(year, month);
+            return Ok(result);
+        }
     }
 }

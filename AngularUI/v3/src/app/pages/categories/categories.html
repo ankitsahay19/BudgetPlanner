@@ -68,7 +68,9 @@
                       <th>S.No.</th>
                       <th>Name</th>
                       <th>Description</th>
-                      <th>Allocated Amount</th>
+                      <th>Allocated Amounts</th>
+                      <th> Total Amounts</th>
+                      <th> Remaining Amounts</th>
                       <th>Actions</th>
                     </tr>
 
@@ -79,26 +81,36 @@
                     @for (cat of categories(); track cat.uniqueId) {
                     @if (cat.parentId === 0 || cat.parentId == null) {
                     <tr class="transaction-item expense">
-                      <td>{{ cat.uniqueId }}</td>
+                      <td>{{ $index+1 }}</td>
                       <td>{{ cat.name }}</td>
                       <td>{{ cat.description }}</td>
-                      <td class="text-danger">{{ cat.allocatedAmount | currency:'INR':'symbol':'1.0-0' }}</td>
-                      <td>
-                        <button class="btn btn-sm btn-outline-primary me-1" (click)="editCategory(cat)"><i
-                            class="bi bi-pencil"></i></button>
-                        <button class="btn btn-sm btn-outline-danger" (click)="deleteCategory(cat.uniqueId!)"><i
-                            class="bi bi-trash"></i></button>
-                      </td>
+                      <td class="text-secondary">{{ cat.allocatedAmount | currency:'INR':'symbol':'1.0-0' }}</td>
+                      <td class="text-secondary">{{ cat.totalAllocatedAmountOfSubCategories |
+                        currency:'INR':'symbol':'1.0-0' }}</td>
+
+                      @if(cat.remainingBalance! >= 0) { <td class="text-success">{{ cat.remainingBalance |
+                        currency:'INR':'symbol':'1.0-0' }}</td>
+                      } @if(cat.remainingBalance! < 0) { <td class="text-danger">{{ cat.remainingBalance |
+                        currency:'INR':'symbol':'1.0-0' }}</td>
+                        }
+                        <td>
+                          <button class="btn btn-sm btn-outline-primary me-1" (click)="editCategory(cat)"><i
+                              class="bi bi-pencil"></i></button>
+                          <button class="btn btn-sm btn-outline-danger" (click)="deleteCategory(cat.uniqueId!)"><i
+                              class="bi bi-trash"></i></button>
+                        </td>
                     </tr>
                     }
                     @for (sub of cat.subCategories || []; track sub.uniqueId) {
                     <tr class="transaction-item income">
-                      <td>{{ sub.uniqueId }}</td>
+                      <td> &NonBreakingSpace; &NonBreakingSpace; &NonBreakingSpace; {{ $index+1 }} .</td>
                       <td style="padding-left: 2em;">↳ {{ sub.name }}</td>
                       <td>{{ sub.description }}</td>
-                      <td class="text-success">{{ sub.allocatedAmount | currency:'INR':'symbol':'1.0-0' }}</td>
+                      <td class="text-secondary">{{ sub.allocatedAmount | currency:'INR':'symbol':'1.0-0' }}</td>
+                      <td></td>
+                      <td></td>
                       <td>
-                        <div class="d-flex align-items-center gap-2">
+                        <div class="d-flex align-items-center">
                           <button class="btn btn-sm btn-outline-primary me-1" (click)="editCategory(sub)"><i
                               class="bi bi-pencil"></i></button>
                           <button class="btn btn-sm btn-outline-danger" (click)="deleteCategory(sub.uniqueId!)"><i
@@ -107,7 +119,7 @@
                       </td>
                     </tr>
                     }
-                    @if ((cat.subCategories || []).length > 0) {
+                    <!-- @if ((cat.subCategories || []).length > 0) {
                     <tr class="table-success">
                       <td></td>
                       <td style="padding-left: 2em;"><strong>Total</strong></td>
@@ -116,10 +128,18 @@
                           currency:'INR':'symbol':'1.0-0'}}</strong></td>
                       <td colspan="2"></td>
                     </tr>
-                    }
+                    } -->
+
                     }
 
                   </tbody>
+                  <thead>
+                    <tr>
+                      <th colspan="3" class="text-end">Grand Total:</th>
+                      <th>{{ getTotalAllocatedAmount() | currency:'INR':'symbol':'1.0-0'}}</th>
+                      <th></th>
+                    </tr>
+                  </thead>
                 </table>
               </div>
             </div>
