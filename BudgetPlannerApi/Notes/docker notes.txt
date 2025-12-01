@@ -1,0 +1,18 @@
+✅ 1. Docker Command (Without compose)
+docker run -d \
+  --name my_postgres \
+  -e POSTGRES_USER=admin \
+  -e POSTGRES_PASSWORD=admin123 \
+  -e POSTGRES_DB=mydb \
+  -p 5432:5432 \
+  -v pgdata:/var/lib/postgresql/data \
+  postgres:16
+
+✅ 2. Volume Persistence
+        Docker volume used: pgdata
+        To check:  docker volume ls
+✅ 3. Connection String (.NET / C#) 
+        Use this: 
+        Host=localhost;Port=5432;Database=mydb;Username=admin;Password=admin123;
+✅ 4. For EF Core:  
+        options.UseNpgsql("Host=localhost;Port=5432;Database=mydb;Username=admin;Password=admin123");
