@@ -109,7 +109,8 @@ namespace BudgetPlannerApplication_2025.Controllers
             existingPlan.Name = plan.Name;
             existingPlan.Description = plan.Name;
             existingPlan.AllocatedAmount = plan.AllocatedAmount;
-            existingPlan.ParentId = plan.ParentId;
+       if(plan.ParentId>0)
+                existingPlan.ParentId = plan.ParentId;
             existingPlan.Year = plan.Year;
             existingPlan.Month = plan.Month;
             existingPlan.LastUpdatedDate = DateTime.UtcNow;

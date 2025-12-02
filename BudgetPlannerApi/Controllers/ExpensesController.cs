@@ -39,19 +39,16 @@ namespace BudgetPlannerApplication_2025.Controllers
         public async Task<ActionResult<Expense>> GetExpense(int id)
         {
             var userId = GetLoggedInUserId();
-            var expense = await _context.Expenses.Where(c => c.UserId == userId).FirstOrDefaultAsync();
-
+            var expense = await _context.Expenses.FirstOrDefaultAsync(c => c.UniqueId == id && (userId == null || c.UserId == userId));
             if (expense == null)
-            {
                 return NotFound();
-            }
-
-            return expense;
+            return Ok(expense);
         }
 
 
-        [HttpPost("CreateOrEdit")]
-        public async Task<IActionResult> CreateOrEditExpense([FromBody] Expense expense)
+
+        [HttpPost("Create")]
+        public async Task<IActionResult> CreateExpense([FromBody] Expense expense)
         {
             if (!ModelState.IsValid)
             {
@@ -65,45 +62,35 @@ namespace BudgetPlannerApplication_2025.Controllers
             if (userId == null)
                 return Unauthorized("User ID not found in token.");
             expense.UserId = userId;
-            var existingExpense = await _context.Expenses
-                .AsNoTracking()
-                .FirstOrDefaultAsync(e => e.UniqueId == expense.UniqueId);
 
-            if (existingExpense == null)
-            {
-                // Add new expense
-                _context.Expenses.Add(expense);
-                await _context.SaveChangesAsync();
+            _context.Expenses.Add(expense);
+            await _context.SaveChangesAsync();
 
-                return CreatedAtAction(nameof(GetExpense), new { id = expense.UniqueId }, expense);
-            }
-            else if (userId == existingExpense.UserId)
-            {
-                expense.LastUpdatedDate = DateTime.UtcNow;
-                _context.Entry(expense).State = EntityState.Modified;
+            return CreatedAtAction(nameof(GetExpense), new { id = expense.UniqueId }, expense);
+        }
 
-                try
-                {
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ExpenseExists(expense.UniqueId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+        [HttpPut("Edit/{id}")]
+        public async Task<IActionResult> UpdateExpense(int id, [FromBody] Expense expense)
+        {
+            if (expense == null || id != expense.UniqueId)
+                return BadRequest("Invalid data or ID mismatch.");
 
-                return Ok(expense);
-            }
-            else
-            {
-                return Forbid("You do not have permission to edit this expense ");
-            }
+            var userId = GetLoggedInUserId();
+            if (userId == null)
+                return Unauthorized();
+
+            var existing = await _context.Expenses.AsNoTracking().FirstOrDefaultAsync(e => e.UniqueId == id);
+            if (existing == null)
+                return NotFound();
+
+            if (existing.UserId != userId)
+                return Forbid();
+
+            expense.LastUpdatedDate = DateTime.UtcNow;
+            _context.Entry(expense).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return Ok(expense);
         }
 
 

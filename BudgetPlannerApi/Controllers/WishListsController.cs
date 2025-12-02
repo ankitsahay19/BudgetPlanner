@@ -37,20 +37,16 @@ namespace BudgetPlannerApplication_2025.Controllers
         public async Task<ActionResult<WishList>> GetWishList(int id)
         {
             var userId = GetLoggedInUserId();
-
-            var wishList = await _context.WishLists.Where(c => c.UserId == userId).FirstOrDefaultAsync();
-
+            var wishList = await _context.WishLists.FirstOrDefaultAsync(c => c.UniqueId == id && (userId == null || c.UserId == userId));
             if (wishList == null)
-            {
                 return NotFound();
-            }
-
-            return wishList;
+            return Ok(wishList);
         }
-       
 
-        [HttpPost("CreateOrEdit")]
-        public async Task<IActionResult> CreateOrEditWishList([FromBody] WishList wishList)
+
+
+        [HttpPost("Create")]
+        public async Task<IActionResult> CreateWishList([FromBody] WishList wishList)
         {
             if (!ModelState.IsValid)
                 return BadRequest("Payload is required.");
@@ -61,45 +57,35 @@ namespace BudgetPlannerApplication_2025.Controllers
             if (userId == null)
                 return Unauthorized("User ID not found in token.");
             wishList.UserId = userId;
-            var existingWishList = await _context.WishLists
-                .AsNoTracking()
-                .FirstOrDefaultAsync(w => w.UniqueId == wishList.UniqueId);
 
-            if (existingWishList == null)
-            {
-                // Add new wish list item
-                _context.WishLists.Add(wishList);
-                await _context.SaveChangesAsync();
+            _context.WishLists.Add(wishList);
+            await _context.SaveChangesAsync();
 
-                return CreatedAtAction(nameof(GetWishList), new { id = wishList.UniqueId }, wishList);
-            }
-            else if (userId == existingWishList.UserId)
-            {
-                wishList.LastUpdatedDate = DateTime.UtcNow;
-                _context.Entry(wishList).State = EntityState.Modified;
+            return CreatedAtAction(nameof(GetWishList), new { id = wishList.UniqueId }, wishList);
+        }
 
-                try
-                {
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!WishListExists(wishList.UniqueId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+        [HttpPut("Edit/{id}")]
+        public async Task<IActionResult> UpdateWishList(int id, [FromBody] WishList wishList)
+        {
+            if (wishList == null || id != wishList.UniqueId)
+                return BadRequest("Invalid data or ID mismatch.");
 
-                return Ok(wishList);
-            }
-            else
-            {
-                return Forbid("You do not have permission to edit this Wish list.");
-            }
+            var userId = GetLoggedInUserId();
+            if (userId == null)
+                return Unauthorized();
+
+            var existing = await _context.WishLists.AsNoTracking().FirstOrDefaultAsync(w => w.UniqueId == id);
+            if (existing == null)
+                return NotFound();
+
+            if (existing.UserId != userId)
+                return Forbid();
+
+            wishList.LastUpdatedDate = DateTime.UtcNow;
+            _context.Entry(wishList).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return Ok(wishList);
         }
 
 
