@@ -54,7 +54,7 @@ namespace BudgetPlannerApi.Controllers
         }
 
         // POST: api/IncomeSource
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateIncomeSource([FromBody] IncomeSource incomeSource)
         {
             if (incomeSource == null)
@@ -69,8 +69,8 @@ namespace BudgetPlannerApi.Controllers
         }
 
         // PUT: api/IncomeSource/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateIncomeSource(int id, [FromBody] IncomeSource incomeSource)
+          [HttpPut("Edit/{id}")]
+         public async Task<IActionResult> UpdateIncomeSource(int id, [FromBody] IncomeSource incomeSource)
         {
             if (incomeSource == null || id != incomeSource.UniqueId)
                 return BadRequest("Invalid IncomeSource data or ID mismatch.");
