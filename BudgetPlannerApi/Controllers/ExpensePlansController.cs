@@ -56,7 +56,7 @@ namespace BudgetPlannerApplication_2025.Controllers
                 return NotFound();
 
             return Ok(plan);
-        } 
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExpensePlan(int id)
@@ -109,7 +109,7 @@ namespace BudgetPlannerApplication_2025.Controllers
             existingPlan.Name = plan.Name;
             existingPlan.Description = plan.Name;
             existingPlan.AllocatedAmount = plan.AllocatedAmount;
-       if(plan.ParentId>0)
+            if (plan.ParentId > 0)
                 existingPlan.ParentId = plan.ParentId;
             existingPlan.Year = plan.Year;
             existingPlan.Month = plan.Month;

@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text;
 using System.Text.Json.Serialization;
+using Bpst.API.Repositories;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -69,6 +70,12 @@ builder.Services.AddHttpContextAccessor();  // ✅ this line is missing
 
 // Services registration
 builder.Services.AddScoped<IUserAccountService, UserAccountService>();
+// Register repository and service
+builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+// register wish list service with fully-qualified types to avoid namespace lookup issues
+builder.Services.AddScoped<Bpst.API.Services.WishLists.IWishListService, Bpst.API.Services.WishLists.WishListService>();
+// register income source service
+builder.Services.AddScoped<Bpst.API.Services.IncomeSources.IIncomeSourceService, Bpst.API.Services.IncomeSources.IncomeSourceService>();
 
 // Controllers and Swagger config
 builder.Services.AddControllers()
