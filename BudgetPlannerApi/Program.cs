@@ -62,7 +62,7 @@ builder.Services.AddAuthentication(options =>
 
 // Database connection
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConStr")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PgSqlDefaultConnection")));
 // Register services
 
 builder.Services.AddHttpContextAccessor();  // ✅ this line is missing
