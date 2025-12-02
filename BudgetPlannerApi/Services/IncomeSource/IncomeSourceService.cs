@@ -53,9 +53,12 @@ namespace Bpst.API.Services.IncomeSources
             var existing = await _db.IncomeSource.AsNoTracking().FirstOrDefaultAsync(w => w.UniqueId == incomeSource.UniqueId);
             if (existing == null) throw new KeyNotFoundException("IncomeSource not found");
             if (existing.UserId != userId) throw new UnauthorizedAccessException();
-
+            else { existing.LastUpdatedDate = DateTime.UtcNow; 
+                existing.SourceName = incomeSource.SourceName;
+                existing.IncomeAmount = incomeSource.IncomeAmount;
+            }
             incomeSource.LastUpdatedDate = DateTime.UtcNow;
-            await _repo.UpdateAsync(incomeSource);
+            await _repo.UpdateAsync(existing);
             await _db.SaveChangesAsync();
             return incomeSource;
         }
