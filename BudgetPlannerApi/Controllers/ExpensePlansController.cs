@@ -55,62 +55,7 @@ namespace BudgetPlannerApplication_2025.Controllers
                 return NotFound();
 
             return plan;
-        }
-
-        // [HttpPost("CreateOrEdit")]
-        // public async Task<IActionResult> CreateOrEditExpensePlan(ExpensePlan category)
-        // {
-        //     if (category == null)
-        //         return BadRequest("Invalid category data.");
-        //     else if (category.ParentId == 0)
-        //         category.ParentId = null;
-
-        //     var userId = GetLoggedInUserId();
-        //     if (userId == null)
-        //         return Unauthorized("User ID not found in token.");
-        //     category.UserId = userId;
-
-        //     var existingCategory = await _context.ExpensePlans
-        //         .AsNoTracking()
-        //         .FirstOrDefaultAsync(c => c.UniqueId == category.UniqueId);
-
-        //     if (existingCategory == null)
-        //     {
-        //         category.CreatedDate = DateTime.UtcNow;
-        //         _context.ExpensePlans.Add(category);
-        //         await _context.SaveChangesAsync();
-
-        //         return CreatedAtAction(nameof(GetExpensePlan), new { id = category.UniqueId }, category);
-        //     }
-        //     else if (userId == existingCategory.UserId)
-        //     {
-        //         category.LastUpdatedDate = DateTime.UtcNow;
-        //         _context.Entry(category).State = EntityState.Modified;
-
-        //         try
-        //         {
-        //             await _context.SaveChangesAsync();
-        //         }
-        //         catch (DbUpdateConcurrencyException)
-        //         {
-        //             if (!ExpensePlanExists(category.UniqueId))
-        //             {
-        //                 return NotFound();
-        //             }
-        //             else
-        //             {
-        //                 throw;
-        //             }
-        //         }
-
-        //         return Ok(category);
-        //     }
-        //     else
-        //     {
-        //         return Forbid("You do not have permission to edit this category.");
-        //     }
-        // }
-
+        } 
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExpensePlan(int id)
