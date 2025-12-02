@@ -49,12 +49,13 @@ namespace BudgetPlannerApplication_2025.Controllers
         public async Task<ActionResult<ExpensePlan>> GetExpensePlan(int id)
         {
             var userId = GetLoggedInUserId();
-            var plan = await _context.ExpensePlans.Where(c => c.UserId == userId).FirstOrDefaultAsync();
+            var plan = await _context.ExpensePlans
+                .FirstOrDefaultAsync(c => c.UniqueId == id && (userId == null || c.UserId == userId));
 
             if (plan == null)
                 return NotFound();
 
-            return plan;
+            return Ok(plan);
         } 
 
         [HttpDelete("{id}")]
@@ -80,11 +81,6 @@ namespace BudgetPlannerApplication_2025.Controllers
 
             return NoContent();
         }
-        private bool ExpensePlanExists(int id)
-        {
-            return _context.ExpensePlans.Any(e => e.UniqueId == id);
-        }
-
 
 
         [HttpPost("Create")]
@@ -97,7 +93,7 @@ namespace BudgetPlannerApplication_2025.Controllers
             if (plan.ParentId == 0) plan.ParentId = null;
             _context.ExpensePlans.Add(plan);
             await _context.SaveChangesAsync();
-            return Ok(plan);
+            return CreatedAtAction(nameof(GetExpensePlan), new { id = plan.UniqueId }, plan);
         }
 
 
