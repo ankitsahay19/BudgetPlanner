@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bpst.API.Services.IncomeSources;
 
 namespace BudgetPlannerApi.Controllers
 {
@@ -18,12 +19,12 @@ namespace BudgetPlannerApi.Controllers
     [Authorize]
     public class IncomeSourceController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IIncomeSourceService _incomeSourceService;
         public readonly IUserAccountService _userAccountService;
 
-        public IncomeSourceController(AppDbContext context, IUserAccountService userAccountService)
+        public IncomeSourceController(IIncomeSourceService incomeSourceService, IUserAccountService userAccountService)
         {
-            _context = context;
+            _incomeSourceService = incomeSourceService;
             _userAccountService = userAccountService;
         }
         // GET: api/IncomeSource
@@ -32,137 +33,84 @@ namespace BudgetPlannerApi.Controllers
         {
             var loggedInUserId = _userAccountService.GetLoggedInUserId();
             if (loggedInUserId == null)
-                return await _context.IncomeSource.ToListAsync();
-            return await _context.IncomeSource.Where(i => i.UserId.Equals(loggedInUserId)).ToListAsync();
+                return Unauthorized();
+            var data = await _incomeSourceService.GetAllForUserAsync(loggedInUserId.Value);
+            return Ok(data);
         }
 
         // GET: api/IncomeSource/5
         [HttpGet("{id}")]
         public async Task<ActionResult<IncomeSource>> GetIncomeSource(int id)
         {
-            var incomeSource = await _context.IncomeSource.FindAsync(id);
+            var loggedInUserId = _userAccountService.GetLoggedInUserId();
+            if (loggedInUserId == null)
+                return Unauthorized();
+            var incomeSource = await _incomeSourceService.GetByIdForUserAsync(id, loggedInUserId.Value);
 
             if (incomeSource == null)
-            {
                 return NotFound();
-            }
-
-            return incomeSource;
-        }
-
-        [HttpPost("Create")]
-        public async Task<IActionResult> CreateIncome([FromBody] IncomeSource incomeSource)
-        {
-            if (incomeSource == null)
-                return BadRequest("Invalid IncomeSource data.");
-            if (_userAccountService.GetLoggedInUserId() == null)
-                return Unauthorized("User ID not found in token.");
-            incomeSource.UserId = _userAccountService.GetLoggedInUserId();
-            incomeSource.CreatedDate = DateTime.UtcNow;
-
-            _context.IncomeSource.Add(incomeSource);
-            await _context.SaveChangesAsync();
 
             return Ok(incomeSource);
         }
 
+        // POST: api/IncomeSource
+        [HttpPost("Create")]
+        public async Task<IActionResult> CreateIncomeSource([FromBody] IncomeSource incomeSource)
+        {
+            if (incomeSource == null)
+                return BadRequest("Invalid IncomeSource data.");
+            var loggedInUserId = _userAccountService.GetLoggedInUserId();
+            if (loggedInUserId == null)
+                return Unauthorized("User ID not found in token.");
 
-        [HttpPut("Edit/{id}")]
-        public async Task<IActionResult> EditIncome(int id, [FromBody] IncomeSource incomeSource)
+            var created = await _incomeSourceService.CreateAsync(incomeSource, loggedInUserId.Value);
+
+            return CreatedAtAction(nameof(GetIncomeSource), new { id = created.UniqueId }, created);
+        }
+
+        // PUT: api/IncomeSource/5
+          [HttpPut("Edit/{id}")]
+         public async Task<IActionResult> UpdateIncomeSource(int id, [FromBody] IncomeSource incomeSource)
         {
             if (incomeSource == null || id != incomeSource.UniqueId)
                 return BadRequest("Invalid IncomeSource data or ID mismatch.");
 
-            var existingIncome = await _context.IncomeSource.AsNoTracking()
-                .FirstOrDefaultAsync(c => c.UniqueId == id);
-
-            if (existingIncome == null)
-                return NotFound("Income source not found.");
-
-            // Check permissions
             var loggedInUserId = _userAccountService.GetLoggedInUserId();
-            if (existingIncome.UserId != loggedInUserId)
+            if (loggedInUserId == null)
+                return Unauthorized();
+
+            try
+            {
+                var updated = await _incomeSourceService.UpdateAsync(incomeSource, loggedInUserId.Value);
+                return Ok(updated);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound("Income source not found.");
+            }
+            catch (UnauthorizedAccessException)
+            {
                 return Forbid("You do not have permission to edit this income source.");
-
-            // Update only editable fields
-            existingIncome.SourceName = incomeSource.SourceName;
-            existingIncome.IncomeAmount = incomeSource.IncomeAmount;
-            existingIncome.LastUpdatedDate = DateTime.UtcNow;
-
-            _context.Entry(existingIncome).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            return Ok(existingIncome);
+            }
         }
 
         // DELETE: api/IncomeSource/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteIncomeSource(int id)
         {
-            var incomeSource = await _context.IncomeSource.FindAsync(id);
-            if (incomeSource == null)
+            var loggedInUserId = _userAccountService.GetLoggedInUserId();
+            if (loggedInUserId == null)
+                return Unauthorized();
+
+            try
+            {
+                await _incomeSourceService.DeleteAsync(id, loggedInUserId.Value);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
-
-            _context.IncomeSource.Remove(incomeSource);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-
-        [HttpPost("CreateOrEdit")]
-        public async Task<IActionResult> CreateOrEditIncome(IncomeSource IncomeSource)
-        {
-            if (IncomeSource == null)
-                return BadRequest("Invalid IncomeSource data.");
-            else if (IncomeSource.UserId == 0)
-                IncomeSource.UserId = null;
-
-            if (_userAccountService.GetLoggedInUserId() == null)
-                return Unauthorized("User ID not found in token.");
-            IncomeSource.UserId = _userAccountService.GetLoggedInUserId();
-
-            var existingIncome = await _context.IncomeSource
-                .AsNoTracking()
-                .FirstOrDefaultAsync(c => c.UniqueId == IncomeSource.UniqueId);
-
-            if (existingIncome == null)
-            {
-                IncomeSource.CreatedDate = DateTime.UtcNow;
-                _context.IncomeSource.Add(IncomeSource);
-                await _context.SaveChangesAsync();
-
-                return CreatedAtAction(nameof(GetIncomeSource), new { id = IncomeSource.UniqueId }, IncomeSource);
-            }
-            else if (_userAccountService.GetLoggedInUserId() == existingIncome.UserId)
-            {
-                IncomeSource.LastUpdatedDate = DateTime.UtcNow;
-                _context.Entry(IncomeSource).State = EntityState.Modified;
-
-                try
-                {
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!IncomeSourceExists(IncomeSource.UniqueId))
-                        return NotFound();
-                    else
-                        throw;
-                }
-
-                return Ok(IncomeSource);
-            }
-            else
-            {
-                return Forbid("You do not have permission to edit this income source.");
-            }
-        }
-        private bool IncomeSourceExists(int id)
-        {
-            return _context.IncomeSource.Any(e => e.UniqueId == id);
         }
 
     }

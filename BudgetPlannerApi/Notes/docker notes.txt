@@ -1,0 +1,90 @@
+ N
+# run on terminal 
+ ## docker compose up -d
+
+folder structure required
+
+root-folder/
+│
+├── docker-compose.yml
+│
+├── api/
+│   └── Dockerfile
+│
+└── client/
+    └── Dockerfile
+
+
+🟦 .NET 9 API Dockerfile (api/Dockerfile)
+# Build Stage
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+
+COPY . .
+RUN dotnet restore
+RUN dotnet publish -c Release -o /app/publish
+
+# Runtime Stage
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
+WORKDIR /app
+COPY --from=build /app/publish .
+EXPOSE 8080
+ENTRYPOINT ["dotnet", "YourApiProjectName.dll"]
+
+
+📌 Replace YourApiProjectName.dll with your API's DLL name.
+🟩 Angular 20 Dockerfile (client/Dockerfile)
+# Stage 1: Build
+FROM node:20 AS build
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+RUN npm run build -- --configuration production
+
+# Stage 2: Nginx Host
+FROM nginx:latest
+COPY --from=build /app/dist/your-angular-app-name/browser /usr/share/nginx/html
+EXPOSE 80
+
+
+📌 Replace your-angular-app-name with your project name inside dist/. 
+🚀 Run Everything 
+From your root folder: 
+docker compose up -d --build
+--------------------------------------------------------------------------------------------------------------------
+Run it
+docker compose up -d
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+.NET API → PostgreSQL 
+Connection string: 
+Host=postgres;Port=5432;Database=MyBudgetPlannerDb;Username=admin;Password=admin123
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Angular → .NET API docker compose down -v
+
+Use Docker network name, NOT localhost: 
+http://mybudgetplanner_api:8080
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+✅ 1. Docker Command (Without compose)
+docker run -d \
+  --name my_postgres \
+  -e POSTGRES_USER=admin \
+  -e POSTGRES_PASSWORD=admin123 \
+  -e POSTGRES_DB=mydb \
+  -p 5432:5432 \
+  -v pgdata:/var/lib/postgresql/data \
+  postgres:16
+
+✅ 2. Volume Persistence
+        Docker volume used: pgdata
+        To check:  docker volume ls
+✅ 3. Connection String (.NET / C#) 
+        Use this: 
+        Host=localhost;Port=5432;Database=mydb;Username=admin;Password=admin123;
+✅ 4. For EF Core:  
+        options.UseNpgsql("Host=localhost;Port=5432;Database=mydb;Username=admin;Password=admin123");

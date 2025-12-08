@@ -50,7 +50,7 @@ namespace Bpst.API.Services.UserAccount
             {
                 var appUser = new AppUser()
                 {
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = DateTime.UtcNow,
                     LoginEmail = user.Email,
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.Password),
                     FirstName = user.FirstName,
@@ -82,13 +82,10 @@ namespace Bpst.API.Services.UserAccount
         public async Task<LoginResponse> Login(LoginVM login)
         {
             var user = await GetUserByEmail(login.LoginName);
-            if (user == null)
-                return new LoginResponse { IsLoginSuccess = false, ErrorMessages = new List<string> { "User not registered" } };
+            if (user == null) return new LoginResponse { IsLoginSuccess = false, ErrorMessages = new List<string> { "User not registered" } };
 
             bool valid = BCrypt.Net.BCrypt.Verify(login.Password, user.PasswordHash);
-            if (!valid)
-                return new LoginResponse { IsLoginSuccess = false, ErrorMessages = new List<string> { "Invalid credentials" } };
-
+            if (!valid) return new LoginResponse { IsLoginSuccess = false, ErrorMessages = new List<string> { "Invalid credentials" } }; 
             return await PopulateLoginResponse(user);
         }
 

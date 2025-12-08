@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BudgetPlannerApplication_2025.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -54,68 +49,14 @@ namespace BudgetPlannerApplication_2025.Controllers
         public async Task<ActionResult<ExpensePlan>> GetExpensePlan(int id)
         {
             var userId = GetLoggedInUserId();
-            var plan = await _context.ExpensePlans.Where(c => c.UserId == userId).FirstOrDefaultAsync();
+            var plan = await _context.ExpensePlans
+                .FirstOrDefaultAsync(c => c.UniqueId == id && (userId == null || c.UserId == userId));
 
             if (plan == null)
                 return NotFound();
 
-            return plan;
+            return Ok(plan);
         }
-
-        // [HttpPost("CreateOrEdit")]
-        // public async Task<IActionResult> CreateOrEditExpensePlan(ExpensePlan category)
-        // {
-        //     if (category == null)
-        //         return BadRequest("Invalid category data.");
-        //     else if (category.ParentId == 0)
-        //         category.ParentId = null;
-
-        //     var userId = GetLoggedInUserId();
-        //     if (userId == null)
-        //         return Unauthorized("User ID not found in token.");
-        //     category.UserId = userId;
-
-        //     var existingCategory = await _context.ExpensePlans
-        //         .AsNoTracking()
-        //         .FirstOrDefaultAsync(c => c.UniqueId == category.UniqueId);
-
-        //     if (existingCategory == null)
-        //     {
-        //         category.CreatedDate = DateTime.UtcNow;
-        //         _context.ExpensePlans.Add(category);
-        //         await _context.SaveChangesAsync();
-
-        //         return CreatedAtAction(nameof(GetExpensePlan), new { id = category.UniqueId }, category);
-        //     }
-        //     else if (userId == existingCategory.UserId)
-        //     {
-        //         category.LastUpdatedDate = DateTime.UtcNow;
-        //         _context.Entry(category).State = EntityState.Modified;
-
-        //         try
-        //         {
-        //             await _context.SaveChangesAsync();
-        //         }
-        //         catch (DbUpdateConcurrencyException)
-        //         {
-        //             if (!ExpensePlanExists(category.UniqueId))
-        //             {
-        //                 return NotFound();
-        //             }
-        //             else
-        //             {
-        //                 throw;
-        //             }
-        //         }
-
-        //         return Ok(category);
-        //     }
-        //     else
-        //     {
-        //         return Forbid("You do not have permission to edit this category.");
-        //     }
-        // }
-
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExpensePlan(int id)
@@ -140,11 +81,6 @@ namespace BudgetPlannerApplication_2025.Controllers
 
             return NoContent();
         }
-        private bool ExpensePlanExists(int id)
-        {
-            return _context.ExpensePlans.Any(e => e.UniqueId == id);
-        }
-
 
 
         [HttpPost("Create")]
@@ -157,7 +93,7 @@ namespace BudgetPlannerApplication_2025.Controllers
             if (plan.ParentId == 0) plan.ParentId = null;
             _context.ExpensePlans.Add(plan);
             await _context.SaveChangesAsync();
-            return Ok(plan);
+            return CreatedAtAction(nameof(GetExpensePlan), new { id = plan.UniqueId }, plan);
         }
 
 
@@ -173,7 +109,8 @@ namespace BudgetPlannerApplication_2025.Controllers
             existingPlan.Name = plan.Name;
             existingPlan.Description = plan.Name;
             existingPlan.AllocatedAmount = plan.AllocatedAmount;
-            existingPlan.ParentId = plan.ParentId;
+            if (plan.ParentId > 0)
+                existingPlan.ParentId = plan.ParentId;
             existingPlan.Year = plan.Year;
             existingPlan.Month = plan.Month;
             existingPlan.LastUpdatedDate = DateTime.UtcNow;

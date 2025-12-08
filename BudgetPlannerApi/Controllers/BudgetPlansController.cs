@@ -34,85 +34,53 @@ namespace BudgetPlannerApplication_2025.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<BudgetPlan>> GetBudgetPlan(int id)
         {
-            var userId = GetLoggedInUserId();
-
-            var budgetPlan = await _context.BudgetPlans.Where(c => c.UserId == userId).FirstOrDefaultAsync();
-
+            var userId = GetLoggedInUserId(); 
+            var budgetPlan = await _context.BudgetPlans.FirstOrDefaultAsync(c => c.UniqueId == id && (userId == null || c.UserId == userId));  
             if (budgetPlan == null)
-            {
-                return NotFound();
-            }
-
-            return budgetPlan;
+                return NotFound(); 
+            return Ok(budgetPlan);
         }
 
-        [HttpPost("CreateOrEdit")]
-        public async Task<IActionResult> CreateOrEditBudgetPlan(BudgetPlan budgetPlan)
+        [HttpPost("Create")]
+        public async Task<IActionResult> CreateBudgetPlan([FromBody] BudgetPlan budgetPlan)
         {
             if (budgetPlan == null)
                 return BadRequest("Invalid data.");
-
             var userId = GetLoggedInUserId();
             if (userId == null)
                 return Unauthorized("User ID not found in token.");
             budgetPlan.UserId = userId;
-            var existingPlan = await _context.BudgetPlans
-                .AsNoTracking()
-                .FirstOrDefaultAsync(b => b.UniqueId == budgetPlan.UniqueId);
 
-            if (existingPlan == null)
-            {
-                // Add new
-                _context.BudgetPlans.Add(budgetPlan);
-                await _context.SaveChangesAsync();
+            _context.BudgetPlans.Add(budgetPlan);
+            await _context.SaveChangesAsync();
 
-                return CreatedAtAction(nameof(GetBudgetPlan), new { id = budgetPlan.UniqueId }, budgetPlan);
-            }
-            else if (userId == existingPlan.UserId)
-            {
-                budgetPlan.LastUpdatedDate = DateTime.UtcNow;
-                _context.Entry(budgetPlan).State = EntityState.Modified;
-
-                try
-                {
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BudgetPlanExists(budgetPlan.UniqueId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-
-                return Ok(budgetPlan);
-            }
-            else
-            {
-                return Forbid("You do not have permission to edit this budget plan.");
-            }
+            return CreatedAtAction(nameof(GetBudgetPlan), new { id = budgetPlan.UniqueId }, budgetPlan);
         }
 
+        // PUT: api/BudgetPlans/{id}
+        [HttpPut("Edit/{id}")]
+        public async Task<IActionResult> UpdateBudgetPlan(int id, [FromBody] BudgetPlan budgetPlan)
+        {
+            if (budgetPlan == null || id != budgetPlan.UniqueId)
+                return BadRequest("Invalid data or ID mismatch.");
 
+            var userId = GetLoggedInUserId();
+            if (userId == null)
+                return Unauthorized();
 
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteBudgetPlan(int id)
-        //{
-        //    var budgetPlan = await _context.BudgetPlans.FindAsync(id);
-        //    if (budgetPlan == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var existing = await _context.BudgetPlans.AsNoTracking().FirstOrDefaultAsync(b => b.UniqueId == id);
+            if (existing == null)
+                return NotFound();
 
-        //    _context.BudgetPlans.Remove(budgetPlan);
-        //    await _context.SaveChangesAsync();
+            if (existing.UserId != userId)
+                return Forbid();
 
-        //    return NoContent();
-        //}
+            budgetPlan.LastUpdatedDate = DateTime.UtcNow;
+            _context.Entry(budgetPlan).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return Ok(budgetPlan);
+        } 
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWishList(int id)
