@@ -21,16 +21,37 @@ namespace Bpst.API.Controllers.Account
         {
             var result = await _userService.RegisterNewUserAsync(user);
 
-            if (result.IsCreated == true && result.UniqueId > 0)
+            if (!result.IsCreated)
             {
-                _context.IncomeSource.Add(new IncomeSource() { UserId = result.UniqueId, SourceName = "Salary", IncomeAmount = 0, CreatedDate = DateTime.UtcNow, LastUpdatedDate = DateTime.UtcNow });
-                _context.IncomeSource.Add(new IncomeSource() { UserId = result.UniqueId, SourceName = "Freelance", IncomeAmount = 0, CreatedDate = DateTime.UtcNow, LastUpdatedDate = DateTime.UtcNow });
-                _context.IncomeSource.Add(new IncomeSource() { UserId = result.UniqueId, SourceName = "Investments", IncomeAmount = 0, CreatedDate = DateTime.UtcNow, LastUpdatedDate = DateTime.UtcNow });
-                _context.IncomeSource.Add(new IncomeSource() { UserId = result.UniqueId, SourceName = "Gifts", IncomeAmount = 0, CreatedDate = DateTime.UtcNow, LastUpdatedDate = DateTime.UtcNow });
-                _context.SaveChangesAsync().Wait();
+                // Duplicate or validation failure
+                return Conflict(new UserRegistrationResponse
+                {
+                    IsCreated = false,
+                    UniqueId = 0,
+                    ErrorMessages = result.ErrorMessages
+                });
             }
-            return result;
+
+            // Success case (created)
+            if (result.UniqueId > 0)
+            {
+                var now = DateTime.UtcNow;
+
+                var defaultSources = new List<IncomeSource>
+        {
+            new IncomeSource { UserId = result.UniqueId, SourceName = "Salary", IncomeAmount = 0, CreatedDate = now, LastUpdatedDate = now },
+            new IncomeSource { UserId = result.UniqueId, SourceName = "Freelance", IncomeAmount = 0, CreatedDate = now, LastUpdatedDate = now },
+            new IncomeSource { UserId = result.UniqueId, SourceName = "Investments", IncomeAmount = 0, CreatedDate = now, LastUpdatedDate = now },
+            new IncomeSource { UserId = result.UniqueId, SourceName = "Gifts", IncomeAmount = 0, CreatedDate = now, LastUpdatedDate = now }
+        };
+
+                _context.IncomeSource.AddRange(defaultSources);
+                await _context.SaveChangesAsync();
+            }
+
+            return CreatedAtAction(nameof(CreateUser), new { id = result.UniqueId }, result);
         }
+
 
 
         [AllowAnonymous]
