@@ -1,44 +1,24 @@
-# multi-stage Dockerfile for BudgetPlannerApi
-# Build with the SDK, produce a trimmed runtime image for production/development
-
-ARG BASE_IMAGE_SDK="mcr.microsoft.com/dotnet/sdk:9.0"
-ARG BASE_IMAGE_RUNTIME="mcr.microsoft.com/dotnet/aspnet:9.0"
-
-FROM ${BASE_IMAGE_SDK} AS build
+# Stage 1: Build Stage
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 
-# copy csproj and restore first (leverage layer caching)
-COPY *.sln .
-COPY BudgetPlannerApi.csproj ./
-# copy any Directory.Build.* or nuget config if present
-RUN dotnet restore --no-cache
-
+# restore
+# Dockerfile is located inside the `BudgetPlannerApi` folder, so COPY paths are relative to that
+COPY ["BudgetPlannerApi.csproj", "./"]
+RUN dotnet restore "./BudgetPlannerApi.csproj"
 # copy everything and build
 COPY . .
-RUN dotnet publish -c Release -o /app/publish /p:PublishTrimmed=false
+WORKDIR /src
+RUN  dotnet build "BudgetPlannerApi.csproj" -c Release -o /app/build
 
-# runtime image
-FROM ${BASE_IMAGE_RUNTIME} AS final
+# Stage 2: Publish Stage
+FROM build AS publish
+RUN dotnet publish "BudgetPlannerApi.csproj" -c Release -o /app/publish /p:PublishTrimmed=false
+
+# Stage 3: Runtime Stage
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
+ENV ASPNETCORE_HTTP_PORTS=5001
+EXPOSE 5001
 WORKDIR /app
-
-# install small client tool (pg_isready) so the entrypoint script can wait for Postgres
-USER root
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends postgresql-client curl \
-    && rm -rf /var/lib/apt/lists/*
-
-# create non-root user
-RUN useradd -m -u 1000 appuser || true
-
-COPY --from=build /app/publish .
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh \
-    && chown -R appuser:appuser /app
-
-USER appuser
-
-ENV ASPNETCORE_URLS="http://+:80"
-EXPOSE 80
-
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "BudgetPlannerApi.dll"]
