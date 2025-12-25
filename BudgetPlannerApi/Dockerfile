@@ -22,3 +22,10 @@ EXPOSE 5001
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "BudgetPlannerApi.dll"]
+
+
+############################################################
+# to run 
+# docker build -t budgetplanner-api .
+# docker run -p 5001:5001 budgetplanner-api
+########################################################################

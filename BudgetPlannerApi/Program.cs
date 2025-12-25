@@ -98,7 +98,10 @@ if (app.Environment.IsDevelopment())
     // (optional) enable developer specific configurations
 }
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c =>
+    {
+        c.RoutePrefix = "swagger";
+    });
 
 app.UseHttpsRedirection();
 

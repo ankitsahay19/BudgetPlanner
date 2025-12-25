@@ -1,74 +1,12 @@
-#################################################################
-# #################################################################
-# Docker Compose for BudgetPlannerApi (development-friendly)
-# Location: this file lives in `BudgetPlannerApi/` so build context
-# for the API service is the current directory. Run from repository
-# root with:
-#   docker compose -f BudgetPlannerApi/docker-compose.yml up --build
-#################################################################
-
-#################################################################
-# To get the mapped host port for the API service:
-# docker compose -f docker-compose.yml port api 80
-
-# Example output: 0.0.0.0:5001
+version: '3.9'
 services:
-  postgres:
-    image: postgres:17
-    container_name: bp_postgres
-    restart: unless-stopped
-    env_file:
-      - .env
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    # Expose DB on host only when needed. Default Postgres port inside
-    # container is 5432. Host port can be changed if you have a local
-    # Postgres running.
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-postgres} -h localhost" ]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-
-  api:
+  # asp.net web application
+  webapp:
+    container_name: budgetplanner-api
     build:
       context: .
       dockerfile: Dockerfile
-    image: budgetplanner_api:local
-    container_name: bp_api
-    restart: on-failure
-    depends_on:
-      postgres:
-        condition: service_healthy
-    env_file:
-      - .env
-    environment:
-      # The app reads the connection string via Configuration.GetConnectionString("PgSqlDefaultConnection")
-      # In ASP.NET Core this maps from the env-var ConnectionStrings__PgSqlDefaultConnection
-      ConnectionStrings__PgSqlDefaultConnection: "Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
-      ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: "http://+:80"
-      # variables used by the container entrypoint script
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USER: ${POSTGRES_USER}
-      MAX_WAIT_SECONDS: ${MAX_WAIT_SECONDS:-60}
     ports:
-      # If API_HOST_PORT is set, map that host port to container 80 (e.g. 5000:80).
-      # If API_HOST_PORT is NOT set, publish container port 80 to a random available host port
-      # (compose will pick a free ephemeral port) — this avoids bind conflicts.
-      - "${API_HOST_PORT:+${API_HOST_PORT}:}80"
-    healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:80/ || exit 1" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-volumes:
-  pgdata:
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
