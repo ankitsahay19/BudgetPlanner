@@ -78,7 +78,8 @@ builder.Services.AddScoped<Bpst.API.Services.WishLists.IWishListService, Bpst.AP
 builder.Services.AddScoped<Bpst.API.Services.IncomeSources.IIncomeSourceService, Bpst.API.Services.IncomeSources.IncomeSourceService>();
 
 // Controllers and Swagger config
-builder.Services.AddControllers()
+// Add MVC controllers + views so we can serve Razor pages / MVC and also keep API controllers
+builder.Services.AddControllersWithViews()
  .AddJsonOptions(options =>
   {
       options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
@@ -102,6 +103,9 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
+// Serve static files (for MVC views or a built React app placed in wwwroot)
+app.UseStaticFiles();
+
 // ✅ Middleware order — very important!
 app.UseCors(MyAllowSpecificOrigins);
 
@@ -109,5 +113,13 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// MVC route (so you can have /Home/Index returning a view)
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// SPA fallback: if no route matches, serve the React index.html from wwwroot (if present)
+app.MapFallbackToFile("index.html");
 
 app.Run();
