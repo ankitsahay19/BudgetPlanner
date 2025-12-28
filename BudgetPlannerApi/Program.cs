@@ -62,9 +62,11 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Database connection
+// Database connection (switchable provider)
+// Use MySQL (Pomelo) for LiveDB in this branch. Connection string name: "LiveDB"
+var liveConn = builder.Configuration.GetConnectionString("LiveDB");
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("aivenPgSqlLiveDb")));
+    options.UseMySql(liveConn, ServerVersion.AutoDetect(liveConn)));
 // Register services
 
 builder.Services.AddHttpContextAccessor();  // ✅ this line is missing
