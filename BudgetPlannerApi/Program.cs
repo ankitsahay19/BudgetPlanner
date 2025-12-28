@@ -63,9 +63,10 @@ builder.Services.AddAuthentication(options =>
 });
 
 // Database connection (switchable provider)
-// Use SQL Server provider now. Connection string name: "LiveDB"
+// Use MySQL (Pomelo) for LiveDB in this branch. Connection string name: "LiveDB"
+var liveConn = builder.Configuration.GetConnectionString("LiveDB");
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("LiveDB")));
+    options.UseMySql(liveConn, ServerVersion.AutoDetect(liveConn)));
 // Register services
 
 builder.Services.AddHttpContextAccessor();  // ✅ this line is missing

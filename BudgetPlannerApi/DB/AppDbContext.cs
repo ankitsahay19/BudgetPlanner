@@ -2,6 +2,7 @@
 using BudgetPlannerApi.DB.Models.User;
 using BudgetPlannerApplication_2025.Models;
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using BudgetPlannerApi.DB.Models;
 
 namespace Bpst.API.DB
@@ -64,7 +65,16 @@ namespace Bpst.API.DB
 
                 if (!string.IsNullOrEmpty(conn))
                 {
-                    optionsBuilder.UseSqlServer(conn);
+                    // If the connection string looks like MySQL (contains Uid/Uid= or Pwd or 'Server=MYSQL'), use MySQL provider
+                    var lower = conn.ToLowerInvariant();
+                    if (lower.Contains("uid=") || lower.Contains("user id=") || lower.Contains("pwd=") || lower.Contains("mysql"))
+                    {
+                        optionsBuilder.UseMySql(conn, ServerVersion.AutoDetect(conn));
+                    }
+                    else
+                    {
+                        optionsBuilder.UseSqlServer(conn);
+                    }
                 }
             }
         }
