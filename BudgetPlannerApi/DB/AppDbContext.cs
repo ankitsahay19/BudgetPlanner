@@ -6,8 +6,11 @@ using BudgetPlannerApi.DB.Models;
 
 namespace Bpst.API.DB
 {
-    public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+    public class AppDbContext : DbContext
     {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -52,7 +55,18 @@ namespace Bpst.API.DB
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured) { }
+            if (!optionsBuilder.IsConfigured)
+            {
+                // Support design-time and environment overrides via environment variables
+                var conn = Environment.GetEnvironmentVariable("ConnectionStrings__LiveDB")
+                           ?? Environment.GetEnvironmentVariable("LiveDB")
+                           ?? Environment.GetEnvironmentVariable("MSSQL_CONN");
+
+                if (!string.IsNullOrEmpty(conn))
+                {
+                    optionsBuilder.UseSqlServer(conn);
+                }
+            }
         }
 
         public DbSet<AppUser> AppUsers { get; set; }

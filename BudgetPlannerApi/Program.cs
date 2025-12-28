@@ -62,9 +62,10 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Database connection
+// Database connection (switchable provider)
+// Use SQL Server provider now. Connection string name: "LiveDB"
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("aivenPgSqlLiveDb")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("LiveDB")));
 // Register services
 
 builder.Services.AddHttpContextAccessor();  // ✅ this line is missing
