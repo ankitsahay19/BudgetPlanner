@@ -10,6 +10,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text;
 using System.Text.Json.Serialization;
 using Bpst.API.Repositories;
+using Bpst.API.Middleware;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -55,7 +56,7 @@ builder.Services.AddAuthentication(options =>
         OnAuthenticationFailed = context =>
         {
             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                context.Response.Headers.Add("Token-Expired", "true");
+                context.Response.Headers["Token-Expired"] = "true";
             return System.Threading.Tasks.Task.CompletedTask;
         }
     };
@@ -92,11 +93,19 @@ builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwa
 
 var app = builder.Build();
 
-// Swagger setup
-if (app.Environment.IsDevelopment())
+// Global exception logging in non-development environments so production exceptions are captured
+if (!app.Environment.IsDevelopment())
 {
-    // (optional) enable developer specific configurations
+    app.UseGlobalExceptionLogging();
 }
+else
+{
+    app.UseDeveloperExceptionPage();
+}
+app.UseDeveloperExceptionPage();
+
+
+// Swagger setup
 app.UseSwagger();
 app.UseSwaggerUI();
 

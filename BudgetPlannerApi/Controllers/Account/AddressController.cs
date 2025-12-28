@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Bpst.API.DB; 
+using Bpst.API.DB;
 using BudgetPlannerApi.DB.Models.Address;
 
 namespace Bpst.API.Controllers.Account
@@ -68,7 +68,7 @@ namespace Bpst.API.Controllers.Account
             if (country == null)
                 return NotFound();
             return country;
-        } 
+        }
 
     }
 }
