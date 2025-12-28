@@ -63,7 +63,7 @@ builder.Services.AddAuthentication(options =>
 
 // Database connection
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("PgSqlDefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("aivenPgSqlLiveDb")));
 // Register services
 
 builder.Services.AddHttpContextAccessor();  // ✅ this line is missing
