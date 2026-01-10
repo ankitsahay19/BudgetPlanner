@@ -16,6 +16,14 @@ namespace Bpst.API.Mapping
                 .ForMember(dest => dest.UserId, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
                 .ForMember(dest => dest.AppUser, opt => opt.Ignore());
+
+            // BudgetPlan mappings
+            CreateMap<BudgetPlannerApplication_2025.Models.BudgetPlan, BudgetPlanDto>();
+            CreateMap<BudgetPlanDto, BudgetPlannerApplication_2025.Models.BudgetPlan>()
+                .ForMember(dest => dest.UniqueId, opt => opt.Ignore())
+                .ForMember(dest => dest.UserId, opt => opt.Ignore())
+                .ForMember(dest => dest.AppUser, opt => opt.Ignore())
+                .ForMember(dest => dest.LastUpdatedDate, opt => opt.Ignore());
         }
     }
 }
