@@ -3,7 +3,7 @@ name: Deploy ASP.NET Core to FTP
 on:
   push:
     branches:
-      - main
+      - release
 
 jobs:
   build-and-deploy:

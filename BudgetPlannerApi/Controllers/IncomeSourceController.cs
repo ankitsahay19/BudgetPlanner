@@ -1,106 +1,126 @@
-﻿using Bpst.API.DB;
+﻿using AutoMapper;
+using Bpst.API.DB;
 using Bpst.API.Services.UserAccount;
+using Bpst.API.Services.IncomeSources;
+using Bpst.API.ViewModels;
 using BudgetPlannerApi.DB.Models;
-using BudgetPlannerApplication_2025.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Bpst.API.Services.IncomeSources;
 
 namespace BudgetPlannerApi.Controllers
 {
-    [Route("api/[controller]")]
+    // Use plural resource name for RESTful routes
+    [Route("api/incomesources")]
     [ApiController]
     [Authorize]
-    public class IncomeSourceController : ControllerBase
+    public class IncomeSourcesController : ControllerBase
     {
         private readonly IIncomeSourceService _incomeSourceService;
-        public readonly IUserAccountService _userAccountService;
-
-        public IncomeSourceController(IIncomeSourceService incomeSourceService, IUserAccountService userAccountService)
+        private readonly IUserAccountService _userAccountService;
+        private readonly IMapper _mapper;
+        public IncomeSourcesController(IIncomeSourceService incomeSourceService, IUserAccountService userAccountService, IMapper mapper)
         {
             _incomeSourceService = incomeSourceService;
             _userAccountService = userAccountService;
+            _mapper = mapper;
         }
-        // GET: api/IncomeSource
+
+        // GET: api/incomesources
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<IncomeSource>>> GetIncomeSource()
+        [ProducesResponseType(typeof(IEnumerable<IncomeSourceDto>), 200)]
+        [ProducesResponseType(401)]
+        public async Task<ActionResult<IEnumerable<IncomeSourceDto>>> GetAll()
         {
             var loggedInUserId = _userAccountService.GetLoggedInUserId();
-            if (loggedInUserId == null)
-                return Unauthorized();
-            var data = await _incomeSourceService.GetAllForUserAsync(loggedInUserId.Value);
-            return Ok(data);
+            if (loggedInUserId == null) return Unauthorized();
+
+            var entities = await _incomeSourceService.GetAllForUserAsync(loggedInUserId.Value);
+            var dto = _mapper.Map<IEnumerable<IncomeSourceDto>>(entities);
+            return Ok(dto);
         }
 
-        // GET: api/IncomeSource/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<IncomeSource>> GetIncomeSource(int id)
+        // GET: api/incomesources/{id}
+        [HttpGet("{id}", Name = "GetIncomeSource")]
+        [ProducesResponseType(typeof(IncomeSourceDto), 200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(401)]
+        public async Task<ActionResult<IncomeSourceDto>> GetById(int id)
         {
             var loggedInUserId = _userAccountService.GetLoggedInUserId();
-            if (loggedInUserId == null)
-                return Unauthorized();
-            var incomeSource = await _incomeSourceService.GetByIdForUserAsync(id, loggedInUserId.Value);
+            if (loggedInUserId == null) return Unauthorized();
 
-            if (incomeSource == null)
-                return NotFound();
+            var entity = await _incomeSourceService.GetByIdForUserAsync(id, loggedInUserId.Value);
+            if (entity == null) return NotFound();
 
-            return Ok(incomeSource);
+            var dto = _mapper.Map<IncomeSourceDto>(entity);
+            return Ok(dto);
         }
 
-        // POST: api/IncomeSource
-        [HttpPost("Create")]
-        public async Task<IActionResult> CreateIncomeSource([FromBody] IncomeSource incomeSource)
+        // POST: api/incomesources
+        [HttpPost]
+        [ProducesResponseType(typeof(IncomeSourceDto), 201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public async Task<IActionResult> Create([FromBody] IncomeSourceDto dto)
         {
-            if (incomeSource == null)
-                return BadRequest("Invalid IncomeSource data.");
+            if (dto == null) return BadRequest();
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
             var loggedInUserId = _userAccountService.GetLoggedInUserId();
-            if (loggedInUserId == null)
-                return Unauthorized("User ID not found in token.");
+            if (loggedInUserId == null) return Unauthorized();
 
-            var created = await _incomeSourceService.CreateAsync(incomeSource, loggedInUserId.Value);
+            var toCreate = _mapper.Map<IncomeSource>(dto);
+            var created = await _incomeSourceService.CreateAsync(toCreate, loggedInUserId.Value);
+            var createdDto = _mapper.Map<IncomeSourceDto>(created);
 
-            return CreatedAtAction(nameof(GetIncomeSource), new { id = created.UniqueId }, created);
+            // Return 201 Created with Location header pointing to GET by id
+            return CreatedAtRoute("GetIncomeSource", new { id = createdDto.UniqueId }, createdDto);
         }
 
-        // PUT: api/IncomeSource/5
-          [HttpPut("Edit/{id}")]
-         public async Task<IActionResult> UpdateIncomeSource(int id, [FromBody] IncomeSource incomeSource)
+        // PUT: api/incomesources/{id}
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(IncomeSourceDto), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> Update(int id, [FromBody] IncomeSourceDto dto)
         {
-            if (incomeSource == null || id != incomeSource.UniqueId)
-                return BadRequest("Invalid IncomeSource data or ID mismatch.");
+            if (dto == null) return BadRequest();
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
             var loggedInUserId = _userAccountService.GetLoggedInUserId();
-            if (loggedInUserId == null)
-                return Unauthorized();
+            if (loggedInUserId == null) return Unauthorized();
 
             try
             {
-                var updated = await _incomeSourceService.UpdateAsync(incomeSource, loggedInUserId.Value);
-                return Ok(updated);
+                var toUpdate = _mapper.Map<IncomeSource>(dto);
+                toUpdate.UniqueId = id; // ensure path id wins
+                var updated = await _incomeSourceService.UpdateAsync(toUpdate, loggedInUserId.Value);
+                var updatedDto = _mapper.Map<IncomeSourceDto>(updated);
+                return Ok(updatedDto);
             }
             catch (KeyNotFoundException)
             {
-                return NotFound("Income source not found.");
+                return NotFound();
             }
             catch (UnauthorizedAccessException)
             {
-                return Forbid("You do not have permission to edit this income source.");
+                return Forbid();
             }
         }
 
-        // DELETE: api/IncomeSource/5
+        // DELETE: api/incomesources/{id}
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteIncomeSource(int id)
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(401)]
+        public async Task<IActionResult> Delete(int id)
         {
             var loggedInUserId = _userAccountService.GetLoggedInUserId();
-            if (loggedInUserId == null)
-                return Unauthorized();
+            if (loggedInUserId == null) return Unauthorized();
 
             try
             {
@@ -112,6 +132,5 @@ namespace BudgetPlannerApi.Controllers
                 return NotFound();
             }
         }
-
     }
 }

@@ -93,6 +93,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
+// Register AutoMapper profiles (must be added before Build so IMapper is available to services)
+builder.Services.AddAutoMapper(typeof(Bpst.API.Mapping.AutoMapperProfile).Assembly);
+
 var app = builder.Build();
 
 // Global exception logging in non-development environments so production exceptions are captured
