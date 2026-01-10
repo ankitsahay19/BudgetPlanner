@@ -24,6 +24,34 @@ namespace Bpst.API.Mapping
                 .ForMember(dest => dest.UserId, opt => opt.Ignore())
                 .ForMember(dest => dest.AppUser, opt => opt.Ignore())
                 .ForMember(dest => dest.LastUpdatedDate, opt => opt.Ignore());
+
+            // ExpensePlan mappings
+            CreateMap<BudgetPlannerApplication_2025.Models.ExpensePlan, ExpensePlanDto>();
+            CreateMap<ExpensePlanDto, BudgetPlannerApplication_2025.Models.ExpensePlan>()
+                .ForMember(dest => dest.UniqueId, opt => opt.Ignore())
+                .ForMember(dest => dest.UserId, opt => opt.Ignore())
+                .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
+                .ForMember(dest => dest.LastUpdatedDate, opt => opt.Ignore())
+                .ForMember(dest => dest.ParentCategory, opt => opt.Ignore())
+                .ForMember(dest => dest.SubExpenses, opt => opt.Ignore());
+
+            // Expense mappings
+            CreateMap<BudgetPlannerApplication_2025.Models.Expense, ExpenseDto>();
+            CreateMap<ExpenseDto, BudgetPlannerApplication_2025.Models.Expense>()
+                .ForMember(dest => dest.UniqueId, opt => opt.Ignore())
+                .ForMember(dest => dest.UserId, opt => opt.Ignore())
+                .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
+                .ForMember(dest => dest.LastUpdatedDate, opt => opt.Ignore())
+                .ForMember(dest => dest.AppUser, opt => opt.Ignore())
+                .ForMember(dest => dest.ExpensePlan, opt => opt.Ignore());
+
+            // WishList mappings
+            CreateMap<BudgetPlannerApplication_2025.Models.WishList, WishListDto>();
+            CreateMap<WishListDto, BudgetPlannerApplication_2025.Models.WishList>()
+                .ForMember(dest => dest.UniqueId, opt => opt.Ignore())
+                .ForMember(dest => dest.UserId, opt => opt.Ignore())
+                .ForMember(dest => dest.AppUser, opt => opt.Ignore())
+                .ForMember(dest => dest.LastUpdatedDate, opt => opt.Ignore());
         }
     }
 }

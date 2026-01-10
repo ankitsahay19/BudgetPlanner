@@ -4,121 +4,100 @@ using BudgetPlannerApplication_2025.Models;
 using Microsoft.AspNetCore.Authorization;
 using Bpst.API.DB;
 using Bpst.API.Services.UserAccount;
+using Bpst.API.ViewModels;
+using AutoMapper;
 
 namespace BudgetPlannerApplication_2025.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/expenseplans")]
     [ApiController]
     [Authorize]
     public class ExpensePlansController : ControllerBase
     {
         private readonly AppDbContext _context;
-        public readonly IUserAccountService _userAccountService;
+        private readonly Bpst.API.Services.UserAccount.IUserAccountService _userAccountService;
+        private readonly AutoMapper.IMapper _mapper;
 
-        public ExpensePlansController(AppDbContext context, IUserAccountService userAccountService)
+        public ExpensePlansController(AppDbContext context, Bpst.API.Services.UserAccount.IUserAccountService userAccountService, AutoMapper.IMapper mapper)
         {
             _context = context;
             _userAccountService = userAccountService;
+            _mapper = mapper;
         }
 
-        // Helper to get logged-in user id from claims
-        private int? GetLoggedInUserId()
-        {
-            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
-                return userId;
-            return null;
-        }
-
-        // GET: api/ExpensePlans
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ExpensePlan>>> GetExpensePlans()
+        public async Task<ActionResult<IEnumerable<ExpensePlanDto>>> GetAll()
         {
-            var userId = GetLoggedInUserId();
+            var userId = _userAccountService.GetLoggedInUserId();
+            if (userId == null) return Unauthorized();
+
             var data = await _context.ExpensePlans
-                //  .Include(sc=>sc.ParentId)
-                .Where(c => c.UserId.Equals(userId))
+                .Where(c => c.UserId == userId)
                 .OrderBy(c => c.ParentId)
                 .ToListAsync();
             data.ForEach(p => { p.SubExpensePlans = data.Where(sp => sp.ParentId == p.UniqueId).ToList(); });
-            return Ok(data);
+            var dto = _mapper.Map<IEnumerable<ExpensePlanDto>>(data);
+            return Ok(dto);
         }
 
-        // GET: api/ExpensePlans/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ExpensePlan>> GetExpensePlan(int id)
+        [HttpGet("{id}", Name = "GetExpensePlan")]
+        public async Task<ActionResult<ExpensePlanDto>> GetById(int id)
         {
-            var userId = GetLoggedInUserId();
-            var plan = await _context.ExpensePlans
-                .FirstOrDefaultAsync(c => c.UniqueId == id && (userId == null || c.UserId == userId));
+            var userId = _userAccountService.GetLoggedInUserId();
+            if (userId == null) return Unauthorized();
 
-            if (plan == null)
-                return NotFound();
+            var plan = await _context.ExpensePlans.FirstOrDefaultAsync(c => c.UniqueId == id && (userId == null || c.UserId == userId));
+            if (plan == null) return NotFound();
 
-            return Ok(plan);
+            var dto = _mapper.Map<ExpensePlanDto>(plan);
+            return Ok(dto);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteExpensePlan(int id)
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] ExpensePlanDto dto)
         {
-            var userId = GetLoggedInUserId();
-            if (userId == null)
-                return Unauthorized();
+            if (dto == null) return BadRequest();
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
-            var ExpensePlan = await _context.ExpensePlans
-                .FirstOrDefaultAsync(w => w.UniqueId == id && w.UserId == userId);
+            var userId = _userAccountService.GetLoggedInUserId();
+            if (userId == null) return Unauthorized();
 
-            if (ExpensePlan == null)
-                return NotFound();
-            var SubExpensePlans = await _context.ExpensePlans
-                    .Where(w => w.ParentId == id && w.UserId == userId)
-                    .ToListAsync();
-            if (SubExpensePlans.Any())
-                return BadRequest("Cannot delete an ExpensePlan that has sub ExpensePlans. Please delete or reassign its sub ExpensePlans first.");
+            var entity = _mapper.Map<BudgetPlannerApplication_2025.Models.ExpensePlan>(dto);
+            entity.UserId = userId;
+            entity.CreatedDate = DateTime.UtcNow;
+            if (entity.ParentId == 0) entity.ParentId = null;
 
-            _context.ExpensePlans.Remove(ExpensePlan);
+            _context.ExpensePlans.Add(entity);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            var createdDto = _mapper.Map<ExpensePlanDto>(entity);
+            return CreatedAtRoute("GetExpensePlan", new { id = createdDto.UniqueId }, createdDto);
         }
 
-
-        [HttpPost("Create")]
-        public async Task<IActionResult> CreateIncome([FromBody] ExpensePlan plan)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] ExpensePlanDto dto)
         {
-            if (plan == null) return BadRequest("Invalid Plan data.");
-            if (_userAccountService.GetLoggedInUserId() == null) return Unauthorized("User ID not found in token.");
-            plan.UserId = _userAccountService.GetLoggedInUserId();
-            plan.CreatedDate = DateTime.UtcNow;
-            if (plan.ParentId == 0) plan.ParentId = null;
-            _context.ExpensePlans.Add(plan);
+            if (dto == null) return BadRequest();
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+            var userId = _userAccountService.GetLoggedInUserId();
+            if (userId == null) return Unauthorized();
+
+            var existing = await _context.ExpensePlans.AsNoTracking().FirstOrDefaultAsync(c => c.UniqueId == id);
+            if (existing == null) return NotFound();
+            if (existing.UserId != userId) return Forbid();
+
+            var toUpdate = _mapper.Map<BudgetPlannerApplication_2025.Models.ExpensePlan>(dto);
+            toUpdate.UniqueId = id;
+            toUpdate.UserId = userId;
+            toUpdate.LastUpdatedDate = DateTime.UtcNow;
+
+            _context.Entry(toUpdate).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetExpensePlan), new { id = plan.UniqueId }, plan);
+
+            var updatedDto = _mapper.Map<ExpensePlanDto>(toUpdate);
+            return Ok(updatedDto);
         }
-
-
-        [HttpPut("Edit/{id}")]
-        public async Task<IActionResult> EditIncome(int id, [FromBody] ExpensePlan plan)
-        {
-            if (plan == null || id != plan.UniqueId) return BadRequest("Invalid plan data or ID mismatch.");
-            var existingPlan = await _context.ExpensePlans.AsNoTracking().FirstOrDefaultAsync(c => c.UniqueId == id);
-            if (existingPlan == null) return NotFound("plan not found.");
-
-            var loggedInUserId = _userAccountService.GetLoggedInUserId();
-            if (existingPlan.UserId != loggedInUserId) return Forbid("You do not have permission to edit this income source.");
-            existingPlan.Name = plan.Name;
-            existingPlan.Description = plan.Name;
-            existingPlan.AllocatedAmount = plan.AllocatedAmount;
-            if (plan.ParentId > 0)
-                existingPlan.ParentId = plan.ParentId;
-            existingPlan.Year = plan.Year;
-            existingPlan.Month = plan.Month;
-            existingPlan.LastUpdatedDate = DateTime.UtcNow;
-            _context.Entry(existingPlan).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return Ok(existingPlan);
-        }
-
     }
 
 }
