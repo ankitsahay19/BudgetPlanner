@@ -1,136 +1,117 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BudgetPlannerApplication_2025.Models;
 using Bpst.API.DB;
 using Bpst.API.Services.UserAccount;
+using Bpst.API.ViewModels;
+using AutoMapper;
 
 namespace BudgetPlannerApplication_2025.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/expenses")]
     [ApiController]
     public class ExpensesController : ControllerBase
     {
         private readonly AppDbContext _context;
-        public readonly IUserAccountService _userAccountService;
+        private readonly IUserAccountService _userAccountService;
+        private readonly IMapper _mapper;
 
-        public ExpensesController(AppDbContext context, IUserAccountService userAccountService)
+        public ExpensesController(AppDbContext context, IUserAccountService userAccountService, IMapper mapper)
         {
             _context = context;
             _userAccountService = userAccountService;
+            _mapper = mapper;
         }
-        private int? GetLoggedInUserId()
-        {
-            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
-                return userId;
-            return null;
-        }
-        // GET: api/Expenses
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Expense>>> GetExpenses()
+        public async Task<ActionResult<IEnumerable<ExpenseDto>>> GetAll()
         {
-            var userId = GetLoggedInUserId();
+            var userId = _userAccountService.GetLoggedInUserId();
+            if (userId == null) return Unauthorized();
 
-            return await _context.Expenses.Where(c => c.UserId.Equals(userId)).ToListAsync();
+            var list = await _context.Expenses.Where(c => c.UserId == userId).ToListAsync();
+            var dto = _mapper.Map<IEnumerable<ExpenseDto>>(list);
+            return Ok(dto);
         }
 
-        // GET: api/Expenses/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Expense>> GetExpense(int id)
+        [HttpGet("{id}", Name = "GetExpense")]
+        public async Task<ActionResult<ExpenseDto>> GetById(int id)
         {
-            var userId = GetLoggedInUserId();
+            var userId = _userAccountService.GetLoggedInUserId();
+            if (userId == null) return Unauthorized();
+
             var expense = await _context.Expenses.FirstOrDefaultAsync(c => c.UniqueId == id && (userId == null || c.UserId == userId));
-            if (expense == null)
-                return NotFound();
-            return Ok(expense);
+            if (expense == null) return NotFound();
+
+            var dto = _mapper.Map<ExpenseDto>(expense);
+            return Ok(dto);
         }
 
-
-
-        [HttpPost("Create")]
-        public async Task<IActionResult> CreateExpense([FromBody] Expense expense)
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] ExpenseDto dto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (dto == null) return BadRequest();
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
-            if (expense == null)
-                return BadRequest("Invalid expense data.");
+            var userId = _userAccountService.GetLoggedInUserId();
+            if (userId == null) return Unauthorized();
 
-            var userId = GetLoggedInUserId();
-            if (userId == null)
-                return Unauthorized("User ID not found in token.");
-            expense.UserId = userId;
+            var entity = _mapper.Map<Expense>(dto);
+            entity.UserId = userId;
+            entity.CreatedDate = DateTime.UtcNow;
 
-            _context.Expenses.Add(expense);
+            _context.Expenses.Add(entity);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetExpense), new { id = expense.UniqueId }, expense);
+            var createdDto = _mapper.Map<ExpenseDto>(entity);
+            return CreatedAtRoute("GetExpense", new { id = createdDto.UniqueId }, createdDto);
         }
 
-        [HttpPut("Edit/{id}")]
-        public async Task<IActionResult> UpdateExpense(int id, [FromBody] Expense expense)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] ExpenseDto dto)
         {
-            if (expense == null || id != expense.UniqueId)
-                return BadRequest("Invalid data or ID mismatch.");
+            if (dto == null) return BadRequest();
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
-            var userId = GetLoggedInUserId();
-            if (userId == null)
-                return Unauthorized();
+            var userId = _userAccountService.GetLoggedInUserId();
+            if (userId == null) return Unauthorized();
 
             var existing = await _context.Expenses.AsNoTracking().FirstOrDefaultAsync(e => e.UniqueId == id);
-            if (existing == null)
-                return NotFound();
+            if (existing == null) return NotFound();
+            if (existing.UserId != userId) return Forbid();
 
-            if (existing.UserId != userId)
-                return Forbid();
+            var toUpdate = _mapper.Map<Expense>(dto);
+            toUpdate.UniqueId = id;
+            toUpdate.UserId = userId;
+            toUpdate.CreatedDate = existing.CreatedDate;
+            toUpdate.LastUpdatedDate = DateTime.UtcNow;
 
-            expense.LastUpdatedDate = DateTime.UtcNow;
-            _context.Entry(expense).State = EntityState.Modified;
+            _context.Entry(toUpdate).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
-            return Ok(expense);
+            var updatedDto = _mapper.Map<ExpenseDto>(toUpdate);
+            return Ok(updatedDto);
         }
 
-
-        //// DELETE: api/Expenses/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteExpense(int id)
-        //{
-        //    var expense = await _context.Expenses.FindAsync(id);
-        //    if (expense == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Expenses.Remove(expense);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWishList(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var userId = GetLoggedInUserId();
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
+            var userId = _userAccountService.GetLoggedInUserId();
+            if (userId == null) return Unauthorized();
 
-            var expense = await _context.Expenses
-                .FirstOrDefaultAsync(w => w.UniqueId == id && w.UserId == userId);
-
-            if (expense == null)
-            {
-                return NotFound();
-            }
+            var expense = await _context.Expenses.FirstOrDefaultAsync(w => w.UniqueId == id && w.UserId == userId);
+            if (expense == null) return NotFound();
 
             _context.Expenses.Remove(expense);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
+
         private bool ExpenseExists(int id)
         {
             return _context.Expenses.Any(e => e.UniqueId == id);
