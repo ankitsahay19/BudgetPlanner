@@ -3,7 +3,7 @@ name: Deploy ASP.NET Core to FTP
 on:
   push:
     branches:
-      - release
+      - release   # or master
 
 jobs:
   build-and-deploy:
@@ -16,7 +16,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '9.0.x'
+        dotnet-version: '9.0.x'   # change if needed
 
     - name: Restore dependencies
       run: dotnet restore
@@ -27,23 +27,7 @@ jobs:
     - name: Publish
       run: dotnet publish --configuration Release --output publish
 
-    # 🔴 STEP 1: Put site in offline mode
-    - name: Enable Maintenance Mode
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./
-        server-dir: ${{ secrets.FTP_TARGET }}/
-        dangerous-clean-slate: false
-        exclude: |
-          *
-        include: |
-          app_offline.htm
-
-    # 🟢 STEP 2: Deploy application
-    - name: FTP Deploy Application
+    - name: FTP Deploy
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: ${{ secrets.FTP_SERVER }}
@@ -51,17 +35,3 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: publish/
         server-dir: ${{ secrets.FTP_TARGET }}/
-
-    # 🔵 STEP 3: Remove maintenance file
-    - name: Disable Maintenance Mode
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./
-        server-dir: ${{ secrets.FTP_TARGET }}/
-        exclude: |
-          *
-        include: |
-          remove_app_offline.trigger
