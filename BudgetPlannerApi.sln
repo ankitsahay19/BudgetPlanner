@@ -5,8 +5,6 @@ VisualStudioVersion = 17.14.36121.58
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetPlannerApi", "BudgetPlannerApi\BudgetPlannerApi.csproj", "{E4DA8ED1-DC54-4B95-9007-A164DAD92A28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetPlannerApi.Tests", "BudgetPlannerApi.Tests\BudgetPlannerApi.Tests.csproj", "{B44DE9D7-E013-E4C1-E7E2-E5B414F28672}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
