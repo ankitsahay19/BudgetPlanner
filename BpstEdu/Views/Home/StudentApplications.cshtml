@@ -23,7 +23,6 @@
             <form class="form-horizontal" asp-action="StudentApplications" asp-controller="Home" method="post">
                 <input type="hidden" asp-for="ApplicationId" class="form-control" />
                 <input type="hidden" asp-for="UniqueId" class="form-control" />
-                <input type="hidden" asp-for="StatusId" value="1" class="form-control" />
                 <div asp-validation-summary="All" class="text-danger"></div>
 
                 @if (isSaved)
