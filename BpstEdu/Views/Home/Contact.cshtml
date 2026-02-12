@@ -1,0 +1,90 @@
+﻿@model BpstEdu.Models.Contact
+@{
+    ViewData["Title"] = "Contact";
+    ViewBag.ActiveTabName = "Contact";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<section id="contact" class="contact">
+    <div class="container">
+        <div class="section-title">
+            <span>Contact</span>
+            <h2>Contact</h2>
+            <p>"Your Solution is Just a Click Away!"</p>
+        </div>
+        <div class="row" data-aos="fade-up">
+            <div class="col-lg-6">
+                <div class="info-box mb-4">
+                    <i class="bx bx-map"></i>
+                    <h3>Our Address</h3>
+                    <p>3rd Floor,Sahai Complex,Near IIM Tiraha, Lucknow   </p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="info-box  mb-4">
+                    <i class="bx bx-envelope"></i>
+                    <h3>Email Us</h3>
+                    <p>support@bitprosofttech.com</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <div class="info-box  mb-4">
+                    <i class="bx bx-phone-call"></i>
+                    <h3>Call Us</h3>
+                    <p>+91 8299101616</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row" data-aos="fade-up">
+
+            <div class="col-lg-6 ">
+                <iframe class="mb-4 mb-lg-0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3557.1188196471976!2d80.908889!3d26.931447400000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3999568c98ff4257%3A0x30b1a198dd18f798!2sBitProSoftTech!5e0!3m2!1sen!2sin!4v1737531744253!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" frameborder="0" style="border:0; width: 100%; height: 384px;" allowfullscreen></iframe>
+            </div>
+
+
+            <div class="col-lg-6">
+                <form asp-action="Contact" asp-controller="Home" method="post" id="myForm" role="form" class="php-email-form">
+                    <div class="form-row">
+                        <div class="col-md-6 form-group">
+                            <input type="text" class="form-control" asp-for="yourName" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                            <div class="validate"></div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <input type="email" class="form-control" asp-for="YourEmail" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
+                            <div class="validate"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" asp-for="Subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+                        <div class="validate"></div>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" asp-for="Message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
+                        <div class="validate"></div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="sent-message">Your message has been sent. Thank you!</div>
+                    </div>
+                    <div class="form-group col-12 text-center">
+                        <input type="submit" value="Submit Message" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</section><!-- End Contact Section -->
+<script>
+    function submitForm(event) {
+        event.preventDefault(); // Prevent form submission
+        // Your form submission logic here (e.g., AJAX call)
+
+        // Reset the form
+        document.getElementById('myForm').reset();
+    }
+</script>

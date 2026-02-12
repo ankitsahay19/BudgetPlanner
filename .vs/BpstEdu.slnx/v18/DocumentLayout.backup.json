@@ -1,0 +1,71 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\models\\class.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\models\\class.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\views\\home\\studentapplications.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\views\\home\\studentapplications.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\models\\application.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\models\\application.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Application.cs",
+              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Models\\Application.cs",
+              "RelativeDocumentMoniker": "BpstEdu\\Models\\Application.cs",
+              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Models\\Application.cs",
+              "RelativeToolTip": "BpstEdu\\Models\\Application.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC0AAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-11T04:37:00.346Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Class.cs",
+              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Models\\Class.cs",
+              "RelativeDocumentMoniker": "BpstEdu\\Models\\Class.cs",
+              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Models\\Class.cs",
+              "RelativeToolTip": "BpstEdu\\Models\\Class.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-11T04:36:53.215Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "StudentApplications.cshtml",
+              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Views\\Home\\StudentApplications.cshtml",
+              "RelativeDocumentMoniker": "BpstEdu\\Views\\Home\\StudentApplications.cshtml",
+              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Views\\Home\\StudentApplications.cshtml",
+              "RelativeToolTip": "BpstEdu\\Views\\Home\\StudentApplications.cshtml",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAAAGQAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-11T04:33:49.519Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

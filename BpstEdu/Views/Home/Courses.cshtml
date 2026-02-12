@@ -1,0 +1,201 @@
+﻿@{
+    ViewBag.ActiveTabName = ViewData["Title"] = "Courses";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+
+<style>
+    .btn {
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+
+    .banner_area {
+        position: relative;
+        background: url(../img/banner/banner.jpg) no-repeat center center;
+    }
+
+    #TrueEng li:hover {
+        font-weight: bold;
+        cursor: pointer;
+        background-color: midnightblue;
+        color: white;
+        margin-right: 5px;
+        margin-left: 5px;
+    }
+
+    #TrueEng li {
+        display: inline
+    }
+</style>
+<br />
+<br />
+
+<div class="container"> 
+    <div class="row">
+        <div class="col-12 text-center">
+            <a href="/Home/StudentApplications" class="btn btn-lg btn-outline-danger text-lg-center">Register Now</a>
+            <br />
+            <br />
+        </div>
+            <div class="col-12">
+                <div class="content">
+                    <div class="row">
+                        <div class="row m-t-3">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-header bg-primary">
+                                        <h1 class="text-white m-b-0 text-center">BPST Software Development & Computer Training Center </h1>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-horizontal">
+                                            <div class="card">
+                                                <div class="card-header bg-secondary">
+                                                    <h3 class="text-white m-b-0 text-center"> True Software Engineering <i> (B.Tech, BCA, MCA, Polytechnic)</i> </h3>
+                                                </div>
+                                                <div class="card-body" style="background-color:white;">
+
+                                                    <div class="container">
+                                                        <p>
+                                                            <b><i>  TRUE Software Engineering </i></b> is the program designed by IT Professionals to help Technical graduates (CS/IT)
+                                                            to complete your engineering close to IT Industry.
+                                                            We will walk through each topic of your core Software Engenireeing subject per semester.
+                                                        </p><br />
+
+                                                        <center>
+                                                            <div class="btn-group mr-2" role="group" aria-label="First group">
+                                                                <button type="button" class="btn btn-outline-success">Web Designing</button>
+                                                                <button type="button" class="btn btn-outline-danger">Web Development</button>
+                                                                <button type="button" class="btn btn-outline-dark">Software Engineering</button>
+                                                                <button type="button" class="btn btn-outline-info">Mobile Apps Development</button>
+                                                                <button type="button" class="btn btn-outline-primary">Ethical Hacking</button>
+                                                            </div>
+                                                            <div class="btn-group mr-2" role="group" aria-label="First group">
+                                                                <button type="button" class="btn btn-outline-warning">Games Development With <b> Unity </b>Game Engine </button>
+                                                                <button type="button" class="btn btn-outline-secondary">Competitive Programming /  Programming Exercises (Workout) </button>
+                                                            </div>
+                                                            <div class="card-body text-center">
+                                                                <h4 class="text-black text-center">Internship / Industrial Training - Language , Tools & Frameworks </h4><br />
+                                                                <button type="button" class="btn btn-primary">  C </button>
+                                                                <button type="button" class="btn btn-secondary">  C++ </button>
+                                                                <button type="button" class="btn btn-info">  C# </button>
+                                                                <button type="button" class="btn btn-success">  JAVA </button>
+                                                                <button type="button" class="btn btn-warning">  HTML </button>
+                                                                <button type="button" class="btn btn-info">  CSS </button>
+
+                                                                <button type="button" class="btn btn-danger">  Bootstrap </button>
+                                                                <button type="button" class="btn btn-secondary">  Java Script </button>
+                                                                <button type="button" class="btn btn-success">  JQuery </button>
+                                                                <button type="button" class="btn btn-danger">  AJAX </button>
+                                                                <button type="button" class="btn btn-warning">  JSON </button>
+                                                                <button type="button" class="btn btn-dark">  XML </button>
+
+                                                                <button type="button" class="btn btn-info">  Angular </button>
+                                                                <button type="button" class="btn btn-warning">  React </button>
+                                                                <button type="button" class="btn btn-info">  Node </button>
+                                                                <button type="button" class="btn btn-danger">  Python </button>
+                                                                <button type="button" class="btn btn-primary">  .Net </button>
+                                                                <button type="button" class="btn btn-secondary">  .Net Core </button>
+                                                                <button type="button" class="btn btn-success">  SQL DataBase Server </button>
+
+                                                                <button type="button" class="btn btn-danger">  ADO.NET </button>
+                                                                <button type="button" class="btn btn-info">  Entity Framework, EF Core 6,7 </button>
+                                                                <button type="button" class="btn btn-secondary"> API / REST API </button>
+                                                                <button type="button" class="btn btn-success">  Visual Studio </button>
+                                                                <button type="button" class="btn btn-warning">  Unity Game Engine </button>
+
+                                                            </div>
+                                                        </center>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <br />
+                                            <div class="card">
+                                                <div class="card-header bg-info">
+                                                    <h3 class="text-white m-b-0 text-center"> General Computer Classes <b>& </b>Job Oriented Courses   </h3>
+                                                </div>
+                                                <br />
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="card">
+                                                            <div class="card-header bg-warning">
+                                                                <h3 class="text-white m-b-0 text-center">  General Courses </h3>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="list-group">
+                                                                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                                                        <div class="d-flex w-100 justify-content-between">
+                                                                            <h5 class="mb-1">Computer Basics & Fundamental </h5>
+                                                                            <small class="text-muted">3 Months </small>
+                                                                        </div>
+                                                                        <small class="text-muted">Fundamental, MS-Paint, Notepad, MS Office, Typing <i>( English / Hindi )</i> Internet, Email, E-Shopping, E-Learning.</small>
+                                                                    </a>
+                                                                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                                                        <div class="d-flex w-100 justify-content-between">
+                                                                            <h5 class="mb-1">DTP </h5>
+                                                                            <small class="text-muted">3 Months </small>
+                                                                        </div>
+                                                                        <small class="text-muted">
+                                                                            Photoshop, Corel Draw, Logo / Banner / Cards designing, Photo editing, Graphic designing.
+                                                                        </small>
+                                                                    </a>
+                                                                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                                                        <div class="d-flex w-100 justify-content-between">
+                                                                            <h5 class="mb-1">Hardware Engineering </h5>
+                                                                            <small class="text-muted">3 Months </small>
+                                                                        </div>
+                                                                        <small class="text-muted">
+                                                                            Desktop / Laptop, Deep understanding of core hardware components, Assambling PC, OS Installation <i>Windows / Linux </i>, Softwares, Networking , Lab Setup.
+                                                                        </small>
+                                                                    </a>
+                                                                </div>
+                                                                @*<ul class="list-group">
+
+                                                                    <li class="list-group-item d-flex justify-content-between align-items-center"> Computer Fundamentals  <span class="badge badge-primary badge-pill">  3 Months </span> </li>
+                                                                    <li class="list-group-item d-flex justify-content-between align-items-center"> DTP  <span class="badge badge-primary badge-pill">  3 Months </span> </li>
+                                                                    <li class="list-group-item d-flex justify-content-between align-items-center"> ADCA  <span class="badge badge-primary badge-pill">  3 Months </span> </li>
+                                                                    <li class="list-group-item d-flex justify-content-between align-items-center"> CCC  <span class="badge badge-primary badge-pill"> 3 Months </span> </li>
+                                                                    <li class="list-group-item d-flex justify-content-between align-items-center"> A Level  <span class="badge badge-primary badge-pill">  3 Months </span> </li>
+                                                                    <li class="list-group-item d-flex justify-content-between align-items-center"> O Level  <span class="badge badge-primary badge-pill">  3 Months </span> </li>
+                                                                    <li class="list-group-item d-flex justify-content-between align-items-center"> Ms Office  <span class="badge badge-primary badge-pill">  3 Months </span> </li>
+                                                                </ul>*@
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="card">
+                                                            <div class="card-header bg-success">
+                                                                <h3 class="text-white m-b-0 text-center">  Programming Classes </h3>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <ul class="list-group">
+                                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                        Classes  XI to  XII
+                                                                        <i style="font-size:x-small">C / C++ / JAVA / Python / HTML / CSS </i>
+                                                                        <span class="badge badge-primary badge-pill">  6 Month  </span>
+                                                                    </li>
+                                                                    <li class="list-group-item d-flex justify-content-between align-items-center"> Language specific advanced programming <span class="badge badge-primary badge-pill">  3 Months </span> </li>
+                                                                    <li class="list-group-item d-flex justify-content-between align-items-center"> Web Designing (HTML / CSS/ Bootstrap) <span class="badge badge-primary badge-pill">  3 Months </span> </li>
+                                                                    <li class="list-group-item d-flex justify-content-between align-items-center"> Web UI Development (JavaScript / JQuery / AJAX) <span class="badge badge-primary badge-pill">  3 Months </span> </li>
+                                                                    <li class="list-group-item d-flex justify-content-between align-items-center"> Advance UI Development <b>Angular</b> or <b>React</b> <span class="badge badge-primary badge-pill">  3 Months </span> </li>
+                                                                    <li class="list-group-item d-flex justify-content-between align-items-center"> Backend Development  <b>.Net, SQL, API </b>  <span class="badge badge-primary badge-pill">  6 Months </span> </li>
+                                                                    <li class="list-group-item d-flex justify-content-between align-items-center">  Competitive Programming <span class="badge badge-primary badge-pill"> 6 Mounths </span> </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br /><br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
