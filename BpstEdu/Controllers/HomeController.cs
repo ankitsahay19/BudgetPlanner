@@ -7,13 +7,21 @@ using System.Diagnostics;
 using System;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace BpstEdu.Controllers
 {
-    public class HomeController(ILogger<HomeController> logger, AppDbContext context) : Controller
+    public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger = logger;
-        private readonly AppDbContext _context = context;
+        private readonly ILogger<HomeController> _logger;
+        private readonly AppDbContext _context;
+
+        public HomeController(ILogger<HomeController> logger, AppDbContext context)
+        {
+            _logger = logger;
+            _context = context;
+        }
         public IActionResult Index()
         {
             ViewBag.ActiveTabId = 1;
@@ -107,10 +115,7 @@ namespace BpstEdu.Controllers
         //}
         public async Task<IActionResult> StudentApplications()
         {
-             return View(new Application()
-            {
-                ApplicationId = "test" 
-            });
+             return View( );
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -122,11 +127,14 @@ namespace BpstEdu.Controllers
                 {
                     if (application.UniqueId.Equals(0))
                     {
-                     //   application.StatusId = 1;
-                     //   var id = _context.Applications.Count();
-                     //   application.ApplicationId = "BPST0" + (id + 1); // Increment id to avoid duplicate ID
-                        TempData["RegId"] = application.ApplicationId;
                         application.CreatedDate = DateTime.UtcNow.AddMinutes(750);
+
+                        // Generate ApplicationId if not already set
+                        if (string.IsNullOrEmpty(application.ApplicationId))
+                        {
+                            var count = _context.Applications.Count();
+                            application.ApplicationId = "BPST" + (count + 1).ToString().PadLeft(5, '0');
+                        }
 
                         // Handle uploaded photo
                         if (Photo != null && Photo.Length > 0)
@@ -142,19 +150,28 @@ namespace BpstEdu.Controllers
                                 ModelState.AddModelError("Photo", "Maximum file size is 2MB.");
                                 return View(application);
                             }
-                            var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
-                            if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
-                            var fileName = $"app_{DateTime.UtcNow.Ticks}{Path.GetExtension(Photo.FileName)}";
-                            var filePath = Path.Combine(uploads, fileName);
+
+                            // Create folder structure: wwwroot/applications/{ApplicationId}/
+                            var applicationsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "applications", application.ApplicationId);
+                            if (!Directory.Exists(applicationsFolder))
+                                Directory.CreateDirectory(applicationsFolder);
+
+                            // Generate unique filename with extension
+                            var fileExtension = Path.GetExtension(Photo.FileName);
+                            var fileName = $"photo_{DateTime.UtcNow.Ticks}{fileExtension}";
+                            var filePath = Path.Combine(applicationsFolder, fileName);
+
+                            // Save the file
                             using (var stream = System.IO.File.Create(filePath))
                             {
                                 await Photo.CopyToAsync(stream);
                             }
-                            application.PhotoPath = "/uploads/" + fileName;
-                        }
-                   //     application.AppliedOn = DateTime.UtcNow.AddMinutes(750); // Use UTC for consistency
-                        _context.Add(application);
 
+                            // Store relative path in database
+                            application.PhotoPath = $"/applications/{application.ApplicationId}/{fileName}";
+                        }
+
+                        _context.Add(application);
                     }
                     else
                         _context.Update(application);
@@ -168,18 +185,10 @@ namespace BpstEdu.Controllers
                     //    ModelState.AddModelError("Course", "Please select course ");
                     // Log the error (uncomment ex variable name and write a log.)
                     ModelState.AddModelError("", "Some thing wrong with Data, unable to save changes. Call To 82-9910-1616 for Registration.");
-                    //ModelState.AddModelError("", ex.Message);
-                    //ModelState.AddModelError("", ex.InnerException.Message);
-                    //ModelState.AddModelError("", ex.StackTrace);
                 }
             }
 
-            // If we got this far, something failed, redisplay form
-          //  ViewData["ApplicationFor"] = new SelectList(_context.Courses, "UniqueId", "Name");
-            //ViewData["Qualification"] = new SelectList(_context.Set<Qualification>(), "UniqueId", "Name");
-         //   ViewData["courses"] = await _context.Courses.ToListAsync();
             return View(application);
         }
     }
-
 }

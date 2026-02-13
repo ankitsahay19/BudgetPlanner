@@ -2,11 +2,6 @@
 using BpstEdu.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BpstEdu.Data
 {
@@ -32,14 +27,15 @@ namespace BpstEdu.Data
             modelBuilder.SeedCities();
  
         }
+        public DbSet<Application> Applications { get; set; } = null!;
 
-        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Contact> Contacts { get; set; } = null!;
        // public DbSet<Batch> Batchs { get; set; }
         //public DbSet<BatchStudent> BatchStudents { get; set; }
         //public DbSet<Qualification> Qualification { get; set; }
         //public DbSet<Course> Courses { get; set; } 
         //public DbSet<StudentApplication> Applications { get; set; }
-        public DbSet<ApplicationStatus> ApplicationStatus { get; set; }
+        public DbSet<ApplicationStatus> ApplicationStatus { get; set; } = null!;
         //public DbSet<Subject> Subjects { get; set; }
         //public DbSet<Question> Questions { get; set; }
         //public DbSet<CodeHelper> CodeHelpers { get; set; }
