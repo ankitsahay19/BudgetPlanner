@@ -18,11 +18,8 @@ namespace BpstEdu.DBModels
         public required string Gender { get; set; }
 
         [Required(ErrorMessage = "Date of birth is required")]
-        public DateTime DateOfBirth { get; set; }
-
-
-        public string? FatherName { get; set; } = string.Empty;
-        public string Address { get; set; } = string.Empty;
+        public DateTime DateOfBirth { get; set; } 
+        public string? Address { get; set; } = string.Empty;
         public string? CollegeName { get; set; } = string.Empty;  
 
 
@@ -34,17 +31,15 @@ namespace BpstEdu.DBModels
         public int NumberOfDays { get { return (CreatedDate - DateTime.Now).Days; } }
 
         [Required(ErrorMessage = "Mobile number is required")]
-        [RegularExpression(@"^[6-9]\d{9}$", ErrorMessage = "Enter a valid 10-digit mobile number")]
+        [RegularExpression(@"^\d{10}$", ErrorMessage = "Enter a valid 10-digit mobile number")]
         [Display(Name = "Mobile Number")]
         public string MobileNumber { get; set; } = string.Empty;
 
 
-        [Required(ErrorMessage = "Email is required")]
-        [EmailAddress(ErrorMessage = "Enter a valid email address")]
+         [EmailAddress(ErrorMessage = "Enter a valid email address")]
         [Display(Name = "Email ID")]
         public string ?EmailId { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Please enter highest qualification")]
         public string ?HighestQualification { get; set; } = string.Empty;
 
         public string? Message { get; set; } = string.Empty;

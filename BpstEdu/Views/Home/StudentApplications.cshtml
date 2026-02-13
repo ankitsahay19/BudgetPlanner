@@ -68,13 +68,13 @@
                     <div class="col-12 col-md-4">
                         <div class="mb-3">
                             <label asp-for="FirstName" class="form-label">First name *</label>
-                            <input asp-for="FirstName" required class="form-control" placeholder="First name" />
+                            <input asp-for="FirstName" tabindex="1" required class="form-control" placeholder="First name" />
                             <span asp-validation-for="FirstName" class="text-danger small"></span>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Gender</label>
-                            <select asp-for="Gender" required class="form-select mb-3 form-control">
+                            <select asp-for="Gender" tabindex="3" required class="form-select mb-3 form-control">
                                 <option selected disabled>Select Gender</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
@@ -84,8 +84,8 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="MobileNumber" class="form-label">Mobile number *</label>
-                            <input asp-for="MobileNumber" required class="form-control" placeholder="e.g. 8299101616" />
+                            <label asp-for="MobileNumber"  class="form-label">Mobile number *</label>
+                            <input asp-for="MobileNumber" tabindex="5" required class="form-control" placeholder="e.g. 8299101616" />
                             <span asp-validation-for="MobileNumber" class="text-danger small"></span>
                         </div>
                     </div>
@@ -94,19 +94,19 @@
                     <div class="col-12 col-md-4">
                         <div class="mb-3">
                             <label asp-for="LastName" class="form-label">Last name *</label>
-                            <input asp-for="LastName" required class="form-control" placeholder="Last name" />
+                            <input asp-for="LastName" tabindex="2" required class="form-control" placeholder="Last name" />
                             <span asp-validation-for="LastName" class="text-danger small"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="DateOfBirth" class="form-label">Date of birth</label>
-                            <input asp-for="DateOfBirth" type="date" id="dob" class="form-control" onchange="calculateAge()" />
+                            <label asp-for="DateOfBirth"  class="form-label">Date of birth</label>
+                            <input asp-for="DateOfBirth" tabindex="4" type="date" class="form-control" onchange="calculateAge()" />
                             <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
                         </div>
 
                         <div class="mb-3">
                             <label asp-for="EmailId" class="form-label">Email</label>
-                            <input asp-for="EmailId" type="email" class="form-control" placeholder="you@example.com" />
+                            <input asp-for="EmailId" tabindex="6" type="email" class="form-control" placeholder="you@example.com" />
                             <span asp-validation-for="EmailId" class="text-danger small"></span>
                         </div>
                     </div>
@@ -115,7 +115,7 @@
 
                 <div class="row mt-3">
                     <div class="col-12">
-                        <label asp-for="Address" class="form-label">Address</label>
+                        <label asp-for="Address" tabindex="7" class="form-label">Address</label>
                         <textarea asp-for="Address" class="form-control" rows="2" placeholder="Enter your full address with pin code."></textarea>
                         <span asp-validation-for="Address" class="text-danger small"></span>
                     </div>
@@ -124,12 +124,12 @@
                 <div class="row mt-3">
                     <div class="col-12 col-md-6">
                         <label asp-for="HighestQualification" class="form-label">Highest qualification</label>
-                        <input asp-for="HighestQualification" class="form-control" />
+                        <input asp-for="HighestQualification" tabindex="8" class="form-control" />
                         <span asp-validation-for="HighestQualification" class="text-danger small"></span>
                     </div>
                     <div class="col-12 col-md-6">
                         <label asp-for="CollegeName" class="form-label">College / Institution</label>
-                        <input asp-for="CollegeName" class="form-control" />
+                        <input asp-for="CollegeName" tabindex="9" class="form-control" />
                         <span asp-validation-for="CollegeName" class="text-danger small"></span>
                     </div>
                 </div>
@@ -137,13 +137,15 @@
                 <div class="row mt-3">
                     <div class="col-12">
                         <label asp-for="Message" class="form-label">Message / Query</label>
-                        <textarea asp-for="Message" class="form-control" rows="3" placeholder="Type your message / query"></textarea>
+                        <textarea asp-for="Message" tabindex="10" class="form-control" rows="3" placeholder="Type your message / query"></textarea>
                         <span asp-validation-for="Message" class="text-danger small"></span>
                     </div>
                 </div>
 
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-primary px-5">Submit Registration</button>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
                 </div>
 
             </form>
@@ -162,7 +164,7 @@
         }
 
         function calculateAge() {
-          const dob = document.getElementById('dob').value;
+          const dob = document.getElementById('DateOfBirth').value;
           if (dob) {
             const birthDate = new Date(dob);
             const diff = Date.now() - birthDate.getTime();
