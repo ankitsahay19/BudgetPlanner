@@ -127,6 +127,25 @@ namespace BpstEdu.Controllers
                 {
                     if (application.UniqueId.Equals(0))
                     {
+                        // Check for duplicate mobile number
+                        var existingByMobile = _context.Applications.FirstOrDefault(a => a.MobileNumber == application.MobileNumber);
+                        if (existingByMobile != null)
+                        {
+                            ModelState.AddModelError("MobileNumber", "This mobile number is already registered. Please use a different mobile number or contact support.");
+                            return View(application);
+                        }
+
+                        // Check for duplicate email
+                        if (!string.IsNullOrEmpty(application.EmailId))
+                        {
+                            var existingByEmail = _context.Applications.FirstOrDefault(a => a.EmailId == application.EmailId);
+                            if (existingByEmail != null)
+                            {
+                                ModelState.AddModelError("EmailId", "This email is already registered. Please use a different email or contact support.");
+                                return View(application);
+                            }
+                        }
+
                         application.CreatedDate = DateTime.UtcNow.AddMinutes(750);
 
                         // Generate ApplicationId if not already set

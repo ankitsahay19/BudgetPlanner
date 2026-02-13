@@ -41,7 +41,8 @@
         color: #0d6efd;
         margin-top: 8px;
     } 
-</style>
+</style> 
+
 <div class="container py-4">
     <div class="card shadow-sm">
         <div class="card-header" style="background-color:black;color:white;">
@@ -54,8 +55,14 @@
             <form class="form-horizontal" asp-action="StudentApplications" asp-controller="Home" method="post" enctype="multipart/form-data">
 
 
-                <div class="row g-4">
-
+                <div class="row g-4"> 
+                    @if (isSaved)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 20px 0;">
+                            <strong>Success!</strong> Your registration has been submitted successfully. We will contact you soon with further details.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
                     <!-- Column 1 : Photo -->
                     <div class="col-md-4">
                         <div class="photo-box">
@@ -115,8 +122,8 @@
 
                 <div class="row mt-3">
                     <div class="col-12">
-                        <label asp-for="Address" tabindex="7" class="form-label">Address</label>
-                        <textarea asp-for="Address" class="form-control" rows="2" placeholder="Enter your full address with pin code."></textarea>
+                        <label asp-for="Address"  class="form-label">Address</label>
+                        <textarea asp-for="Address" tabindex="7" class="form-control" rows="2" placeholder="Enter your full address with pin code."></textarea>
                         <span asp-validation-for="Address" class="text-danger small"></span>
                     </div>
                 </div>
@@ -143,7 +150,7 @@
                 </div>
 
                 <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-primary px-5">Submit Registration</button>
+                    <button type="submit"  tabindex="11" class="btn btn-primary px-5">Submit Registration</button>
                     <div asp-validation-summary="All" class="text-danger"></div>
 
                 </div>
