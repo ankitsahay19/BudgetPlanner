@@ -16,16 +16,13 @@
 
     <title>BPST Software Education</title>
     <meta content="" name="descriptison">
-    <meta content="" name="keywords">
-    <link href="~/AdminTemp/dist/img/logo.png" rel="icon" />
+    <meta content="" name="keywords"> 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
     <link href="/LandingPage/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/LandingPage/assets/css/style.css" rel="stylesheet">
+
     <link href="/LandingPage/assets/vendor/icofont/icofont.min.css" rel="stylesheet">
     <link href="/LandingPage/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="/LandingPage/assets/vendor/venobox/venobox.css" rel="stylesheet">
-    <link href="/LandingPage/assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="/LandingPage/assets/vendor/aos/aos.css" rel="stylesheet">
-    <link href="/LandingPage/assets/css/style.css" rel="stylesheet">
     @RenderSection("Style", required: false)
 </head>
 <body>
@@ -35,8 +32,7 @@
     <!-- ======= Header ======= -->
     <header id="header" style="background-color:black;top:unset" class="fixed-top ">
         <div class="container d-flex align-items-center">
-            @*<img style="height:2em;padding-right:1em;" src="~/AdminTemp/dist/img/bpstLogo.png" />*@
-            <img style="height:2em;" src="~/AdminTemp/dist/img/bpstLogo.png" />
+              <img style="height:2em;"  src="~/images/bpstlogo.png" />
             <h1 class="logo mr-auto" style="text-transform:none"><a asp-action="Index" asp-controller="Home">PST Software Education </a></h1>
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
@@ -140,21 +136,12 @@
     </footer><!-- End Footer -->
 
     <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
-    <div id="preloader"></div>
-
+ 
     <!-- Vendor JS Files -->
-    <script src="/LandingPage/assets/vendor/jquery/jquery.min.js"></script>
-    <script src="/LandingPage/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="/LandingPage/assets/vendor/jquery.easing/jquery.easing.min.js"></script>
-    <script src="/LandingPage/assets/vendor/php-email-form/validate.js"></script>
-    <script src="/LandingPage/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-    <script src="/LandingPage/assets/vendor/venobox/venobox.min.js"></script>
-    <script src="/LandingPage/assets/vendor/owl.carousel/owl.carousel.min.js"></script>
-    <script src="/LandingPage/assets/vendor/aos/aos.js"></script>
+    <script src="/LandingPage/assets/vendor/jquery/jquery.min.js" defer></script>
+    <script src="/LandingPage/assets/vendor/bootstrap/js/bootstrap.bundle.min.js" defer></script>
 
-    <!-- Template Main JS File -->
-    <script src="/LandingPage/assets/js/main.js"></script>
-    @RenderSection("Scripts", required: false)
+     @RenderSection("Scripts", required: false)
 </body>
 
 </html>

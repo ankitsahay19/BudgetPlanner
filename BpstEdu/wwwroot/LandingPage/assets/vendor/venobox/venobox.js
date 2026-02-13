@@ -256,10 +256,8 @@
                     blocknum = $('.vbox-num');
                     blockshare = $('.vbox-share');
                     blocktitle = $('.vbox-title');
-                    $preloader = $('.vbox-preloader');
-
-                    $preloader.show();
-
+ 
+ 
                     if (option.titlePosition == 'top') {
                         sharepos = 'bottom';
                     } else {
@@ -450,8 +448,7 @@
                       content.addClass('vbox-animated').addClass('swipe-left');
                     }
 
-                    $preloader.show();
-
+ 
                     content.animate({
                       opacity : 0,
                     }, 500, function(){
@@ -775,8 +772,7 @@
                     content.animate({
                         'opacity': '1'
                     },'slow', function(){
-                        $preloader.hide();
-                    });
+                     });
 
                     option.cb_content_loaded(obj, gallIndex, thenext, theprev);
                 }

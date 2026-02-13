@@ -9,110 +9,121 @@
     {
         isSaved = (bool)TempData["SaveSuccess"];
     }
-    // List<Course> ApplicationFor = ViewBag.courses;
     if (ViewBag.SaveSuccess != null && ViewBag.SaveSuccess == true)
     {
         isSaved = true;
     }
 }
-<br />
-<div class="container">
-    <div class="card">
-        <div class="card-header text-center bg-dark text-white text-bold">Student Registration</div>
+
+
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex align-items-center justify-content-between">
+                <h5 class="mb-0">Student Registration</h5>
+                <small class="text-light">Please provide accurate information. Fields marked with * are required.</small>
+            </div>
+        </div>
         <div class="card-body">
-            <form class="form-horizontal" asp-action="StudentApplications" asp-controller="Home" method="post">
-                <input type="hidden" asp-for="ApplicationId" class="form-control" />
-                <input type="hidden" asp-for="UniqueId" class="form-control" />
-                <div asp-validation-summary="All" class="text-danger"></div>
+                <form>
 
-                @if (isSaved)
-                {
-                    <div class="col-sm-12 alert alert-success" role="alert">
-                        Your registartion was accesspted successfully, we will contact you soon.
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                }
-                <div class="row form-group">
-                    <div class="form-group col-md-4">
-                        <label asp-for="FirstName"> First Name</label>
-                        <input type="text" asp-for="FirstName" placeholder="Student First Name" class="form-control"  />
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label asp-for="LastName"> Last Name </label>
-                        <input type="text" asp-for="LastName" placeholder="Student Last Name" class="form-control"  />
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                    </div>
+      <!-- 3 Column Layout -->
+      <div class="row g-4">
 
-                    <div class="form-group col-md-4">
-                        <label asp-for="FatherName">Father Name </label>
-                        <input type="text" asp-for="FatherName" placeholder="Father Name" class="form-control"  />
-                        <span asp-validation-for="FatherName" class="text-danger"></span>
-                    </div>
+        <!-- Column 1 : Photo -->
+        <div class="col-md-4">
+          <div class="photo-box">
+            <img id="preview" src="https://via.placeholder.com/150" class="photo-preview"/>
+            <input type="file" class="form-control" accept="image/*" onchange="loadPhoto(event)">
+            <div id="ageDisplay" class="age-text"></div>
+          </div>
+        </div>
 
-                    <div class="form-group col-md-6">
-                        <label asp-for="EmailId">Email Id </label>
-                        <input type="text" asp-for="EmailId" placeholder="Ex: myemail@gmail.com" class="form-control"  />
-                        <span asp-validation-for="EmailId" class="text-danger"></span>
-                    </div>
+        <!-- Column 2 -->
+        <div class="col-md-4">
 
-                    <div class="form-group col-md-6">
-                        <label asp-for="MobileNumber">Mobile Number </label>
-                        <input type="text" asp-for="MobileNumber" placeholder="+91 -8299-1016-16 " class="form-control"  />
-                        <span asp-validation-for="MobileNumber" class="text-danger"></span>
-                    </div>
+          <!-- Row 1 -->
+          <label class="form-label">First Name</label>
+          <input type="text" class="form-control mb-3">
 
-                    <div class="form-group col-md-12">
-                        <label asp-for="Address">  </label>
-                        <input type="text" asp-for="Address" placeholder="Enter your full address with pin code." class="form-control"  />
-                        <span asp-validation-for="Address" class="text-danger"></span>
-                    </div>
+          <!-- Row 2 -->
+          <label class="form-label">Gender</label>
+          <select class="form-select mb-3">
+            <option selected disabled>Select Gender</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
 
-                    <div class="form-group col-md-4">
-                        <label asp-for="HighestQualification">  </label>
-                        <input type="text" asp-for="HighestQualification" placeholder="Your Highest Qualification" class="form-control"  />
-                        <span asp-validation-for="HighestQualification" class="text-danger"></span>
-                    </div>
+          <!-- Row 3 -->
+          <label class="form-label">Mobile</label>
+          <input type="tel" class="form-control">
+        </div>
 
-                    <div class="form-group col-md-4">
-                        <label asp-for="CollegeName">  </label>
-                        <input type="text" asp-for="CollegeName" placeholder="Enter your College Name & Board" class="form-control"  />
-                        <span asp-validation-for="CollegeName" class="text-danger"></span>
-                    </div>
-                  @*   <div class="form-group col-md-4">
-                        <label asp-for="Course">Course Applying For </label>
-                        <select asp-for="CourseId" class="form-control"  onchange="common.GetBatchesByCourseId(this)">
-                            <option value="0">--Select--</option>
-                            @foreach (var cource in ApplicationFor)
-                            {
-                                <option value="@cource.UniqueId"> @cource.Name </option>
-                            }
-                        </select>
-                        <span asp-validation-for="CourseId" class="text-danger"></span>
-                    </div> *@
+        <!-- Column 3 -->
+        <div class="col-md-4">
 
-                    <div class="form-group col-md-12" style="display:none">
+          <!-- Row 1 -->
+          <label class="form-label">Last Name</label>
+          <input type="text" class="form-control mb-3">
 
+          <!-- Row 2 -->
+          <label class="form-label">Date of Birth</label>
+          <input type="date" id="dob" class="form-control mb-3" onchange="calculateAge()">
 
-                    <div class="form-group col-md-12">
-                        <label asp-for="Message">  </label>
-                        <textarea asp-for="Message" placeholder="Type your message / query " class="form-control"> </textarea>
-                        <span asp-validation-for="Message" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
+          <!-- Row 3 -->
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control">
+        </div>
 
+      </div>
+
+      <!-- Address -->
+      <div class="section-title">Address</div>
+      <textarea class="form-control" rows="3" placeholder="Enter full address"></textarea>
+
+      <!-- Qualification -->
+      <div class="section-title">Highest Qualification</div>
+      <input type="text" class="form-control">
+
+      <!-- College -->
+      <div class="section-title">College / Institution</div>
+      <input type="text" class="form-control">
+
+      <!-- Message -->
+      <div class="section-title">Message / Query</div>
+      <textarea class="form-control" rows="3" placeholder="Any message or query"></textarea>
+
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary px-5">Submit Registration</button>
+      </div>
+
+    </form>
+ 
         </div>
     </div>
 </div>
-</div>
-
 
 @section Scripts {
     <script src="~/appjs/common.js"></script>
+
+<script>
+  function loadPhoto(event) {
+    const preview = document.getElementById('preview');
+    preview.src = URL.createObjectURL(event.target.files[0]);
+  }
+
+  function calculateAge() {
+    const dob = document.getElementById('dob').value;
+    if (dob) {
+      const birthDate = new Date(dob);
+      const diff = Date.now() - birthDate.getTime();
+      const ageDate = new Date(diff);
+      const age = Math.abs(ageDate.getUTCFullYear() - 1970);
+      document.getElementById('ageDisplay').innerText = "Age: " + age + " years";
+    }
+  }
+</script>
 }
+
+ 

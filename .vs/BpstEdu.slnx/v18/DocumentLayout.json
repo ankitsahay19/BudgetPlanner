@@ -3,72 +3,12 @@
   "WorkspaceRootPath": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\views\\shared\\_homelayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\views\\shared\\_homelayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\dbmodels\\country.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\dbmodels\\country.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\models\\contact.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\models\\contact.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\dbmodels\\cities.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\dbmodels\\cities.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\views\\home\\studentapplications.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\views\\home\\studentapplications.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\dbmodels\\application.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\dbmodels\\application.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\views\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\views\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\data\\modelbuilderextention.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\data\\modelbuilderextention.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\dbmodels\\course.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\dbmodels\\course.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\dbmodels\\state.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\dbmodels\\state.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\dbmodels\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\dbmodels\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\models\\applicationstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\models\\applicationstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\data\\commonconstants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\data\\commonconstants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|c:\\mydata-ankit\\projects\\2026\\bpstedu\\bpstedu\\bpstedu.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{89995255-0695-16AF-7822-A050C67F6A9F}|BpstEdu\\BpstEdu.csproj|solutionrelative:bpstedu\\bpstedu.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -78,227 +18,32 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Contact.cs",
-              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Models\\Contact.cs",
-              "RelativeDocumentMoniker": "BpstEdu\\Models\\Contact.cs",
-              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Models\\Contact.cs",
-              "RelativeToolTip": "BpstEdu\\Models\\Contact.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-12T14:41:39.175Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "_ViewStart.cshtml",
-              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Views\\_ViewStart.cshtml",
-              "RelativeDocumentMoniker": "BpstEdu\\Views\\_ViewStart.cshtml",
-              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Views\\_ViewStart.cshtml",
-              "RelativeToolTip": "BpstEdu\\Views\\_ViewStart.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-12T14:39:10.302Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "_ViewImports.cshtml",
-              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Views\\_ViewImports.cshtml",
-              "RelativeDocumentMoniker": "BpstEdu\\Views\\_ViewImports.cshtml",
-              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Views\\_ViewImports.cshtml",
-              "RelativeToolTip": "BpstEdu\\Views\\_ViewImports.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-12T14:39:03.653Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
               "Title": "Country.cs",
               "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\DBModels\\Country.cs",
               "RelativeDocumentMoniker": "BpstEdu\\DBModels\\Country.cs",
               "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\DBModels\\Country.cs",
               "RelativeToolTip": "BpstEdu\\DBModels\\Country.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAhwA4AAAAWAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-12T14:34:28.756Z",
+              "WhenOpened": "2026-02-13T11:24:45.639Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Cities.cs",
-              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\DBModels\\Cities.cs",
-              "RelativeDocumentMoniker": "BpstEdu\\DBModels\\Cities.cs",
-              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\DBModels\\Cities.cs",
-              "RelativeToolTip": "BpstEdu\\DBModels\\Cities.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAASwBIAAAAoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-12T14:34:21.664Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Course.cs",
-              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\DBModels\\Course.cs",
-              "RelativeDocumentMoniker": "BpstEdu\\DBModels\\Course.cs",
-              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\DBModels\\Course.cs",
-              "RelativeToolTip": "BpstEdu\\DBModels\\Course.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-12T14:34:16.541Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "State.cs",
-              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\DBModels\\State.cs",
-              "RelativeDocumentMoniker": "BpstEdu\\DBModels\\State.cs",
-              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\DBModels\\State.cs",
-              "RelativeToolTip": "BpstEdu\\DBModels\\State.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-12T14:34:07.158Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "AppUser.cs",
-              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\DBModels\\AppUser.cs",
-              "RelativeDocumentMoniker": "BpstEdu\\DBModels\\AppUser.cs",
-              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\DBModels\\AppUser.cs",
-              "RelativeToolTip": "BpstEdu\\DBModels\\AppUser.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-12T14:24:38.18Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\appsettings.json",
-              "RelativeDocumentMoniker": "BpstEdu\\appsettings.json",
-              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\appsettings.json",
-              "RelativeToolTip": "BpstEdu\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAABKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-02-12T14:22:02.647Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "ApplicationStatus.cs",
-              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Models\\ApplicationStatus.cs",
-              "RelativeDocumentMoniker": "BpstEdu\\Models\\ApplicationStatus.cs",
-              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Models\\ApplicationStatus.cs",
-              "RelativeToolTip": "BpstEdu\\Models\\ApplicationStatus.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-12T08:07:00.602Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "ModelBuilderExtention.cs",
-              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Data\\ModelBuilderExtention.cs",
-              "RelativeDocumentMoniker": "BpstEdu\\Data\\ModelBuilderExtention.cs",
-              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Data\\ModelBuilderExtention.cs",
-              "RelativeToolTip": "BpstEdu\\Data\\ModelBuilderExtention.cs",
-              "ViewState": "AgIAACcAAAAAAAAAAAApwDMAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-12T08:01:07.925Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "BpstEdu",
-              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\BpstEdu.csproj",
-              "RelativeDocumentMoniker": "BpstEdu\\BpstEdu.csproj",
-              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\BpstEdu.csproj",
-              "RelativeToolTip": "BpstEdu\\BpstEdu.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-02-12T07:57:48.138Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "AppDbContext.cs",
-              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Data\\AppDbContext.cs",
-              "RelativeDocumentMoniker": "BpstEdu\\Data\\AppDbContext.cs",
-              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Data\\AppDbContext.cs",
-              "RelativeToolTip": "BpstEdu\\Data\\AppDbContext.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAxwCAAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-12T07:57:33.067Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "CommonConstants.cs",
-              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Data\\CommonConstants.cs",
-              "RelativeDocumentMoniker": "BpstEdu\\Data\\CommonConstants.cs",
-              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Data\\CommonConstants.cs",
-              "RelativeToolTip": "BpstEdu\\Data\\CommonConstants.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-12T07:57:04.349Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "HomeController.cs",
-              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Controllers\\HomeController.cs",
-              "RelativeDocumentMoniker": "BpstEdu\\Controllers\\HomeController.cs",
-              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Controllers\\HomeController.cs",
-              "RelativeToolTip": "BpstEdu\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAAHEAAAAAAAAAAAAowJEAAAA9AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-12T07:30:32.619Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Application.cs",
-              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\DBModels\\Application.cs",
-              "RelativeDocumentMoniker": "BpstEdu\\DBModels\\Application.cs",
-              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\DBModels\\Application.cs",
-              "RelativeToolTip": "BpstEdu\\DBModels\\Application.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAAA4AAAA9AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-11T04:37:00.346Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "StudentApplications.cshtml",
-              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Views\\Home\\StudentApplications.cshtml",
-              "RelativeDocumentMoniker": "BpstEdu\\Views\\Home\\StudentApplications.cshtml",
-              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Views\\Home\\StudentApplications.cshtml",
-              "RelativeToolTip": "BpstEdu\\Views\\Home\\StudentApplications.cshtml",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAgwBkAAAACAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "_HomeLayout.cshtml",
+              "DocumentMoniker": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Views\\Shared\\_HomeLayout.cshtml",
+              "RelativeDocumentMoniker": "BpstEdu\\Views\\Shared\\_HomeLayout.cshtml",
+              "ToolTip": "C:\\MyData-Ankit\\Projects\\2026\\BpstEdu\\BpstEdu\\Views\\Shared\\_HomeLayout.cshtml",
+              "RelativeToolTip": "BpstEdu\\Views\\Shared\\_HomeLayout.cshtml",
+              "ViewState": "AgIAAIAAAAAAAAAAAAAEwI8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-11T04:33:49.519Z",
+              "WhenOpened": "2026-02-13T11:15:25.505Z",
               "EditorCaption": ""
             }
           ]

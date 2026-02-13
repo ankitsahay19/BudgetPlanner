@@ -19,6 +19,10 @@ namespace BpstEdu.DBModels
 
         public string FatherName { get; set; } = string.Empty;
 
+        public string Gender { get; set; }
+
+        public DateTime? DateOfBirth { get; set; }
+
         public string Address { get; set; } = string.Empty;
 
         [Display(Name = "Applied On")]
