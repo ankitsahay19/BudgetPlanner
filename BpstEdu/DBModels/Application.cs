@@ -19,8 +19,10 @@ namespace BpstEdu.DBModels
 
         public string FatherName { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Please select gender")]
         public string Gender { get; set; }
 
+        [Required(ErrorMessage = "Date of birth is required")]
         public DateTime? DateOfBirth { get; set; }
 
         public string Address { get; set; } = string.Empty;
@@ -48,6 +50,9 @@ namespace BpstEdu.DBModels
         public string HighestQualification { get; set; } = string.Empty;
 
         public string? Message { get; set; } = string.Empty;
+
+        // Path to uploaded photo (relative to wwwroot)
+        public string? PhotoPath { get; set; } = string.Empty;
 
 
     }

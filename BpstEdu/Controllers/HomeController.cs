@@ -4,6 +4,9 @@ using BpstEdu.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace BpstEdu.Controllers
 {
@@ -104,12 +107,14 @@ namespace BpstEdu.Controllers
         //}
         public async Task<IActionResult> StudentApplications()
         {
-           // ViewData["courses"] = await _context.Courses.ToListAsync();
-            return View(new Application() { ApplicationId = "test" });
+             return View(new Application()
+            {
+                ApplicationId = "test" 
+            });
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> StudentApplications(Application application)
+        public async Task<IActionResult> StudentApplications(Application application, Microsoft.AspNetCore.Http.IFormFile Photo)
         {
             if (ModelState.IsValid)
             {
@@ -121,6 +126,32 @@ namespace BpstEdu.Controllers
                      //   var id = _context.Applications.Count();
                      //   application.ApplicationId = "BPST0" + (id + 1); // Increment id to avoid duplicate ID
                         TempData["RegId"] = application.ApplicationId;
+                        application.CreatedDate = DateTime.UtcNow.AddMinutes(750);
+
+                        // Handle uploaded photo
+                        if (Photo != null && Photo.Length > 0)
+                        {
+                            var allowed = new[] { "image/jpeg", "image/png", "image/jpg" };
+                            if (!allowed.Contains(Photo.ContentType))
+                            {
+                                ModelState.AddModelError("Photo", "Only JPG/PNG images are allowed.");
+                                return View(application);
+                            }
+                            if (Photo.Length > 2 * 1024 * 1024)
+                            {
+                                ModelState.AddModelError("Photo", "Maximum file size is 2MB.");
+                                return View(application);
+                            }
+                            var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+                            if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
+                            var fileName = $"app_{DateTime.UtcNow.Ticks}{Path.GetExtension(Photo.FileName)}";
+                            var filePath = Path.Combine(uploads, fileName);
+                            using (var stream = System.IO.File.Create(filePath))
+                            {
+                                await Photo.CopyToAsync(stream);
+                            }
+                            application.PhotoPath = "/uploads/" + fileName;
+                        }
                    //     application.AppliedOn = DateTime.UtcNow.AddMinutes(750); // Use UTC for consistency
                         _context.Add(application);
 

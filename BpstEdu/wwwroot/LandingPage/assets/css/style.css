@@ -280,6 +280,13 @@ h1, h2, h3, h4, h5, h6 {
   right: 15px;
 }
 
+/* Required field star */
+.required-star {
+  color: #d9534f; /* bootstrap danger red */
+  font-weight: 700;
+  margin-left: 4px;
+}
+
 @media (max-width: 1366px) {
   .nav-menu .drop-down .drop-down ul {
     left: -90%;
@@ -410,6 +417,7 @@ h1, h2, h3, h4, h5, h6 {
     background-image: url('../../../images/landingpagebanner.jpg');
     background-size: cover;
     position: relative;
+      height:60em;
 }
 
 #hero:before {
