@@ -8,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
+builder.Services.AddScoped<BpstEdu.Services.IStudentApplicationService, BpstEdu.Services.StudentApplicationService>();
+
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConStr")));
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {

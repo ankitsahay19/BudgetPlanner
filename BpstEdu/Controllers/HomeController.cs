@@ -1,3 +1,4 @@
+using BpstEdu.Services;
 using BpstEdu.Data;
 using BpstEdu.DBModels;
 using BpstEdu.Models;
@@ -16,11 +17,13 @@ namespace BpstEdu.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly AppDbContext _context;
+        private readonly IStudentApplicationService _studentApplicationService;
 
-        public HomeController(ILogger<HomeController> logger, AppDbContext context)
+        public HomeController(ILogger<HomeController> logger, AppDbContext context, IStudentApplicationService studentApplicationService)
         {
             _logger = logger;
             _context = context;
+            _studentApplicationService = studentApplicationService;
         }
         public IActionResult Index()
         {
@@ -123,90 +126,18 @@ namespace BpstEdu.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
+                var (success, errorMessage) = await _studentApplicationService.ProcessStudentApplicationAsync(application, Photo, ModelState);
+
+                if (success)
                 {
-                    if (application.UniqueId.Equals(0))
-                    {
-                        // Check for duplicate mobile number
-                        var existingByMobile = _context.Applications.FirstOrDefault(a => a.MobileNumber == application.MobileNumber);
-                        if (existingByMobile != null)
-                        {
-                            ModelState.AddModelError("MobileNumber", "This mobile number is already registered. Please use a different mobile number or contact support.");
-                            return View(application);
-                        }
-
-                        // Check for duplicate email
-                        if (!string.IsNullOrEmpty(application.EmailId))
-                        {
-                            var existingByEmail = _context.Applications.FirstOrDefault(a => a.EmailId == application.EmailId);
-                            if (existingByEmail != null)
-                            {
-                                ModelState.AddModelError("EmailId", "This email is already registered. Please use a different email or contact support.");
-                                return View(application);
-                            }
-                        }
-
-                        application.CreatedDate = DateTime.UtcNow.AddMinutes(750);
-
-                        // Generate ApplicationId if not already set
-                        if (string.IsNullOrEmpty(application.ApplicationId))
-                        {
-                            var count = _context.Applications.Count();
-                            application.ApplicationId = "BPST" + (count + 1).ToString().PadLeft(5, '0');
-                        }
-
-                        // Handle uploaded photo
-                        if (Photo != null && Photo.Length > 0)
-                        {
-                            var allowed = new[] { "image/jpeg", "image/png", "image/jpg" };
-                            if (!allowed.Contains(Photo.ContentType))
-                            {
-                                ModelState.AddModelError("Photo", "Only JPG/PNG images are allowed.");
-                                return View(application);
-                            }
-                            if (Photo.Length > 2 * 1024 * 1024)
-                            {
-                                ModelState.AddModelError("Photo", "Maximum file size is 2MB.");
-                                return View(application);
-                            }
-
-                            // Create folder structure: wwwroot/applications/{ApplicationId}/
-                            var applicationsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "applications", application.ApplicationId);
-                            if (!Directory.Exists(applicationsFolder))
-                                Directory.CreateDirectory(applicationsFolder);
-
-                            // Generate unique filename with extension
-                            var fileExtension = Path.GetExtension(Photo.FileName);
-                            var fileName = $"photo_{DateTime.UtcNow.Ticks}{fileExtension}";
-                            var filePath = Path.Combine(applicationsFolder, fileName);
-
-                            // Save the file
-                            using (var stream = System.IO.File.Create(filePath))
-                            {
-                                await Photo.CopyToAsync(stream);
-                            }
-
-                            // Store relative path in database
-                            application.PhotoPath = $"/applications/{application.ApplicationId}/{fileName}";
-                        }
-
-                        _context.Add(application);
-                    }
-                    else
-                        _context.Update(application);
-                    await _context.SaveChangesAsync();
                     TempData["SaveSuccess"] = true;
                     return RedirectToAction(nameof(StudentApplications));
                 }
-                catch (Exception ex)
+                else
                 {
-                    //if (application.CourseId == 0)
-                    //    ModelState.AddModelError("Course", "Please select course ");
-                    // Log the error (uncomment ex variable name and write a log.)
-                    ModelState.AddModelError("", "Some thing wrong with Data, unable to save changes. Call To 82-9910-1616 for Registration.");
+                    ModelState.AddModelError("", errorMessage);
                 }
             }
-
             return View(application);
         }
     }
