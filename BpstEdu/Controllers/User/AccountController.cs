@@ -1,11 +1,9 @@
 ﻿using BpstEdu.DBModels;
 using BpstEdu.Data;
-using BpstEdu.DBModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Security.Claims;
 using BpstEdu.Models.Users;
 
 namespace BitProSoftTech.Controllers.User
@@ -16,7 +14,6 @@ namespace BitProSoftTech.Controllers.User
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
         private readonly AppDbContext _context;
-        private readonly HttpContent _httpContext;
 
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, AppDbContext context) : base(context)
         {
@@ -25,14 +22,14 @@ namespace BitProSoftTech.Controllers.User
             _context = context;
         }
 
-        public async Task<string> GetCurrentUserId()
+        public async Task<string?> GetCurrentUserId()
         {
-            AppUser user = await GetCurrentUserAsync();
+            AppUser? user = await GetCurrentUserAsync();
 
-            return (user.Id);
+            return user?.Id;
 
         }
-        private Task<AppUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+        private Task<AppUser?> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         public async Task<IActionResult> Index()
         {
@@ -58,7 +55,7 @@ namespace BitProSoftTech.Controllers.User
                     var result = await _userManager.CreateAsync(appUser, appUser.Password);
                     if (result.Succeeded)
                     {
-                        var result2 = await _userManager.AddToRoleAsync(appUser, "Admin");
+                        var result2 = await _userManager.AddToRoleAsync(appUser, "Admin"!);
                         await _signInManager.SignInAsync(appUser, isPersistent: false).ConfigureAwait(false);
                         return RedirectToAction("Index", "Home", new { Areas = "Admin" });
                     }
@@ -96,7 +93,7 @@ namespace BitProSoftTech.Controllers.User
                 {
                     var userRoles = _context.Roles.ToList();
                     foreach (var role in userRoles)
-                        await _userManager.AddToRoleAsync(appUser, role.Name).ConfigureAwait(false);
+                        await _userManager.AddToRoleAsync(appUser, role.Name!).ConfigureAwait(false);
                     resultStr = "Master User Created Successfully.";                      
                 }
                 else
@@ -132,7 +129,7 @@ namespace BitProSoftTech.Controllers.User
                 if (result.Succeeded)
                 {
                     var user = await _userManager.FindByNameAsync(model.LoginUserName);
-                    var role = await _userManager.GetRolesAsync(user);
+                    var role = await _userManager.GetRolesAsync(user!);
 
                     if (role.Contains("Admin"))
                         return RedirectToAction("Dashboard", "Home", new { Area = "Admin" });

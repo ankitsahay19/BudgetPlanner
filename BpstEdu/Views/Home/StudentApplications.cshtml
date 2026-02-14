@@ -5,11 +5,11 @@
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
     ViewBag.ActiveTabName = "Registration";
     var isSaved = false;
-    if (TempData["SaveSuccess"] != null)
+    if (TempData["SaveSuccess"] is bool tempSaved && tempSaved)
     {
-        isSaved = (bool)TempData["SaveSuccess"];
+        isSaved = true;
     }
-    if (ViewBag.SaveSuccess != null && ViewBag.SaveSuccess == true)
+    if (ViewBag.SaveSuccess is true)
     {
         isSaved = true;
     }

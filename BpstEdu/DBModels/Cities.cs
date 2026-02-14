@@ -1,10 +1,6 @@
 ﻿using BpstEdu.DBModels;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BpstEdu.DBModels
 {
@@ -16,6 +12,6 @@ namespace BpstEdu.DBModels
         public int StateId { get; set; }
         public string Name { get; set; } = string.Empty;
         [ForeignKey("StateId")]
-        public State State { get; set; }
+        public State? State { get; set; }
     }
 }

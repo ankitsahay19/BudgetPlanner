@@ -6,10 +6,10 @@ namespace BpstEdu.Models
     {
         [Key]
         public int UniqueId { get; set; }
-        public string yourName { get; set; }
-        public string YourEmail { get; set; }
-        public string Subject { get; set; }
-        public string Message { get; set; }
+        public string yourName { get; set; } = string.Empty;
+        public string YourEmail { get; set; } = string.Empty;
+        public string Subject { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
 
     }
 }

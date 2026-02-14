@@ -3,7 +3,6 @@ using BpstEdu.Data;
 using BpstEdu.DBModels;
 using BpstEdu.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 using System;
 using System.IO;
@@ -71,7 +70,7 @@ namespace BpstEdu.Controllers
         {
             return View();
         }
-        public static string ReadFile(string FileName)
+        public static string? ReadFile(string FileName)
         {
             try
             {
@@ -84,10 +83,10 @@ namespace BpstEdu.Controllers
                     }
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 //Log
-                throw ex;
+                throw;
             }
             return null;
         }
@@ -134,8 +133,8 @@ namespace BpstEdu.Controllers
                     return RedirectToAction(nameof(StudentApplications));
                 }
                 else
-                {
-                    ModelState.AddModelError("", errorMessage);
+                    {
+                    ModelState.AddModelError("", errorMessage ?? "An unknown error occurred during application processing.");
                 }
             }
             return View(application);

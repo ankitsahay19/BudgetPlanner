@@ -1,5 +1,4 @@
-﻿using BpstEdu.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BpstEdu.DBModels
@@ -11,7 +10,7 @@ namespace BpstEdu.DBModels
         public int UniqueId { get; set; }
         public int CountryId { get; set; }
         [ForeignKey("CountryId")]
-        public Country Country { get; set; }
-        public string Name { get; set; }
+        public Country? Country { get; set; }
+        public string Name { get; set; } = string.Empty;
     }
 }

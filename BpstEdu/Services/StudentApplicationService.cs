@@ -21,7 +21,7 @@ namespace BpstEdu.Services
             _logger = logger;
         }
 
-        public async Task<(bool Success, string ErrorMessage)> ProcessStudentApplicationAsync(Application application, IFormFile photo, ModelStateDictionary modelState)
+        public async Task<(bool Success, string? ErrorMessage)> ProcessStudentApplicationAsync(Application application, IFormFile photo, ModelStateDictionary modelState)
         {
             if (application.UniqueId.Equals(0))
             {

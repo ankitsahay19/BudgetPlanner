@@ -7,6 +7,6 @@ namespace BpstEdu.Services
 {
     public interface IStudentApplicationService
     {
-        Task<(bool Success, string ErrorMessage)> ProcessStudentApplicationAsync(Application application, IFormFile photo, ModelStateDictionary modelState);
+        Task<(bool Success, string? ErrorMessage)> ProcessStudentApplicationAsync(Application application, IFormFile photo, ModelStateDictionary modelState);
     }
 }

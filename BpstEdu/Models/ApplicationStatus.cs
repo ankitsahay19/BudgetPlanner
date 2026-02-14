@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BpstEdu.Models
 {
@@ -9,7 +8,7 @@ namespace BpstEdu.Models
         public int UniqueId { get; set; }
 
         [Required]
-        public string RegistrationStatus { get; set; }
+        public string RegistrationStatus { get; set; } = string.Empty;
 
         public DateTime CreateDate { get; set; }
     }
