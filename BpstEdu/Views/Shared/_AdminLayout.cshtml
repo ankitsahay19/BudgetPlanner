@@ -1,3 +1,11 @@
+@{    // -- New active tab
+    string activeTab = string.Empty;
+    string activeTabName = "something...";
+    if (!string.IsNullOrEmpty(ViewBag.activeTabName))
+    {
+        activeTabName = ViewBag.activeTabName;
+    }
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,10 +90,16 @@
             <h4 class="mb-0">TechTrain</h4>
         </div>
         <ul class="nav nav-pills flex-column mb-auto">
-            <li><a href="#dash" class="nav-link active"><i class="bi bi-grid-1x2-fill me-2"></i> Dashboard</a></li>
-            <li><a href="#batches" class="nav-link"><i class="bi bi-stack me-2"></i> Manage Batches</a></li>
-            <li><a href="#students" class="nav-link"><i class="bi bi-people-fill me-2"></i> Enrollments</a></li>
-            <li><a href="#reviews" class="nav-link"><i class="bi bi-chat-heart-fill me-2"></i> Reviews</a></li>
+            @if (activeTabName.Contains("Dashboard")) { activeTab = "active"; } else { activeTab = string.Empty; } 
+            <li><a href="/Admin/home/dashboard" class="nav-link @activeTab"><i class="bi bi-grid-1x2-fill me-2"></i> Dashboard</a></li>
+            @if (activeTabName.Contains("Applications")) { activeTab = "active"; } else { activeTab = string.Empty; } 
+            <li><a href="/Admin/Applications" class="nav-link @activeTab"><i class="bi bi-grid-1x2-fill me-2"></i> Applications</a></li>
+            @if (activeTabName.Contains("Helper")) { activeTab = "active"; } else { activeTab = string.Empty; }
+            <li><a href="#batches" class="nav-link @activeTab"><i class="bi bi-stack me-2"></i> Manage Batches</a></li>
+            @if (activeTabName.Contains("Helper")) { activeTab = "active"; } else { activeTab = string.Empty; }
+            <li><a href="#students" class="nav-link @activeTab"><i class="bi bi-people-fill me-2"></i> Enrollments</a></li>
+            @if (activeTabName.Contains("Helper")) { activeTab = "active"; } else { activeTab = string.Empty; }
+            <li><a href="#reviews" class="nav-link @activeTab"><i class="bi bi-chat-heart-fill me-2"></i> Reviews</a></li>
         </ul>
         <div class="px-3 pb-3">
             <div class="small text-muted">User: Admin (Lead)</div>

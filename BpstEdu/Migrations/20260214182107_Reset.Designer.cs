@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BpstEdu.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260214103357_AddFeedbackAndStatus")]
-    partial class AddFeedbackAndStatus
+    [Migration("20260214182107_Reset")]
+    partial class Reset
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

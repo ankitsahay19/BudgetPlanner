@@ -28,7 +28,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 
 var app = builder.Build();
 
-SeedAdminUser(app);
+// SeedAdminUser(app);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

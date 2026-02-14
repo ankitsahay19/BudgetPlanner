@@ -31,7 +31,9 @@ namespace BpstEdu.Migrations
                     EmailId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     HighestQualification = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhotoPath = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    PhotoPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Feedback = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ApplicationStatus = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

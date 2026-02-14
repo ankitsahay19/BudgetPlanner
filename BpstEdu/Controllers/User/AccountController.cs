@@ -134,6 +134,60 @@ namespace BpstEdu.Controllers.User
             return await _context.Cities.FindAsync(id);
         }
 
+        // --- @ToDo : NOTE : Remove following methods while release.
+
+
+        public async Task<string> CreateMasterUser()
+        {
+            var resultStr = string.Empty;
+            try
+            {
+                AppUser appUser = new AppUser()
+                {
+                    UserName = "admin@bpst.com",
+                    Password = "Admin@20",
+                    ConfirmPassword = "Admin@20",
+                    PhoneNumber = "9999999999",
+                };
+
+                var result = await _userManager.CreateAsync(appUser, appUser.Password);
+                if (result.Succeeded)
+                {
+                    var userRoles = _context.Roles.ToList();
+                    foreach (var role in userRoles)
+                        await _userManager.AddToRoleAsync(appUser, role.Name).ConfigureAwait(false);
+                    resultStr = "Master User Created Successfully.";
+                     
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        resultStr = "Some Error: " + error.Code;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                resultStr = "Some Error: " + ex.Message;
+            }
+            return resultStr;
+        }
+        
+        
+        public async Task<IActionResult> AutoLogin()
+        {
+            var result = await _signInManager.PasswordSignInAsync("admin@bpst.com", "Admin@20", true, lockoutOnFailure: false);
+            if (result.Succeeded)
+                return await ReDirectIfLoggedIn();
+            else
+                return RedirectToAction("CreateMasterUser");
+        }
+
+
+
+
     }
 
 }
