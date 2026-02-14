@@ -12,7 +12,23 @@
 
 <h1>Applications</h1>
 
-<table class="table">
+<div class="row mb-3">
+    <div class="col-md-6">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search by name, email, or mobile..." />
+    </div>
+    <div class="col-md-3">
+        <select id="sortSelect" class="form-control">
+            <option value="nameAsc">Name (A-Z)</option>
+            <option value="nameDesc">Name (Z-A)</option>
+            <option value="emailAsc">Email (A-Z)</option>
+            <option value="emailDesc">Email (Z-A)</option>
+            <option value="mobileAsc">Mobile (Asc)</option>
+            <option value="mobileDesc">Mobile (Desc)</option>
+        </select>
+    </div>
+</div>
+
+<table class="table" id="applicationsTable">
     <thead>
         <tr>
             <th>Photo</th>
@@ -25,9 +41,11 @@
     <tbody>
         @foreach (var app in Model)
         {
-            <tr>
+            <tr data-name="@app.FullName" data-email="@app.EmailId" data-mobile="@app.MobileNumber">
                 <td>
-                    <img src="~/@app.PhotoPath" class="img-thumbnail" style="width: 100px" alt="Photo" />
+                    <a href="#" class="profile-thumbnail" data-bs-toggle="modal" data-bs-target="#imageModal" data-img-src="~/@app.PhotoPath">
+                        <img src="~/@app.PhotoPath" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;" alt="Photo" />
+                    </a>
                 </td>
                 <td>@app.FullName</td>
                 <td>@app.EmailId</td>
@@ -39,3 +57,120 @@
         }
     </tbody>
 </table>
+
+<div class="text-center mt-3">
+    <button id="loadMoreBtn" class="btn btn-primary">Load More</button>
+</div>
+
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Profile Photo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="" class="img-fluid" id="modalImage" alt="Profile Photo" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="#" id="downloadImageBtn" class="btn btn-primary" download>Download</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Placeholder for JavaScript logic
+        $(document).ready(function () {
+            // Modal image display
+            $('#imageModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var imgSrc = button.data('img-src'); // Extract info from data-* attributes
+                var modal = $(this);
+                modal.find('#modalImage').attr('src', imgSrc);
+                modal.find('#downloadImageBtn').attr('href', imgSrc);
+            });
+
+            // Search and Sort (client-side - initial implementation)
+            var $tableBody = $('#applicationsTable tbody');
+            var $rows = $tableBody.find('tr');
+            var pageSize = 10;
+            var currentPage = 0;
+
+            function displayRows() {
+                $rows.hide();
+                var start = currentPage * pageSize;
+                var end = start + pageSize;
+                $rows.slice(start, end).show();
+
+                if (end >= $rows.length) {
+                    $('#loadMoreBtn').hide();
+                } else {
+                    $('#loadMoreBtn').show();
+                }
+            }
+
+            function applyFiltersAndSort() {
+                var searchText = $('#searchInput').val().toLowerCase();
+                var sortValue = $('#sortSelect').val();
+
+                $rows = $('#applicationsTable tbody tr').filter(function () {
+                    var name = $(this).data('name').toLowerCase();
+                    var email = $(this).data('email').toLowerCase();
+                    var mobile = $(this).data('mobile').toLowerCase();
+                    return name.includes(searchText) || email.includes(searchText) || mobile.includes(searchText);
+                }).sort(function (a, b) {
+                    var aValue, bValue;
+
+                    switch (sortValue) {
+                        case 'nameAsc':
+                            aValue = $(a).data('name');
+                            bValue = $(b).data('name');
+                            return aValue.localeCompare(bValue);
+                        case 'nameDesc':
+                            aValue = $(a).data('name');
+                            bValue = $(b).data('name');
+                            return bValue.localeCompare(aValue);
+                        case 'emailAsc':
+                            aValue = $(a).data('email');
+                            bValue = $(b).data('email');
+                            return aValue.localeCompare(bValue);
+                        case 'emailDesc':
+                            aValue = $(a).data('email');
+                            bValue = $(b).data('email');
+                            return bValue.localeCompare(aValue);
+                        case 'mobileAsc':
+                            aValue = parseInt($(a).data('mobile'));
+                            bValue = parseInt($(b).data('mobile'));
+                            return aValue - bValue;
+                        case 'mobileDesc':
+                            aValue = parseInt($(a).data('mobile'));
+                            bValue = parseInt($(b).data('mobile'));
+                            return bValue - aValue;
+                        default:
+                            return 0;
+                    }
+                });
+
+                currentPage = 0; // Reset pagination on filter/sort
+                $tableBody.empty().append($rows);
+                displayRows();
+            }
+
+            $('#searchInput, #sortSelect').on('keyup change', function () {
+                applyFiltersAndSort();
+            });
+
+            $('#loadMoreBtn').on('click', function () {
+                currentPage++;
+                displayRows();
+            });
+
+            // Initial display
+            applyFiltersAndSort();
+        });
+    </script>
+}

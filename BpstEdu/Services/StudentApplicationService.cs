@@ -76,7 +76,7 @@ namespace BpstEdu.Services
 
                     // Generate unique filename with extension
                     var fileExtension = Path.GetExtension(photo.FileName);
-                    var fileName = $"photo_{DateTime.UtcNow.Ticks}{fileExtension}";
+                    var fileName = $"photo_{application.FullName}_{application.Gender}{fileExtension}";
                     var filePath = Path.Combine(applicationsFolder, fileName);
 
                     // Save the file

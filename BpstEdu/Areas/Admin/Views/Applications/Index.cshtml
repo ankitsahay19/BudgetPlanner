@@ -1,125 +1,205 @@
-﻿@model IEnumerable<BpstEdu.DBModels.Application>
+@model IEnumerable<BpstEdu.DBModels.Application>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Applications";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-        ViewBag.ActiveTabName = "Applications";
-
+    ViewBag.ActiveTabName = "Applications";
 }
+
 <div class="main-wrapper">
 
-<h1>Index</h1>
+<h1>Applications</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
 
-<table class="table">
+<div class="row mb-3">
+    <div class="col-md-6">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search by name, email, or mobile..." />
+    </div>
+    <div class="col-md-3">
+        <select id="sortSelect" class="form-control">
+            <option value="nameAsc">Name (A-Z)</option>
+            <option value="nameDesc">Name (Z-A)</option>
+            <option value="emailAsc">Email (A-Z)</option>
+            <option value="emailDesc">Email (Z-A)</option>
+            <option value="mobileAsc">Mobile (Asc)</option>
+            <option value="mobileDesc">Mobile (Desc)</option>
+            <option value="statusAsc">Status (A-Z)</option>
+            <option value="statusDesc">Status (Z-A)</option>
+        </select>
+    </div>
+</div>
+
+<table class="table" id="applicationsTable">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicationId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Gender)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOfBirth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CollegeName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MobileNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmailId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HighestQualification)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Message)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhotoPath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Feedback)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicationStatus)
-            </th>
+            <th>Photo</th>
+            <th>Gender</th>
+             <th>Mobile</th>
+            <th>Days</th>
+            <th>Photo </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicationId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Gender)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfBirth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CollegeName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MobileNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmailId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HighestQualification)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Message)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhotoPath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Feedback)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicationStatus)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.UniqueId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var app in Model)
+        {
+            <tr data-name="@(app.FirstName + " " + app.LastName)" data-email="@app.EmailId" data-mobile="@app.MobileNumber" data-status="@app.ApplicationStatus">
+
+                <td> @app.FullName </td>
+                <td>@app.Gender</td>
+                <td>@app.MobileNumber</td>
+                <td>@app.NumberOfDays Days Ego</td>
+                <td>
+                    <a href="#" class="profile-thumbnail" data-bs-toggle="modal" data-bs-target="#imageModal" data-img-src="@app.PhotoPath">
+                        <img src="@app.PhotoPath" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;"  />
+                    </a>
+                </td>                <td>
+                    <a asp-action="Edit" asp-route-id="@app.UniqueId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@app.UniqueId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@app.UniqueId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<div class="text-center mt-3">
+    <button id="loadMoreBtn" class="btn btn-primary">Load More</button>
 </div>
+
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Profile Photo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="" class="img-fluid" id="modalImage" alt="Profile Photo" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="#" id="downloadImageBtn" class="btn btn-primary" download>Download</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Modal image display
+            $('#imageModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var imgSrc = button.data('img-src'); // Extract info from data-* attributes
+                var modal = $(this);
+                modal.find('#modalImage').attr('src', imgSrc);
+                modal.find('#downloadImageBtn').attr('href', imgSrc);
+            });
+
+            // Search and Sort (client-side - initial implementation)
+            var $tableBody = $('#applicationsTable tbody');
+            var $allRows = $tableBody.find('tr'); // Store all rows initially
+            var $displayedRows = $(); // Rows currently displayed
+            var pageSize = 10;
+            var currentPage = 0;
+
+            function filterAndSortRows() {
+                var searchText = $('#searchInput').val().toLowerCase();
+                var sortValue = $('#sortSelect').val();
+
+                var filteredRows = $allRows.filter(function () {
+                    var name = $(this).data('name').toLowerCase();
+                    var email = $(this).data('email').toLowerCase();
+                    var mobile = $(this).data('mobile').toLowerCase();
+                    var status = $(this).data('status') ? $(this).data('status').toLowerCase() : ''; // Handle null status
+                    return name.includes(searchText) || email.includes(searchText) || mobile.includes(searchText) || status.includes(searchText);
+                });
+
+                filteredRows.sort(function (a, b) {
+                    var aValue, bValue;
+
+                    switch (sortValue) {
+                        case 'nameAsc':
+                            aValue = $(a).data('name');
+                            bValue = $(b).data('name');
+                            return aValue.localeCompare(bValue);
+                        case 'nameDesc':
+                            aValue = $(a).data('name');
+                            bValue = $(b).data('name');
+                            return bValue.localeCompare(aValue);
+                        case 'emailAsc':
+                            aValue = $(a).data('email');
+                            bValue = $(b).data('email');
+                            return aValue.localeCompare(bValue);
+                        case 'emailDesc':
+                            aValue = $(a).data('email');
+                            bValue = $(b).data('email');
+                            return bValue.localeCompare(aValue);
+                        case 'mobileAsc':
+                            aValue = parseInt($(a).data('mobile'));
+                            bValue = parseInt($(b).data('mobile'));
+                            return aValue - bValue;
+                        case 'mobileDesc':
+                            aValue = parseInt($(a).data('mobile'));
+                            bValue = parseInt($(b).data('mobile'));
+                            return bValue - aValue;
+                        case 'statusAsc':
+                            aValue = $(a).data('status') || '';
+                            bValue = $(b).data('status') || '';
+                            return aValue.localeCompare(bValue);
+                        case 'statusDesc':
+                            aValue = $(a).data('status') || '';
+                            bValue = $(b).data('status') || '';
+                            return bValue.localeCompare(aValue);
+                        default:
+                            return 0;
+                    }
+                });
+                return filteredRows;
+            }
+
+            function displayRows() {
+                var rowsToDisplay = filterAndSortRows();
+                $tableBody.empty(); // Clear existing rows
+
+                var start = currentPage * pageSize;
+                var end = start + pageSize;
+                
+                rowsToDisplay.slice(0, end).each(function () {
+                    $tableBody.append(this);
+                });
+                
+                if (end >= rowsToDisplay.length) {
+                    $('#loadMoreBtn').hide();
+                } else {
+                    $('#loadMoreBtn').show();
+                }
+            }
+
+            $('#searchInput, #sortSelect').on('keyup change', function () {
+                currentPage = 0; // Reset pagination on filter/sort
+                displayRows();
+            });
+
+            $('#loadMoreBtn').on('click', function () {
+                currentPage++;
+                displayRows();
+            });
+
+            // Initial display
+            displayRows();
+
+            // Add a default-profile.png for error handling if image path is bad
+            // This assumes you have a default-profile.png in your wwwroot/images folder
+            // or adjust the path accordingly.
+            // Example: <img src="~/@@app.PhotoPath" onerror="this.onerror=null;this.src='/images/default-profile.png';" />
+        });
+    </script>
+}
