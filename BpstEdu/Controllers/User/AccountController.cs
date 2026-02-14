@@ -57,7 +57,7 @@ namespace BpstEdu.Controllers.User
             {
                 var user = await _userManager.GetUserAsync(User);
                 var role = await _userManager.GetRolesAsync(user);
-                if (role.Contains("Admin")) return RedirectToAction("Index", "Home", new { Area = "Admin" });
+                if (role.Contains("Admin")) return RedirectToAction("Dashboard", "Home", new { Area = "Admin" });
                 else if (role.Contains("Staff")) return RedirectToAction("Index", "Home", new { Area = "Staff" });
                 else if (role.Contains("Student")) return RedirectToAction("Index", "Home", new { Area = "Student" });
                 else return View("Login");

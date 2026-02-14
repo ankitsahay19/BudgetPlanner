@@ -15,6 +15,11 @@ namespace BpstEdu.Areas.Admin.Controllers
             _context = context;
         }
 
+        public IActionResult Dashboard()
+        {
+             return View();
+        }
+
         public IActionResult Index()
         {
             var applications = _context.Applications.ToList();
