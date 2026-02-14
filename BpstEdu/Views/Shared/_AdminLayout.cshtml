@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BpstEdu Admin</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/admin/css/admin.css" />
+</head>
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar-->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading">Admin Menu</div>
+            <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action bg-light" href="@Url.Action("Index", "Admin")">Dashboard</a>
+                <a class="list-group-item list-group-item-action bg-light" href="#">Applications</a>
+                <a class="list-group-item list-group-item-action bg-light" href="#">Settings</a>
+            </div>
+        </div>
+        <!-- Page Content-->
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="container-fluid">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="~/admin/js/admin.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

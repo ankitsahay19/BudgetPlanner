@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BpstEdu.DBModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace BpstEdu.Models.Users
 {

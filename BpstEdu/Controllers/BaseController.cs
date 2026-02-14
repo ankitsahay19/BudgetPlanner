@@ -12,13 +12,6 @@ namespace BitProSoftTech.Controllers
         public BaseController(AppDbContext context)
         {
             _context = context;
-        }
-
-       
-       
-
-     
- 
-
+        }  
     }
 }

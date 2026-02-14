@@ -1,0 +1,91 @@
+@model BpstEdu.DBModels.Application
+
+@{
+    ViewData["Title"] = "Application Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Application Details</h1>
+
+<div>
+    <h4>Application</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ApplicationId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ApplicationId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EmailId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EmailId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MobileNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MobileNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateOfBirth)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HighestQualification)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HighestQualification)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CollegeName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CollegeName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PhotoPath)
+        </dt>
+        <dd class = "col-sm-10">
+            <img src="~/@Model.PhotoPath" class="img-fluid" alt="Photo" />
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <h4>Feedback</h4>
+    <hr />
+    <form asp-action="AddFeedback">
+        <input type="hidden" asp-for="UniqueId" />
+        <div class="form-group">
+            <label asp-for="Feedback" class="control-label"></label>
+            <textarea asp-for="Feedback" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <label asp-for="ApplicationStatus" class="control-label"></label>
+            <input asp-for="ApplicationStatus" class="form-control" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save Feedback" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

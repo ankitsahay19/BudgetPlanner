@@ -1,0 +1,41 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@model List<BpstEdu.DBModels.Application>
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Applications</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var app in Model)
+        {
+            <tr>
+                <td>
+                    <img src="~/@app.PhotoPath" class="img-thumbnail" style="width: 100px" alt="Photo" />
+                </td>
+                <td>@app.FullName</td>
+                <td>@app.EmailId</td>
+                <td>@app.MobileNumber</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@app.UniqueId">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

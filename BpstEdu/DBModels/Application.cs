@@ -47,6 +47,9 @@ namespace BpstEdu.DBModels
         // Path to uploaded photo (relative to wwwroot)
         public string? PhotoPath { get; set; } = string.Empty;
 
+        public string? Feedback { get; set; }
+        public string? ApplicationStatus { get; set; }
+
 
     }
 }

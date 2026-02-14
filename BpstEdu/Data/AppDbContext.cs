@@ -47,9 +47,9 @@ namespace BpstEdu.Data
         /////////////////////////////////////////////////////////////////////////////////////
         //public DbSet<EducationBoardsMaster> EducationBoards { get; set; }
         //public DbSet<Country> Countries { get; set; }
-        //public DbSet<State> States { get; set; }
-        //public DbSet<City> Cities { get; set; }
-        //public DbSet<Address> Addresses { get; set; }
+        public DbSet<State> States { get; set; }
+        public DbSet<City> Cities { get; set; }
+        // public DbSet<Address> Addresses { get; set; }
         //public DbSet<Enquiry> Enquiries { get; set; }
 
     }

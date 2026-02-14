@@ -1,0 +1,63 @@
+﻿@* @inject SignInManager<AppUser> signInManager *@
+@model BpstEdu.Models.Users.Login
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+  // Layout = null;
+}
+
+<br />
+
+<div class="container">
+    <div class="card">
+        <div class="card-header text-center bg-dark text-white text-bold"><h2><b>Login </b></h2></div>
+        <div class="card-body">
+            <form class="form-horizontal" asp-action="Login" asp-controller="Account" method="post">
+                <div class="row form-group">
+                    <label class="control-label col-sm-2" asp-for="LoginUserName"></label>
+                    <div class="col-sm-10">
+                        <input type="text" asp-for="LoginUserName" placeholder="Enter UserName" class="form-control" />
+                        <span asp-validation-for="LoginUserName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <label class="control-label col-sm-2" asp-for="Password"></label>
+                    <div class="col-sm-10">
+                        <input asp-for="Password" class="form-control" type="password" placeholder="Enter password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                        <div asp-validation-summary="All" class="text-danger"></div> 
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-sm-2"> </div>
+                    <div class="col-sm-10">
+                        <div class="checkbox">
+
+                            <label asp-for="RememberMe">
+                                <input asp-for="RememberMe" />
+                                @Html.DisplayNameFor(m => m.RememberMe)
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Log in</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        @*<div class="card-footer text-right bg-secondary text-white ">
+                Din't Have an account? &nbsp;  &nbsp;  &nbsp; <a class="btn btn-danger" asp-controller="Account" asp-action="Register">SignUp For Free</a>
+            </div>*@
+    </div>
+    <main role="main" class="pb-3">
+        <div class="row">
+            <div class="col-md-4">
+                <section>
+                </section>
+            </div>
+        </div>
+    </main>
+</div>
+
+
