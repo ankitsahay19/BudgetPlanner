@@ -102,19 +102,8 @@ namespace BpstEdu.Controllers
         public IActionResult Exam()
         {
             return View();
-        }
-        //[HttpGet]
-        //public async Task<IActionResult> GetBatchesByCourseId(int courseId)
-        //{
-        //    var batches = await _context.Batchs.Include(b => b.Course)
-        //      //  .Where(b => b.CourseId == courseId)
-        //        .Select(b => new
-        //        {
-        //            Id = b.UniqueId,
-        //            Value = $"{b.RemainingDays} Days To Go -  {b.Course.Name}_{b.StartDateTime:dd-MMM-yyyy}_{b.StartDateTime:hh:mm: tt}"
-        //        }).ToListAsync();
-        //    return Json(batches);
-        //}
+        } 
+        
         public async Task<IActionResult> StudentApplications()
         {
              return View( );

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using BpstEdu.Data; 
 
 namespace BpstEdu.DBModels
 {
@@ -48,8 +49,6 @@ namespace BpstEdu.DBModels
         public string? PhotoPath { get; set; } = string.Empty;
 
         public string? Feedback { get; set; }
-        public string? ApplicationStatus { get; set; }
-
-
+        public Data.CommonConstants.ApplicationStatus ApplicationStatus { get; set; } = CommonConstants.ApplicationStatus.Applied; 
     }
 }

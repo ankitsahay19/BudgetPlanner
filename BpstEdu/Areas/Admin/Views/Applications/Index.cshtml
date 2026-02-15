@@ -35,10 +35,11 @@
 <table class="table" id="applicationsTable">
     <thead>
         <tr>
-            <th>Photo</th>
+            <th>Name</th>
             <th>Gender</th>
              <th>Mobile</th>
-            <th>Days</th>
+                <th>Status</th>
+                <th>Applied At</th>
             <th>Photo </th>
             <th></th>
         </tr>
@@ -51,8 +52,9 @@
                 <td> @app.FullName </td>
                 <td>@app.Gender</td>
                 <td>@app.MobileNumber</td>
-                <td>@app.NumberOfDays Days Ego</td>
-                <td>
+                    <td>@app.ApplicationStatus</td>
+                    <td>@app.NumberOfDays Day's Ego</td>
+                    <td>
                     <a href="#" class="profile-thumbnail" data-bs-toggle="modal" data-bs-target="#imageModal" data-img-src="@app.PhotoPath">
                         <img src="@app.PhotoPath" class="img-thumbnail" style="width: 50px; height: 50px; object-fit: cover;"  />
                     </a>

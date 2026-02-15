@@ -37,7 +37,7 @@ namespace BpstEdu.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddFeedback(int UniqueId, string Feedback, string ApplicationStatus)
+        public IActionResult AddFeedback(int UniqueId, string Feedback, Data.CommonConstants.ApplicationStatus status)
         {
             var application = _context.Applications.Find(UniqueId);
             if (application == null)
@@ -46,7 +46,7 @@ namespace BpstEdu.Areas.Admin.Controllers
             }
 
             application.Feedback = Feedback;
-            application.ApplicationStatus = ApplicationStatus;
+            application.ApplicationStatus = status;
 
             _context.SaveChanges();
 
