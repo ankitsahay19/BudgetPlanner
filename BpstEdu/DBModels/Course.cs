@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 
 namespace BpstEdu.DBModels
 {
@@ -21,7 +22,8 @@ namespace BpstEdu.DBModels
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Fees { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+         public DateTime CreatedDate { get; set; }
         public DateTime LastUpdatedDate { get; set; }
     }
 }
