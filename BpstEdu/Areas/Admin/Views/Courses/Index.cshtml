@@ -1,0 +1,51 @@
+﻿@model IEnumerable<BpstEdu.DBModels.Course>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.ActiveTabName = "Courses";
+}
+
+<div class="main-wrapper">
+    <h1>Index</h1>
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+
+    <div class="table-container" style="max-height:60vh; overflow:auto; border:1px solid #e6e6e6; padding:0;">
+        <table id="courseTable" class="display">
+            <thead>
+                <tr>
+                    <th> Course Name </th>
+                    <th> Description </th>
+                    <th> Fees </th>
+                    <th> Created Date </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td> @Html.DisplayFor(modelItem => item.CourseName) </td>
+                        <td> @Html.DisplayFor(modelItem => item.Description) </td>
+                        <td> @Html.DisplayFor(modelItem => item.Fees) </td>
+                        <td> @Html.DisplayFor(modelItem => item.CreatedDate) </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.UniqueId">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#courseTable').DataTable();
+    });
+</script>

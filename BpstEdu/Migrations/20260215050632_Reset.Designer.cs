@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BpstEdu.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260214182107_Reset")]
+    [Migration("20260215050632_Reset")]
     partial class Reset
     {
         /// <inheritdoc />
@@ -105,8 +105,8 @@ namespace BpstEdu.Migrations
                     b.Property<string>("ApplicationId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ApplicationStatus")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ApplicationStatus")
+                        .HasColumnType("int");
 
                     b.Property<string>("CollegeName")
                         .HasColumnType("nvarchar(max)");
@@ -7491,6 +7491,112 @@ namespace BpstEdu.Migrations
                         });
                 });
 
+            modelBuilder.Entity("BpstEdu.DBModels.Course", b =>
+                {
+                    b.Property<int>("UniqueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
+
+                    b.Property<string>("CourseName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<decimal>("Fees")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<DateTime>("LastUpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UniqueId");
+
+                    b.ToTable("Courses");
+
+                    b.HasData(
+                        new
+                        {
+                            UniqueId = 1,
+                            CourseName = "Programming Fundamentals",
+                            CreatedDate = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Essential for software engineering. Covers core programming concepts and is ideal for beginners starting a career in technology.",
+                            Fees = 0m,
+                            LastUpdatedDate = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            UniqueId = 2,
+                            CourseName = "Software Engineering",
+                            CreatedDate = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Focuses on web application development and includes internship opportunities. Learn to build robust and scalable systems, covering UI/UX to full-stack development.",
+                            Fees = 0m,
+                            LastUpdatedDate = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            UniqueId = 3,
+                            CourseName = "AI & Machine Learning",
+                            CreatedDate = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Learn to design and develop intelligent systems using artificial intelligence and machine learning technologies.",
+                            Fees = 0m,
+                            LastUpdatedDate = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            UniqueId = 4,
+                            CourseName = "Game Development",
+                            CreatedDate = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Transform creative ideas into interactive games using modern game development tools and technologies.",
+                            Fees = 0m,
+                            LastUpdatedDate = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            UniqueId = 5,
+                            CourseName = "Cybersecurity",
+                            CreatedDate = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Learn to protect systems, networks, and data from cyber threats while understanding ethical hacking and security best practices.",
+                            Fees = 0m,
+                            LastUpdatedDate = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            UniqueId = 6,
+                            CourseName = "Mobile App Development (Android & iOS)",
+                            CreatedDate = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Build cross-platform and native mobile applications with modern frameworks and best development practices.",
+                            Fees = 0m,
+                            LastUpdatedDate = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            UniqueId = 7,
+                            CourseName = "Hardware Engineering",
+                            CreatedDate = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Learn the fundamentals of computer hardware, embedded systems, and electronics design.",
+                            Fees = 0m,
+                            LastUpdatedDate = new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            UniqueId = 8,
+                            CourseName = "Other Courses",
+                            CreatedDate = new DateTime(2026, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Additional specialized or customized courses based on emerging technologies and student requirements.",
+                            Fees = 0m,
+                            LastUpdatedDate = new DateTime(2026, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
             modelBuilder.Entity("BpstEdu.DBModels.State", b =>
                 {
                     b.Property<int>("UniqueId")
@@ -7737,32 +7843,6 @@ namespace BpstEdu.Migrations
                     b.HasKey("UniqueId");
 
                     b.ToTable("ApplicationStatus");
-
-                    b.HasData(
-                        new
-                        {
-                            UniqueId = 1,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RegistrationStatus = "New Application"
-                        },
-                        new
-                        {
-                            UniqueId = 2,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RegistrationStatus = "Reviewed"
-                        },
-                        new
-                        {
-                            UniqueId = 3,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RegistrationStatus = "Admission Taken"
-                        },
-                        new
-                        {
-                            UniqueId = 4,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RegistrationStatus = "Not Interested Anymore"
-                        });
                 });
 
             modelBuilder.Entity("BpstEdu.Models.Contact", b =>
@@ -7792,76 +7872,6 @@ namespace BpstEdu.Migrations
                     b.HasKey("UniqueId");
 
                     b.ToTable("Contacts");
-                });
-
-            modelBuilder.Entity("BpstEdu.Models.Course", b =>
-                {
-                    b.Property<int>("UniqueId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UniqueId"));
-
-                    b.Property<bool>("IntershipAvailable")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UniqueId");
-
-                    b.ToTable("Course");
-
-                    b.HasData(
-                        new
-                        {
-                            UniqueId = 1,
-                            IntershipAvailable = true,
-                            Name = "Programming Classes (for Rising Stars - IX - XII )"
-                        },
-                        new
-                        {
-                            UniqueId = 2,
-                            IntershipAvailable = true,
-                            Name = "Full Stack Development - Internship 6 months "
-                        },
-                        new
-                        {
-                            UniqueId = 3,
-                            IntershipAvailable = true,
-                            Name = "Full Stack Development - Industrial Training  45 days "
-                        },
-                        new
-                        {
-                            UniqueId = 4,
-                            IntershipAvailable = true,
-                            Name = "Cyber Security - 45 Days"
-                        },
-                        new
-                        {
-                            UniqueId = 5,
-                            IntershipAvailable = true,
-                            Name = "Game Development - 45 Days"
-                        },
-                        new
-                        {
-                            UniqueId = 6,
-                            IntershipAvailable = true,
-                            Name = "App Development - 45 Days"
-                        },
-                        new
-                        {
-                            UniqueId = 7,
-                            IntershipAvailable = true,
-                            Name = "Networking Class - 45 Days"
-                        },
-                        new
-                        {
-                            UniqueId = 8,
-                            IntershipAvailable = true,
-                            Name = "Others"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

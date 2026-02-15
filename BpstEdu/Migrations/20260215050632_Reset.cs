@@ -33,7 +33,7 @@ namespace BpstEdu.Migrations
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhotoPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Feedback = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ApplicationStatus = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ApplicationStatus = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -123,17 +123,20 @@ namespace BpstEdu.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Course",
+                name: "Courses",
                 columns: table => new
                 {
                     UniqueId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IntershipAvailable = table.Column<bool>(type: "bit", nullable: false)
+                    CourseName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Fees = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Course", x => x.UniqueId);
+                    table.PrimaryKey("PK_Courses", x => x.UniqueId);
                 });
 
             migrationBuilder.CreateTable(
@@ -283,17 +286,6 @@ namespace BpstEdu.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "ApplicationStatus",
-                columns: new[] { "UniqueId", "CreateDate", "RegistrationStatus" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "New Application" },
-                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Reviewed" },
-                    { 3, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admission Taken" },
-                    { 4, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Not Interested Anymore" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
@@ -309,18 +301,18 @@ namespace BpstEdu.Migrations
                 values: new object[] { 1, "India" });
 
             migrationBuilder.InsertData(
-                table: "Course",
-                columns: new[] { "UniqueId", "IntershipAvailable", "Name" },
+                table: "Courses",
+                columns: new[] { "UniqueId", "CourseName", "CreatedDate", "Description", "Fees", "LastUpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, true, "Programming Classes (for Rising Stars - IX - XII )" },
-                    { 2, true, "Full Stack Development - Internship 6 months " },
-                    { 3, true, "Full Stack Development - Industrial Training  45 days " },
-                    { 4, true, "Cyber Security - 45 Days" },
-                    { 5, true, "Game Development - 45 Days" },
-                    { 6, true, "App Development - 45 Days" },
-                    { 7, true, "Networking Class - 45 Days" },
-                    { 8, true, "Others" }
+                    { 1, "Programming Fundamentals", new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Essential for software engineering. Covers core programming concepts and is ideal for beginners starting a career in technology.", 0m, new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, "Software Engineering", new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Focuses on web application development and includes internship opportunities. Learn to build robust and scalable systems, covering UI/UX to full-stack development.", 0m, new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, "AI & Machine Learning", new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Learn to design and develop intelligent systems using artificial intelligence and machine learning technologies.", 0m, new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, "Game Development", new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Transform creative ideas into interactive games using modern game development tools and technologies.", 0m, new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, "Cybersecurity", new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Learn to protect systems, networks, and data from cyber threats while understanding ethical hacking and security best practices.", 0m, new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 6, "Mobile App Development (Android & iOS)", new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Build cross-platform and native mobile applications with modern frameworks and best development practices.", 0m, new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 7, "Hardware Engineering", new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Learn the fundamentals of computer hardware, embedded systems, and electronics design.", 0m, new DateTime(2026, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 8, "Other Courses", new DateTime(2026, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Additional specialized or customized courses based on emerging technologies and student requirements.", 0m, new DateTime(2026, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -1667,7 +1659,7 @@ namespace BpstEdu.Migrations
                 name: "Contacts");
 
             migrationBuilder.DropTable(
-                name: "Course");
+                name: "Courses");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

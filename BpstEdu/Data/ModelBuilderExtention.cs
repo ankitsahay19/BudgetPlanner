@@ -15,29 +15,20 @@ namespace BpstEdu.Data
                new IdentityRole() { Id = "7fd3a789-e48b-4ba5-941a-11cbc3b47f39", Name = "Student", NormalizedName = "STUDENT", ConcurrencyStamp = "a8388c90-9c2b-4260-8cb7-f4250d503afd" }
                );
         }
-        public static void SeedApplicationStatus(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<ApplicationStatus>().HasData(
-                new ApplicationStatus() { UniqueId = 1, RegistrationStatus = "New Application" },
-                new ApplicationStatus() { UniqueId = 2, RegistrationStatus = "Reviewed" },
-                new ApplicationStatus() { UniqueId = 3, RegistrationStatus = "Admission Taken" },
-                new ApplicationStatus() { UniqueId = 4, RegistrationStatus = "Not Interested Anymore" }
-                );
-        }
         public static void SeedCourseCategory(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Course>().HasData(
-                  new Course { UniqueId = 1, Name = "Programming Classes (for Rising Stars - IX - XII )", IntershipAvailable = true },
-            new Course { UniqueId = 2, Name = "Full Stack Development - Internship 6 months ", IntershipAvailable = true },
-            new Course { UniqueId = 3, Name = "Full Stack Development - Industrial Training  45 days ", IntershipAvailable = true },
-            new Course { UniqueId = 4, Name = "Cyber Security - 45 Days", IntershipAvailable = true },
-            new Course { UniqueId = 5, Name = "Game Development - 45 Days", IntershipAvailable = true },
-            new Course { UniqueId = 6, Name = "App Development - 45 Days", IntershipAvailable = true },
-            new Course { UniqueId = 7, Name = "Networking Class - 45 Days", IntershipAvailable = true },
-            new Course { UniqueId = 8, Name = "Others", IntershipAvailable = true }
+                new Course { UniqueId = 1, CourseName = "Programming Fundamentals", Description = "Essential for software engineering. Covers core programming concepts and is ideal for beginners starting a career in technology.", CreatedDate = new DateTime(2026, 2, 15), LastUpdatedDate = new DateTime(2026, 2, 15) },
+                new Course { UniqueId = 2, CourseName = "Software Engineering", Description = "Focuses on web application development and includes internship opportunities. Learn to build robust and scalable systems, covering UI/UX to full-stack development.", CreatedDate = new DateTime(2026, 2, 15), LastUpdatedDate = new DateTime(2026, 2, 15) }, 
+                new Course { UniqueId = 3, CourseName = "AI & Machine Learning", Description = "Learn to design and develop intelligent systems using artificial intelligence and machine learning technologies.", CreatedDate = new DateTime(2026, 2, 15), LastUpdatedDate = new DateTime(2026, 2, 15) },
+                new Course { UniqueId = 4, CourseName = "Game Development", Description = "Transform creative ideas into interactive games using modern game development tools and technologies.", CreatedDate = new DateTime(2026, 2, 15), LastUpdatedDate = new DateTime(2026, 2, 15) },
+                new Course { UniqueId = 5, CourseName = "Cybersecurity", Description = "Learn to protect systems, networks, and data from cyber threats while understanding ethical hacking and security best practices.", CreatedDate = new DateTime(2026, 2, 15), LastUpdatedDate = new DateTime(2026, 2, 15) },
+                new Course { UniqueId = 6, CourseName = "Mobile App Development (Android & iOS)", Description = "Build cross-platform and native mobile applications with modern frameworks and best development practices.", CreatedDate = new DateTime(2026, 2, 15), LastUpdatedDate = new DateTime(2026, 2, 15) },
+                new Course { UniqueId = 7, CourseName = "Hardware Engineering", Description = "Learn the fundamentals of computer hardware, embedded systems, and electronics design.", CreatedDate = new DateTime(2026, 2, 15), LastUpdatedDate = new DateTime(2026, 2, 15) },
+                new Course { UniqueId = 8, CourseName = "Other Courses", Description = "Additional specialized or customized courses based on emerging technologies and student requirements.", CreatedDate = new DateTime(2026, 3, 1), LastUpdatedDate = new DateTime(2026, 3, 1) }
                 );
         }
-     
+
         public static void SeedCountry(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Country>().HasData(
@@ -1304,6 +1295,6 @@ namespace BpstEdu.Data
                  new City() { UniqueId = 1216, StateId = 32, Name = "Zamania" }
                  );
         }
-          
+
     }
 }
