@@ -1,0 +1,67 @@
+﻿@model IEnumerable<BpstEdu.DBModels.Batch>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.ActiveTabName = "Batches";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Course)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fees)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TenureInDays)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartingFrom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastUpdatedDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course.CourseName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fees)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenureInDays)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartingFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastUpdatedDate)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.UniqueId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

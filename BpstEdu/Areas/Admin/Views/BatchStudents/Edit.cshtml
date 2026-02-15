@@ -1,0 +1,56 @@
+﻿@model BpstEdu.DBModels.Student.BatchStudent
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.ActiveTabName = "BatchStudents";
+}
+
+<h1>Edit</h1>
+
+<h4>BatchStudent</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="UniqueId" />
+            <div class="form-group">
+                <label asp-for="BatchId" class="control-label"></label>
+                <select asp-for="BatchId" class="form-control" asp-items="ViewBag.BatchId"></select>
+                <span asp-validation-for="BatchId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StudentId" class="control-label"></label>
+                <select asp-for="StudentId" class="form-control" asp-items="ViewBag.StudentId"></select>
+                <span asp-validation-for="StudentId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiscountedFeeAmount" class="control-label"></label>
+                <input asp-for="DiscountedFeeAmount" class="form-control" />
+                <span asp-validation-for="DiscountedFeeAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatedDate" class="control-label"></label>
+                <input asp-for="CreatedDate" class="form-control" />
+                <span asp-validation-for="CreatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastUpdatedDate" class="control-label"></label>
+                <input asp-for="LastUpdatedDate" class="form-control" />
+                <span asp-validation-for="LastUpdatedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
