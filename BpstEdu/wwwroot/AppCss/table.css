@@ -1,0 +1,17 @@
+#courseTable td, #courseTable th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+#courseTable th.fees-col, #courseTable td.fees-col,
+#courseTable th.date-col, #courseTable td.date-col,
+#courseTable th.actions-col, #courseTable td.actions-col {
+    text-align: right !important;
+}
+#courseTable th:nth-child(1), #courseTable td:nth-child(1) { width: 20%; }
+#courseTable th:nth-child(2), #courseTable td:nth-child(2) { width: 50%; }
+#courseTable th:nth-child(3), #courseTable td:nth-child(3) { width: 10%; }
+#courseTable th:nth-child(4), #courseTable td:nth-child(4) { width: 10%; }
+#courseTable th:nth-child(5), #courseTable td:nth-child(5) { width: 10%; }
+

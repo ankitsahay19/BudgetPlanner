@@ -4,34 +4,15 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.ActiveTabName = "Courses";
-}
-
-<div class="main-wrapper">
-  
-
- 
-
-
+} 
+@section Style {
+     <link rel="stylesheet" href="/AppCss/table.css" /> 
+} 
+<div class="main-wrapper">  
     <div class="card shadow mb-4"> 
-     <div class="card-header bg-success text-white">
-            Courses
-        </div>
-     
+     <div class="card-header bg-success text-white"> Courses </div>      
         <div class="card-body">
-            <a asp-action="Create" class="btn btn-outline-primary float-end">Create New</a>
-            <style>
-                #courseTable td, #courseTable th {
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    vertical-align: middle;
-                }
-                #courseTable th.fees-col, #courseTable td.fees-col,
-                #courseTable th.date-col, #courseTable td.date-col,
-                #courseTable th.actions-col, #courseTable td.actions-col {
-                    text-align: right !important;
-                }
-            </style>
+            <a asp-action="Create" class="btn btn-outline-primary float-end">Create New</a> 
             <table id="courseTable" class="table table-hover table-striped" style="margin:0; width:100%; table-layout:fixed;">
             <colgroup>
                 <col style="width:20%">
@@ -57,8 +38,7 @@
                         <td>@Html.DisplayFor(modelItem => item.Description)</td>
                         <td class="fees-col">@Html.DisplayFor(modelItem => item.Fees)</td>
                         <td class="date-col">@Html.DisplayFor(modelItem => item.CreatedDate)</td>
-                   
-                        <td class="actions-col">
+                         <td class="actions-col">
                             <a asp-action="Edit" asp-route-id="@item.UniqueId" title="Edit" class="me-2 text-primary"><i class="bi bi-pencil-square"></i></a>
                             <a asp-action="Details" asp-route-id="@item.UniqueId" title="Details" class="me-2 text-info"><i class="bi bi-info-circle"></i></a>
                             <a asp-action="Delete" asp-route-id="@item.UniqueId" title="Delete" class="text-danger"><i class="bi bi-trash"></i></a>
@@ -67,19 +47,13 @@
                 }
             </tbody>
         </table> 
-        <div class="card-body" style="padding:0;">
-        </div>
+        <div class="card-body" style="padding:0;"> </div>
     </div>
-</div>
-
+</div> 
 @section Scripts {
     <script>
-        $(document).ready(function () {
-
-            $('#courseTable').DataTable();
-            $('#table2').DataTable();
-  //          $('#table3').DataTable();
-
+        $(document).ready(function () { 
+            $('#courseTable').DataTable(); 
         });
     </script>
 }
