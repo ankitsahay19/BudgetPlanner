@@ -34,11 +34,19 @@
         <ul class="nav nav-pills flex-column mb-auto">
             @if (activeTabName.Contains("Dashboard")) { activeTab = "active"; } else { activeTab = string.Empty; } 
             <li><a href="/Admin/home/dashboard" class="nav-link @activeTab"><i class="bi bi-grid-1x2-fill me-2"></i> Dashboard</a></li>
-            @if (activeTabName.Contains("Courses")) { activeTab = "active"; } else { activeTab = string.Empty; }
-            <li><a href="/Admin/Courses" class="nav-link @activeTab"><i class="bi bi-grid-1x2-fill me-2"></i> Courses</a></li>
 
             @if (activeTabName.Contains("Applications")) { activeTab = "active"; } else { activeTab = string.Empty; } 
             <li><a href="/Admin/Applications" class="nav-link @activeTab"><i class="bi bi-grid-1x2-fill me-2"></i> Applications</a></li>
+
+            @if (activeTabName.Contains("Courses")) { activeTab = "active"; } else { activeTab = string.Empty; }
+            <li><a href="/Admin/Courses" class="nav-link @activeTab"><i class="bi bi-grid-1x2-fill me-2"></i> Courses</a></li>
+
+            @if (activeTabName.Contains("Batches")) { activeTab = "active"; } else { activeTab = string.Empty; }
+            <li><a href="/Admin/Batches" class="nav-link @activeTab"><i class="bi bi-grid-1x2-fill me-2"></i> Batches</a></li>
+             @if (activeTabName.Contains("Students")) { activeTab = "active"; } else { activeTab = string.Empty; }
+            <li><a href="/Admin/Students" class="nav-link @activeTab"><i class="bi bi-grid-1x2-fill me-2"></i> Students</a></li>
+ 
+
             @if (activeTabName.Contains("Helper")) { activeTab = "active"; } else { activeTab = string.Empty; }
             <li><a href="#batches" class="nav-link @activeTab"><i class="bi bi-stack me-2"></i> Manage Batches</a></li>
             @if (activeTabName.Contains("Helper")) { activeTab = "active"; } else { activeTab = string.Empty; }

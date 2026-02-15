@@ -51,32 +51,4 @@ app.MapControllerRoute(name: "areas", pattern: "{area:exists}/{controller=Home}/
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
 app.Run();
 
-static void SeedAdminUser(IHost app)
-{
-    var scopeFactory = app.Services.GetService<IServiceScopeFactory>();
-    using (var scope = scopeFactory.CreateScope())
-    {
-        var userManager = scope.ServiceProvider.GetService<UserManager<AppUser>>();
-        var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
 
-        if (!roleManager.RoleExistsAsync("Admin").Result)
-        {
-            roleManager.CreateAsync(new IdentityRole("Admin")).Wait();
-        }
-
-        if (userManager.FindByNameAsync("admin").Result == null)
-        {
-            var admin = new AppUser
-            {
-                UserName = "admin@bpst.com",
-                Email = "admin@bpst.com",
-                PhoneNumber = "1234567890"
-            };
-            var result = userManager.CreateAsync(admin, "Admin@123").Result;
-            if (result.Succeeded)
-            {
-                userManager.AddToRoleAsync(admin, "Admin").Wait();
-            }
-        }
-    }
-}

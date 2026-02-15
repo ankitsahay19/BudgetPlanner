@@ -30,20 +30,20 @@ namespace BpstEdu.Services
 
         public string GetLoggedInUser()
         {
-            return _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
         }
         public string GetLoggedInUserId()
         {
-            return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
         }
         public string GetLoggedInUserEmail()
         {
-            return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+            return _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty;
         }
         public List<string> GetLoggedInUserRoles()
         {
-            var roles = _httpContextAccessor.HttpContext.User.FindAll(ClaimTypes.Role).Select(roleClaim => roleClaim.Value).ToList();
-            return roles;
+            var roles = _httpContextAccessor.HttpContext?.User.FindAll(ClaimTypes.Role).Select(roleClaim => roleClaim.Value).ToList();
+            return roles ?? new List<string>();
         }
         public string GetLayout()
         {
@@ -76,8 +76,12 @@ namespace BpstEdu.Services
             return result;
         }
 
-        public async Task<IdentityResult> UpldateLoggedInUserEmail(UpdateEmailVM updateEmail)
+        public async Task<IdentityResult> UpldateLoggedInUserEmail(UpdateEmailVM? updateEmail)
         {
+            if (updateEmail == null)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = "Update email view model is null." });
+            }
             /// check in user is valid , by validating password of cussent user . 
             // updateEmail.Password; // error --- Incorrect pwd.
             //             return;
@@ -112,7 +116,7 @@ namespace BpstEdu.Services
         public async Task<IdentityResult> UpldateLoggedInUserPassword(string newEmail, string oldPassword, string newPassword)
         {
             // Get the logged-in user
-            var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
+            var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext?.User);
             if (user == null)
             {
                 return IdentityResult.Failed(new IdentityError { Description = "User not found." });

@@ -56,6 +56,10 @@ namespace BpstEdu.Controllers.User
             if (_signInManager.IsSignedIn(User))
             {
                 var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return View("Login");
+                }
                 var role = await _userManager.GetRolesAsync(user);
                 if (role.Contains("Admin")) return RedirectToAction("Dashboard", "Home", new { Area = "Admin" });
                 else if (role.Contains("Staff")) return RedirectToAction("Index", "Home", new { Area = "Staff" });
@@ -66,15 +70,11 @@ namespace BpstEdu.Controllers.User
                 return View("Login");// RedirectToAction("Login", "Account");
         }
 
-        [Authorize(Roles = "Staff,Admin,Student")]
-
         public async Task<IActionResult> ChangePassword()
         {
             ViewBag.Layout = _userService.GetLayout();
             return View();
         }
-        [Authorize(Roles = "Staff,Admin,Student")]
-
         [HttpPost]
         public async Task<IActionResult> ChangePassword(UpdatePassword model)
         {
@@ -90,8 +90,6 @@ namespace BpstEdu.Controllers.User
             ViewBag.Layout = _userService.GetLayout();
             return View(model);
         }
-        [Authorize(Roles = "Staff,Admin,Student")]
-
         [HttpGet]
         public async Task<IActionResult> ChangeEmail()
         {
@@ -99,13 +97,14 @@ namespace BpstEdu.Controllers.User
             if (_signInManager.IsSignedIn(User))
             {
                 var user = await _userManager.GetUserAsync(User);
-                emailUpdate.OldEmail = user.Email;
+                if (user != null)
+                {
+                    emailUpdate.OldEmail = user.Email;
+                }
             }
             ViewBag.Layout = _userService.GetLayout();
             return View(emailUpdate);
         }
-        [Authorize(Roles = "Staff,Admin,Student")]
-
         [HttpPost]
         public async Task<IActionResult> ChangeEmail(UpdateEmailVM updateEmail)
         {

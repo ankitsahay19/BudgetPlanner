@@ -19,13 +19,12 @@
                 <col style="width:50%">
                 <col style="width:10%">
                 <col style="width:10%">
-                <col style="width:10%">
             </colgroup>
             <thead>
                 <tr>
                     <th>Course Name</th>
                     <th>Description</th>
-                    <th class="fees-col">Fees</th>
+
                     <th class="date-col">Created Date</th>
                     <th></th> 
                 </tr>
@@ -36,7 +35,7 @@
                     <tr>
                         <td>@Html.DisplayFor(modelItem => item.CourseName)</td>
                         <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                        <td class="fees-col">@Html.DisplayFor(modelItem => item.Fees)</td>
+
                         <td class="date-col">@Html.DisplayFor(modelItem => item.CreatedDate)</td>
                          <td class="actions-col">
                             <a asp-action="Edit" asp-route-id="@item.UniqueId" title="Edit" class="me-2 text-primary"><i class="bi bi-pencil-square"></i></a>

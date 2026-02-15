@@ -18,11 +18,8 @@ namespace BpstEdu.DBModels
         public string ?Description { get; set; }
 
 
-        [Obsolete("This property is deprecated.")]
-        [Required(ErrorMessage = "Fees is required.")]
-        [DataType(DataType.Currency)]
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal Fees { get; set; }
+
+
 
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
          public DateTime CreatedDate { get; set; }

@@ -61,10 +61,10 @@
                         <div class="mb-2">
                             <label asp-for="ApplicationStatus" class="form-label"></label>
                             <select asp-for="ApplicationStatus" class="form-select">
-                               @*  @foreach (var status in Enum.GetValues(typeof(BpstEdu.Data.CommonConstants.ApplicationStatus))) {
+@*                                 @foreach (var status in Enum.GetValues(typeof(BpstEdu.Data.CommonConstants.ApplicationStatus))) {
                                     <option value="@status" @(Model.ApplicationStatus.ToString() == status.ToString() ? "selected" : "")>@status</option>
-                                } *@
-                            </select>
+                                }
+ *@                            </select>
                         </div>
                         <div class="mb-2">
                             <label for="adminComment" class="form-label">Add Comment</label>
