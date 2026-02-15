@@ -1,16 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BpstEdu.DBModels
+namespace BpstEdu.DBModels.User
 {
-    [Table("States")]
-    public class State
+    [Table("Cities")]
+    public class City
     {
         [Key]
         public int UniqueId { get; set; }
-        public int CountryId { get; set; }
-        [ForeignKey("CountryId")]
-        public Country? Country { get; set; }
+        public int StateId { get; set; }
         public string Name { get; set; } = string.Empty;
+        [ForeignKey("StateId")]
+        public State? State { get; set; }
     }
 }

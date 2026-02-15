@@ -1,5 +1,4 @@
-﻿using BpstEdu.DBModels;
-using BpstEdu.Data;
+﻿using BpstEdu.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using BpstEdu.Models.Users;
 using BpstEdu.Services;
 using BpstEdu.Models;
+using BpstEdu.DBModels.User;
 
 namespace BpstEdu.Controllers.User
 {

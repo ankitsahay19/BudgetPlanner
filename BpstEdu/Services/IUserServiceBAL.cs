@@ -1,4 +1,4 @@
-﻿using BpstEdu.DBModels;
+﻿using BpstEdu.DBModels.User;
 using BpstEdu.Models;
 using Microsoft.AspNetCore.Identity;
 

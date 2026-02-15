@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BpstEdu.DBModels
+namespace BpstEdu.DBModels.User
 {
     public class AppUser : IdentityUser
     {

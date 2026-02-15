@@ -12,11 +12,13 @@ namespace BpstEdu.DBModels
 
         [Required(ErrorMessage = "Course Name is required.")]
         [StringLength(100, ErrorMessage = "Course Name cannot exceed 100 characters.")]
-        public string CourseName { get; set; }
+        public required string CourseName { get; set; }
 
         [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
-        public string Description { get; set; } 
+        public string ?Description { get; set; }
 
+
+        [Obsolete("This property is deprecated.")]
         [Required(ErrorMessage = "Fees is required.")]
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18, 2)")]

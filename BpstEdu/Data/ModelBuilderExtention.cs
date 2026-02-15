@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using BpstEdu.Models;
 using BpstEdu.DBModels;
+using BpstEdu.DBModels.User;
 
 namespace BpstEdu.Data
 {

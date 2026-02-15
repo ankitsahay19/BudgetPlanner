@@ -1,5 +1,5 @@
 using BpstEdu.Data;
-using BpstEdu.DBModels;
+using BpstEdu.DBModels.User;
 using BpstEdu.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
