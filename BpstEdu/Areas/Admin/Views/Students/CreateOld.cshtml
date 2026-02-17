@@ -1,0 +1,213 @@
+﻿@model BpstEdu.DBModels.Student.Student
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.ActiveTabName = "Students";
+}
+
+<style>
+    .upload-img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 6px;
+        border: 1px dashed #ccc;
+    }
+
+    .form-label.small {
+        font-size: 13px;
+        margin-bottom: 2px;
+    }
+
+    }
+</style>
+
+<div class="row g-2">
+
+    <!-- BASIC DETAILS -->
+    <div class="col-lg-4 col-md-6">
+        <label asp-for="FirstName" class="form-label small"></label>
+        <input asp-for="FirstName" class="form-control form-control-sm" required />
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+        <label asp-for="LastName" class="form-label small"></label>
+        <input asp-for="LastName" class="form-control form-control-sm" required />
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+        <label asp-for="Gender" class="form-label small"></label>
+        <select asp-for="Gender" class="form-select form-select-sm">
+            <option disabled selected>Select</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+        </select>
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+        <label asp-for="DateOfBirth" class="form-label small"></label>
+        <input asp-for="DateOfBirth" id="DateOfBirth"
+               type="date"
+               class="form-control form-control-sm"
+               onchange="calculateAge()" />
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+        <label asp-for="MobileNumber" class="form-label small"></label>
+        <input asp-for="MobileNumber" class="form-control form-control-sm" />
+    </div>
+
+    <div class="col-lg-4 col-md-6">
+        <label asp-for="EmailId" class="form-label small"></label>
+        <input asp-for="EmailId" type="email" class="form-control form-control-sm" />
+    </div>
+
+</div>
+
+<hr />
+
+<!-- FATHER DETAILS -->
+<h6 class="fw-bold">Father Details</h6>
+
+<div class="row g-2">
+    <div class="col-md-6">
+        <label class="form-label small">Father Name</label>
+        <input id="FatherName" name="FatherName" class="form-control form-control-sm" />
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label small">Father Mobile</label>
+        <input id="FatherMobile" name="FatherMobile" class="form-control form-control-sm" />
+    </div>
+</div>
+
+<hr />
+
+<!-- EMERGENCY CONTACT -->
+<h6 class="fw-bold">Emergency Contact</h6>
+
+<div class="form-check mb-2">
+    <input class="form-check-input"
+           type="checkbox"
+           id="sameAsFather"
+           onchange="copyFatherDetails()" />
+    <label class="form-check-label small">
+        Same as Father Details
+    </label>
+</div>
+
+<div class="row g-2">
+    <div class="col-md-4">
+        <label class="form-label small">Contact Name</label>
+        <input id="EmergencyName" name="EmergencyName"
+               class="form-control form-control-sm" />
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label small">Mobile</label>
+        <input id="EmergencyMobile" name="EmergencyMobile"
+               class="form-control form-control-sm" />
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label small">Relationship</label>
+        <select id="EmergencyRelation"
+                name="EmergencyRelation"
+                class="form-select form-select-sm">
+            <option value="">Select</option>
+            <option>Father</option>
+            <option>Mother</option>
+            <option>Sibling</option>
+        </select>
+    </div>
+</div>
+
+<hr />
+
+<!-- UPLOAD SECTION -->
+<div class="row g-2">
+
+    <!-- Profile -->
+    <div class="col-md-4 text-center">
+        <img id="profilePreview"
+             class="upload-img"
+             src="data:image/svg+xml;utf8,
+        <svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'>
+            <circle cx='60' cy='40' r='30' fill='%23ccc' />
+            <rect x='20' y='70' width='80' height='40' fill='%23ccc' />
+        </svg>" />
+
+        <input asp-for="Photo"
+               type="file"
+               class="form-control form-control-sm"
+               onchange="previewImage(event,'profilePreview')" />
+    </div>
+
+    <!-- Aadhar -->
+    <div class="col-md-4 text-center">
+        <img id="aadharPreview" class="upload-img"
+             src="data:image/svg+xml;utf8,
+        <svg xmlns='http://www.w3.org/2000/svg' width='120' height='80'>
+            <rect width='120' height='80' fill='%23ccc' />
+            <text x='15' y='45' font-size='12'>AADHAR</text>
+        </svg>" />
+
+        <input asp-for="Aadhar"
+               type="file"
+               class="form-control form-control-sm"
+               onchange="previewImage(event,'aadharPreview')" />
+    </div>
+
+    <!-- PAN -->
+    <div class="col-md-4 text-center">
+        <img id="panPreview" class="upload-img"
+             src="data:image/svg+xml;utf8,
+        <svg xmlns='http://www.w3.org/2000/svg' width='120' height='80'>
+            <rect width='120' height='80' fill='%23ccc' />
+            <text x='30' y='45' font-size='12'>PAN</text>
+        </svg>" />
+
+        <input asp-for="Pan"
+               type="file"
+               class="form-control form-control-sm"
+               onchange="previewImage(event,'panPreview')" />
+    </div>
+    <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary px-5">Create</button>
+    </div>
+
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+                function previewImage(event, id) {
+            const img = document.getElementById(id);
+            img.src = URL.createObjectURL(event.target.files[0]);
+        }
+
+        function copyFatherDetails() {
+
+            let checked = document.getElementById("sameAsFather").checked;
+
+            if (checked) {
+                document.getElementById("EmergencyName").value =
+                    document.getElementById("FatherName").value;
+
+                document.getElementById("EmergencyMobile").value =
+                    document.getElementById("FatherMobile").value;
+
+                document.getElementById("EmergencyRelation").value = "Father";
+            }
+            else {
+                document.getElementById("EmergencyName").value = "";
+                document.getElementById("EmergencyMobile").value = "";
+                document.getElementById("EmergencyRelation").value = "";
+            }
+        }
+    </script>
+}

@@ -47,10 +47,22 @@ namespace BpstEdu.Areas.Admin.Controllers
         }
 
         // GET: Admin/Batches/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int id)
         {
             ViewData["CourseId"] = new SelectList(_context.Courses, "UniqueId", "CourseName");
-            return View();
+
+            Batch? _batch = null;
+            if (id > 0)
+                _batch = await _context.Batches.FindAsync(id);
+            _batch ??= new Batch
+            {
+                StartingFrom = DateTime.Now.AddDays(15),
+                CreatedDate = DateTime.Now,
+                LastUpdatedDate = DateTime.Now,
+                TenureInDays = 45,
+                Fees = 6500,
+            };
+            return View(_batch);
         }
 
         // POST: Admin/Batches/Create
@@ -58,11 +70,17 @@ namespace BpstEdu.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UniqueId,CourseId,Fees,TenureInDays,StartingFrom,CreatedDate,LastUpdatedDate")] Batch batch)
+        public async Task<IActionResult> Create(Batch batch)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(batch);
+                if (batch.UniqueId.Equals(0))
+                {
+                    batch.CreatedDate = DateTime.Now;
+                    _context.Add(batch);
+                }
+                else _context.Update(batch);
+                batch.LastUpdatedDate = DateTime.Now;
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -70,58 +88,6 @@ namespace BpstEdu.Areas.Admin.Controllers
             return View(batch);
         }
 
-        // GET: Admin/Batches/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var batch = await _context.Batches.FindAsync(id);
-            if (batch == null)
-            {
-                return NotFound();
-            }
-            ViewData["CourseId"] = new SelectList(_context.Courses, "UniqueId", "CourseName", batch.CourseId);
-            return View(batch);
-        }
-
-        // POST: Admin/Batches/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UniqueId,CourseId,Fees,TenureInDays,StartingFrom,CreatedDate,LastUpdatedDate")] Batch batch)
-        {
-            if (id != batch.UniqueId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(batch);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BatchExists(batch.UniqueId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CourseId"] = new SelectList(_context.Courses, "UniqueId", "CourseName", batch.CourseId);
-            return View(batch);
-        }
 
         // GET: Admin/Batches/Delete/5
         public async Task<IActionResult> Delete(int? id)

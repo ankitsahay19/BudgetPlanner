@@ -5,105 +5,285 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.ActiveTabName = "Students";
 }
+<style>
+    .wizard-step {
+        display: none;
+    }
 
-<h1>Create</h1>
+        .wizard-step.active {
+            display: block;
+        }
 
-<h4>Student</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ApplicationId" class="control-label"></label>
-                <select asp-for="ApplicationId" class ="form-control" asp-items="ViewBag.ApplicationId"></select>
+    .step-indicator {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
+
+        .step-indicator .step {
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+            .step-indicator .step::before {
+                content: '';
+                height: 4px;
+                background: #dee2e6;
+                position: absolute;
+                width: 100%;
+                top: 15px;
+                left: -50%;
+                z-index: 0;
+            }
+
+            .step-indicator .step:first-child::before {
+                display: none;
+            }
+
+    .step-circle {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #dee2e6;
+        margin: auto;
+        line-height: 30px;
+        color: white;
+        position: relative;
+        z-index: 1;
+    }
+
+    .step.active .step-circle {
+        background: #0d6efd;
+    }
+</style>
+
+ <div class="card">
+
+
+    <div class="card-body">
+        <h4>Student Admition Form</h4>
+        <hr />
+  
+        <div class="card shadow p-4">
+
+            <!-- Step Indicator -->
+            <div class="step-indicator">
+                <div class="step active">
+                    <div class="step-circle">1</div>
+                    <small>Personal</small>
+                </div>
+
+                <div class="step">
+                    <div class="step-circle">2</div>
+                    <small>Required Documents</small>
+                </div>
+
+                <div class="step">
+                    <div class="step-circle">3</div>
+                    <small>Confirm</small>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+
+            <!-- Step 1 -->
+            <div class="wizard-step active">
+                <h5>Personal Information</h5>
+
+                <div class="col-lg-4 col-md-6">
+                    <label asp-for="FirstName" class="form-label small"></label>
+                    <input asp-for="FirstName" class="form-control form-control-sm" required />
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <label asp-for="LastName" class="form-label small"></label>
+                    <input asp-for="LastName" class="form-control form-control-sm" required />
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <label asp-for="Gender" class="form-label small"></label>
+                    <select asp-for="Gender" class="form-select form-select-sm">
+                        <option disabled selected>Select</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <label asp-for="DateOfBirth" class="form-label small"></label>
+                    <input asp-for="DateOfBirth" id="DateOfBirth"
+                           type="date"
+                           class="form-control form-control-sm"
+                           onchange="calculateAge()" />
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <label asp-for="MobileNumber" class="form-label small"></label>
+                    <input asp-for="MobileNumber" class="form-control form-control-sm" />
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <label asp-for="EmailId" class="form-label small"></label>
+                    <input asp-for="EmailId" type="email" class="form-control form-control-sm" />
+                </div>
+
             </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
+
+            <hr />
+
+            <!-- FATHER DETAILS -->
+            <h6 class="fw-bold">Father Details</h6>
+
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <label class="form-label small">Father Name</label>
+                    <input id="FatherName" name="FatherName" class="form-control form-control-sm" />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label small">Father Mobile</label>
+                    <input id="FatherMobile" name="FatherMobile" class="form-control form-control-sm" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Gender" class="control-label"></label>
-                <input asp-for="Gender" class="form-control" />
-                <span asp-validation-for="Gender" class="text-danger"></span>
+
+            <hr />
+
+            <!-- EMERGENCY CONTACT -->
+            <h6 class="fw-bold">Emergency Contact</h6>
+
+            <div class="form-check mb-2">
+                <input class="form-check-input"
+                       type="checkbox"
+                       id="sameAsFather"
+                       onchange="copyFatherDetails()" />
+                <label class="form-check-label small">
+                    Same as Father Details
+                </label>
             </div>
-            <div class="form-group">
-                <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" />
-                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+
+            <div class="row g-2">
+                <div class="col-md-4">
+                    <label class="form-label small">Contact Name</label>
+                    <input id="EmergencyName" name="EmergencyName"
+                           class="form-control form-control-sm" />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label small">Mobile</label>
+                    <input id="EmergencyMobile" name="EmergencyMobile"
+                           class="form-control form-control-sm" />
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label small">Relationship</label>
+                    <select id="EmergencyRelation"
+                            name="EmergencyRelation"
+                            class="form-select form-select-sm">
+                        <option value="">Select</option>
+                        <option>Father</option>
+                        <option>Mother</option>
+                        <option>Sibling</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CollegeName" class="control-label"></label>
-                <input asp-for="CollegeName" class="form-control" />
-                <span asp-validation-for="CollegeName" class="text-danger"></span>
+
+            <!-- Step 2 -->
+            <div class="wizard-step">
+                <h5>Address</h5>
+
+                <div class="mb-3">
+                    <label>City</label>
+                    <input class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label>Country</label>
+                    <input class="form-control" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="MobileNumber" class="control-label"></label>
-                <input asp-for="MobileNumber" class="form-control" />
-                <span asp-validation-for="MobileNumber" class="text-danger"></span>
+
+            <!-- Step 3 -->
+            <div class="wizard-step">
+                <h5>Confirmation</h5>
+                <p>Please review your information and submit.</p>
             </div>
-            <div class="form-group">
-                <label asp-for="EmailId" class="control-label"></label>
-                <input asp-for="EmailId" class="form-control" />
-                <span asp-validation-for="EmailId" class="text-danger"></span>
+
+            <!-- Navigation Buttons -->
+            <div class="mt-4 d-flex justify-content-between">
+                <button class="btn btn-secondary" id="prevBtn">Previous</button>
+                <button class="btn btn-primary" id="nextBtn">Next</button>
             </div>
-            <div class="form-group">
-                <label asp-for="HighestQualification" class="control-label"></label>
-                <input asp-for="HighestQualification" class="form-control" />
-                <span asp-validation-for="HighestQualification" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Message" class="control-label"></label>
-                <input asp-for="Message" class="form-control" />
-                <span asp-validation-for="Message" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhotoPath" class="control-label"></label>
-                <input asp-for="PhotoPath" class="form-control" />
-                <span asp-validation-for="PhotoPath" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AadhaarNumber" class="control-label"></label>
-                <input asp-for="AadhaarNumber" class="form-control" />
-                <span asp-validation-for="AadhaarNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AadharFileUrl" class="control-label"></label>
-                <input asp-for="AadharFileUrl" class="form-control" />
-                <span asp-validation-for="AadharFileUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PanNumber" class="control-label"></label>
-                <input asp-for="PanNumber" class="form-control" />
-                <span asp-validation-for="PanNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PanFileUrl" class="control-label"></label>
-                <input asp-for="PanFileUrl" class="form-control" />
-                <span asp-validation-for="PanFileUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+
+        </div>
+   </div>
+
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+ 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script> 
+            let currentStep = 0;
+            const steps = document.querySelectorAll(".wizard-step");
+            const indicators = document.querySelectorAll(".step");
+
+            function showStep(index) {
+
+                steps.forEach(s => s.classList.remove("active"));
+                indicators.forEach(i => i.classList.remove("active"));
+
+                steps[index].classList.add("active");
+                indicators[index].classList.add("active");
+
+                document.getElementById("prevBtn").style.display = index === 0 ? "none" : "inline-block";
+
+                document.getElementById("nextBtn").innerText =
+                    index === steps.length - 1 ? "Submit" : "Next";
+            }
+
+            document.getElementById("nextBtn").addEventListener("click", () => {
+
+                if (currentStep < steps.length - 1) {
+                    currentStep++;
+                    showStep(currentStep);
+                } else {
+                    alert("Form Submitted");
+                }
+            });
+
+            document.getElementById("prevBtn").addEventListener("click", () => {
+                currentStep--;
+                showStep(currentStep);
+            });
+
+            showStep(currentStep);
+
+
+                function previewImage(event, id) {
+            const img = document.getElementById(id);
+            img.src = URL.createObjectURL(event.target.files[0]);
+        }
+
+        function copyFatherDetails() {
+
+            let checked = document.getElementById("sameAsFather").checked;
+
+            if (checked) {
+                document.getElementById("EmergencyName").value =
+                    document.getElementById("FatherName").value;
+
+                document.getElementById("EmergencyMobile").value =
+                    document.getElementById("FatherMobile").value;
+
+                document.getElementById("EmergencyRelation").value = "Father";
+            }
+            else {
+                document.getElementById("EmergencyName").value = "";
+                document.getElementById("EmergencyMobile").value = "";
+                document.getElementById("EmergencyRelation").value = "";
+            }
+        }
+    </script>
 }

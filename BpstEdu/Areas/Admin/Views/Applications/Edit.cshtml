@@ -1,4 +1,5 @@
 ﻿@model BpstEdu.DBModels.Application
+@using BpstEdu.Data
 
 @{
     ViewData["Title"] = "Edit";
@@ -38,6 +39,18 @@
                         </div>
                         <div class="row mb-2">
                             <div class="col-sm-6 mb-2">
+                                <label asp-for="FirstName" class="form-label"></label>
+                                <input asp-for="FirstName" class="form-control" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-6 mb-2">
+                                <label asp-for="LastName" class="form-label"></label>
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-sm-6 mb-2">
                                 <label asp-for="HighestQualification" class="form-label"></label>
                                 <input asp-for="HighestQualification" class="form-control" readonly />
                             </div>
@@ -60,11 +73,7 @@
                         </div>
                         <div class="mb-2">
                             <label asp-for="ApplicationStatus" class="form-label"></label>
-                            <select asp-for="ApplicationStatus" class="form-select">
-@*                                 @foreach (var status in Enum.GetValues(typeof(BpstEdu.Data.CommonConstants.ApplicationStatus))) {
-                                    <option value="@status" @(Model.ApplicationStatus.ToString() == status.ToString() ? "selected" : "")>@status</option>
-                                }
- *@                            </select>
+                            <select asp-for="ApplicationStatus" class="form-select" asp-items="Html.GetEnumSelectList(typeof(CommonConstants.ApplicationStatus))"></select>
                         </div>
                         <div class="mb-2">
                             <label for="adminComment" class="form-label">Add Comment</label>

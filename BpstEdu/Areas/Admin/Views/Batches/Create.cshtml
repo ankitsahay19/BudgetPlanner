@@ -7,54 +7,66 @@
 
 }
 
-<h1>Create</h1>
 
-<h4>Batch</h4>
+<div class="card">
+
+  
+    <div class="card-body">
+        <h4>Batch</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
         <form asp-action="Create">
+
+            <input type="hidden" asp-for="CreatedDate">
+            <input type="hidden" asp-for="LastUpdatedDate">
+            <input type="hidden" asp-for="UniqueId">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CourseId" class="control-label"></label>
-                <select asp-for="CourseId" class ="form-control" asp-items="ViewBag.CourseId"></select>
+             
+                <div class="row g-3">
+
+                <!-- Course -->
+                <div class="col-md-6 mb-3">
+                    <label asp-for="CourseId" class="form-label">Select Course</label>
+                    <select asp-for="CourseId" class="form-control" asp-items="ViewBag.CourseId"></select>
+                    <span asp-validation-for="CourseId" class="text-danger"></span>
+                </div>
+
+                <!-- Fees -->
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Fees" class="form-label"></label>
+                    <input asp-for="Fees" class="form-control" />
+                    <span asp-validation-for="Fees" class="text-danger"></span>
+                </div>
+
+                <!-- Tenure -->
+                <div class="col-md-6 mb-3">
+                    <label asp-for="TenureInDays" class="form-label"></label>
+                    <input asp-for="TenureInDays" class="form-control" />
+                    <span asp-validation-for="TenureInDays" class="text-danger"></span>
+                </div>
+
+                <!-- Starting From -->
+                <div class="col-md-6 mb-3">
+                    <label asp-for="StartingFrom" class="form-label"></label>
+                    <input asp-for="StartingFrom"
+                           class="form-control"
+                           type="datetime-local"
+                           value="@(Model?.StartingFrom.ToString("yyyy-MM-ddTHH:mm") ?? DateTime.Now.ToString("yyyy-MM-ddTHH:mm"))" />
+                    <span asp-validation-for="StartingFrom" class="text-danger"></span>
+                </div>
+
             </div>
-            <div class="form-group">
-                <label asp-for="Fees" class="control-label"></label>
-                <input asp-for="Fees" class="form-control" />
-                <span asp-validation-for="Fees" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TenureInDays" class="control-label"></label>
-                <input asp-for="TenureInDays" class="form-control" />
-                <span asp-validation-for="TenureInDays" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartingFrom" class="control-label"></label>
-                <input asp-for="StartingFrom" class="form-control" />
-                <span asp-validation-for="StartingFrom" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedDate" class="control-label"></label>
-                <input asp-for="CreatedDate" class="form-control" />
-                <span asp-validation-for="CreatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastUpdatedDate" class="control-label"></label>
-                <input asp-for="LastUpdatedDate" class="form-control" />
-                <span asp-validation-for="LastUpdatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+             
+            <div class="text-center mt-4">
+                <input type="submit" value="Create" class="btn btn-primary px-4 me-2" />
+                <a asp-action="Index" class="btn btn-outline-secondary px-4">Back to List</a>
             </div>
         </form>
+
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

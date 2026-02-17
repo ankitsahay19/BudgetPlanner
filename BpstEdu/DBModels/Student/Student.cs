@@ -1,6 +1,7 @@
 ﻿using BpstEdu.Data;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
 namespace BpstEdu.DBModels.Student
 {
@@ -45,6 +46,10 @@ namespace BpstEdu.DBModels.Student
 
         // Path to uploaded photo (relative to wwwroot)
         public string? PhotoPath { get; set; } = string.Empty;
+
+        [NotMapped]
+        [Display(Name = "Upload Photo")]
+        public IFormFile? Photo { get; set; }
 
 
 

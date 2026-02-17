@@ -45,8 +45,11 @@
             <li><a href="/Admin/Batches" class="nav-link @activeTab"><i class="bi bi-grid-1x2-fill me-2"></i> Batches</a></li>
              @if (activeTabName.Contains("Students")) { activeTab = "active"; } else { activeTab = string.Empty; }
             <li><a href="/Admin/Students" class="nav-link @activeTab"><i class="bi bi-grid-1x2-fill me-2"></i> Students</a></li>
-             @if (activeTabName.Contains("BatchStudents")) { activeTab = "active"; } else { activeTab = string.Empty; }
+            @if (activeTabName.Contains("BatchStudents")) { activeTab = "active"; } else { activeTab = string.Empty; }
             <li><a href="/Admin/BatchStudents" class="nav-link @activeTab"><i class="bi bi-grid-1x2-fill me-2"></i> Batch Students</a></li>
+
+            @if (activeTabName.Contains("StudentFees")) { activeTab = "active"; } else { activeTab = string.Empty; }
+            <li><a href="/Admin/StudentFees" class="nav-link @activeTab"><i class="bi bi-grid-1x2-fill me-2"></i> Fees </a></li>
  
 
             @if (activeTabName.Contains("batchS")) { activeTab = "active"; } else { activeTab = string.Empty; }
@@ -60,7 +63,9 @@
             <div class="small text-muted">User: Admin (Lead)</div>
         </div>
     </div>
-    @RenderBody()
+    <div class="main-wrapper">
+        @RenderBody()
+</div>
 
     
 <!-- jQuery (Load First) -->

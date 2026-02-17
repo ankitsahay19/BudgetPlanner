@@ -5,15 +5,10 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.ActiveTabName = "Applications";
 }
-
-<div class="main-wrapper">
-
+ 
 <h1>Applications</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
+ 
 <div class="row mb-3">
     <div class="col-md-6">
         <input type="text" id="searchInput" class="form-control" placeholder="Search by name, email, or mobile..." />
@@ -60,8 +55,7 @@
                     </a>
                 </td>                <td>
                     <a asp-action="Edit" asp-route-id="@app.UniqueId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@app.UniqueId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@app.UniqueId">Delete</a>
+                    <a asp-action="Details" asp-route-id="@app.UniqueId">Details</a> 
                 </td>
             </tr>
         }
@@ -90,8 +84,7 @@
         </div>
     </div>
 </div>
-
-</div>
+ 
 
 @section Scripts {
     <script>
@@ -195,13 +188,7 @@
                 displayRows();
             });
 
-            // Initial display
-            displayRows();
-
-            // Add a default-profile.png for error handling if image path is bad
-            // This assumes you have a default-profile.png in your wwwroot/images folder
-            // or adjust the path accordingly.
-            // Example: <img src="~/@@app.PhotoPath" onerror="this.onerror=null;this.src='/images/default-profile.png';" />
-        });
+             displayRows();
+         });
     </script>
 }

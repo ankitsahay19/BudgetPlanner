@@ -1,14 +1,13 @@
-﻿@model BpstEdu.DBModels.Batch
+﻿@model BpstEdu.DBModels.Student.StudentFee
 
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewBag.ActiveTabName = "Batches";
 }
 
 <h1>Edit</h1>
 
-<h4>Batch</h4>
+<h4>StudentFee</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -16,24 +15,29 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="UniqueId" />
             <div class="form-group">
-                <label asp-for="CourseId" class="control-label"></label>
-                <select asp-for="CourseId" class="form-control" asp-items="ViewBag.CourseId"></select>
-                <span asp-validation-for="CourseId" class="text-danger"></span>
+                <label asp-for="BatchStudentId" class="control-label"></label>
+                <select asp-for="BatchStudentId" class="form-control" asp-items="ViewBag.BatchStudentId"></select>
+                <span asp-validation-for="BatchStudentId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Fees" class="control-label"></label>
-                <input asp-for="Fees" class="form-control" />
-                <span asp-validation-for="Fees" class="text-danger"></span>
+                <label asp-for="StudentId" class="control-label"></label>
+                <input asp-for="StudentId" class="form-control" />
+                <span asp-validation-for="StudentId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TenureInDays" class="control-label"></label>
-                <input asp-for="TenureInDays" class="form-control" />
-                <span asp-validation-for="TenureInDays" class="text-danger"></span>
+                <label asp-for="SubmittedFeeAmount" class="control-label"></label>
+                <input asp-for="SubmittedFeeAmount" class="form-control" />
+                <span asp-validation-for="SubmittedFeeAmount" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StartingFrom" class="control-label"></label>
-                <input asp-for="StartingFrom" class="form-control" />
-                <span asp-validation-for="StartingFrom" class="text-danger"></span>
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FeeSubmittingDate" class="control-label"></label>
+                <input asp-for="FeeSubmittingDate" class="form-control" />
+                <span asp-validation-for="FeeSubmittingDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CreatedDate" class="control-label"></label>

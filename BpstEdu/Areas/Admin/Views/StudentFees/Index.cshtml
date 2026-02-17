@@ -1,9 +1,8 @@
-﻿@model IEnumerable<BpstEdu.DBModels.Batch>
+﻿@model IEnumerable<BpstEdu.DBModels.Student.StudentFee>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewBag.ActiveTabName = "Batches";
 }
 
 <h1>Index</h1>
@@ -15,16 +14,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Course)
+                @Html.DisplayNameFor(model => model.StudentId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Fees)
+                @Html.DisplayNameFor(model => model.SubmittedFeeAmount)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TenureInDays)
+                @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartingFrom)
+                @Html.DisplayNameFor(model => model.FeeSubmittingDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedDate)
@@ -39,16 +38,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Course.CourseName)
+                @Html.DisplayFor(modelItem => item.StudentId)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Fees)
+                @Html.DisplayFor(modelItem => item.SubmittedFeeAmount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TenureInDays)
+                @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StartingFrom)
+                @Html.DisplayFor(modelItem => item.FeeSubmittingDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedDate)
@@ -57,7 +56,7 @@
                 @Html.DisplayFor(modelItem => item.LastUpdatedDate)
             </td>
             <td>
-                <a asp-action="Create" asp-route-id="@item.UniqueId">Edit</a> |
+                <a asp-action="Edit" asp-route-id="@item.UniqueId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.UniqueId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.UniqueId">Delete</a>
             </td>
